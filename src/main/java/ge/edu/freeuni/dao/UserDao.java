@@ -17,6 +17,9 @@ public class UserDao {
     @Autowired
     private BasicDataSource db;
 
+    public BasicDataSource getBasicDataSource() {
+        return db;
+    }
 
     public User get(String login) {
         String sql = "SELECT login,hashedpassword,isadmin FROM users WHERE login = ?;";
@@ -29,8 +32,8 @@ public class UserDao {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return new User(rs.getString("login"),
-                                    rs.getString("hashedpassword"),
-                                    rs.getBoolean("isadmin"));
+                            rs.getString("hashedpassword"),
+                            rs.getBoolean("isadmin"));
                 } else {
                     return null;
                 }
@@ -42,6 +45,24 @@ public class UserDao {
 
     public boolean contains(String login) {
         return get(login) != null;
+    }
+
+    public boolean add(String login, String password) {
+        if (contains(login)) return false;
+
+        String sql = "INSERT INTO users (login, hashedpassword, isadmin) VALUES (?,?, false)";
+
+        try (Connection con = db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, login);
+            ps.setString(2, PasswordHasher.hashPassword(password));
+
+            return ps.executeUpdate() == 1;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to create user: " + login, e);
+        }
     }
 
     public boolean correctPassword(String login, String suggestedPassword) {
@@ -63,25 +84,6 @@ public class UserDao {
             }
         } catch (SQLException e) {
             throw new RuntimeException("Password check failed for user: " + login, e);
-        }
-    }
-
-
-    public boolean create(String login, String password, String name, String surname) {
-        if (contains(login)) return false;
-
-        String sql = "INSERT INTO users (login, hashedpassword, isadmin) VALUES (?,?, false)";
-
-        try (Connection con = db.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setString(1, login);
-            ps.setString(2, PasswordHasher.hashPassword(password));
-
-            return ps.executeUpdate() == 1;
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to create user: " + login, e);
         }
     }
 

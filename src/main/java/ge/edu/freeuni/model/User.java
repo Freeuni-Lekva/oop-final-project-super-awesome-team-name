@@ -38,11 +38,11 @@ public class User {
         return isAdmin;
     }
 
-    public void setAdmin(boolean admin) {
+    public void setAdmin() {
         isAdmin = true;
     }
 
-    public void removeAdmin(boolean admin) {
+    public void removeAdmin() {
         isAdmin = false;
     }
 }
