@@ -5,8 +5,8 @@ USE QuizWebsite;
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
-    login CHAR(64),
-    hashedpassword CHAR(64),
-    isadmin boolean
+    login VARCHAR(100) PRIMARY KEY,
+    hashedpassword VARCHAR(255) NOT NULL,
+    isadmin boolean NOT NULL
 );
 

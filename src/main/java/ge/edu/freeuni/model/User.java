@@ -12,6 +12,12 @@ public class User {
         this.isAdmin = false;
     }
 
+    public User(String name, String hashedPassword, boolean isAdmin) {
+        this.name = name;
+        this.hashedPassword = hashedPassword;
+        this.isAdmin = isAdmin;
+    }
+
     public String getName() {
         return name;
     }
@@ -32,11 +38,11 @@ public class User {
         return isAdmin;
     }
 
-    public void setAdmin(boolean admin) {
+    public void setAdmin() {
         isAdmin = true;
     }
 
-    public void removeAdmin(boolean admin) {
+    public void removeAdmin() {
         isAdmin = false;
     }
 }

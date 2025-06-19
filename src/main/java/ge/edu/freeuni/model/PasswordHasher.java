@@ -7,8 +7,14 @@ public class PasswordHasher {
 
     private static final String ALGORITHM = "SHA-1";
 
+
+    public static boolean checkPassword(String password, String hashedPassword) {
+        return hashPassword(password).equals(hashedPassword);
+    }
+
     /**
      * Generates hashed password
+     *
      * @param password
      * @return hashedPassword
      */
@@ -18,6 +24,7 @@ public class PasswordHasher {
 
     /**
      * Generates HashValue of a given string in a bytes array form
+     *
      * @param password
      * @return bytes
      */
@@ -33,6 +40,7 @@ public class PasswordHasher {
 
     /**
      * Generates a hex string from bytes array with 2 chars for each byte
+     *
      * @param bytes
      * @return string
      */
