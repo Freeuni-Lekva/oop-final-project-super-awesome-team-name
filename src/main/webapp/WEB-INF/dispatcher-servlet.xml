@@ -20,13 +20,12 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
         <property name="initialSize" value="3"/>
     </bean>
 
-    <!--<mvc:interceptors>
+    <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/"></mvc:mapping>
             <mvc:mapping path="/"></mvc:mapping>
             <bean class="ge.edu.freeuni.interceptor.AuthInterceptor"/>
         </mvc:interceptor>
-    </mvc:interceptors>-->
+    </mvc:interceptors>
 
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

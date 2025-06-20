@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class UserController {
@@ -23,13 +24,14 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ModelAndView login(@RequestParam String name, @RequestParam String password) {
+    public ModelAndView login(HttpSession session, @RequestParam String name, @RequestParam String password) {
         ModelAndView mav = new ModelAndView("login");
         if (!users.contains(name)) {
             mav.addObject("error", "User does not exist.");
         } else if (!users.correctPassword(name, password)) {
             mav.addObject("error", "Incorrect password.");
         }
+        session.setAttribute("name", name);
         return mav;
     }
 
@@ -46,6 +48,12 @@ public class UserController {
             return mav;
         }
         return new ModelAndView("redirect:/login");
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "login";
     }
 
 
