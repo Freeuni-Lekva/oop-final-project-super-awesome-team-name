@@ -2,8 +2,8 @@ package ge.edu.freeuni.model;
 
 public class User {
 
-    private String name;
-    private String hashedPassword;
+    private final String name;
+    private final String hashedPassword;
     private boolean isAdmin;
 
     public User(String name, String hashedPassword) {
@@ -22,18 +22,6 @@ public class User {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getHashedPassword() {
-        return hashedPassword;
-    }
-
-    public void setHashedPassword(String hashedPassword) {
-        this.hashedPassword = hashedPassword;
-    }
-
     public boolean isAdmin() {
         return isAdmin;
     }
@@ -45,4 +33,14 @@ public class User {
     public void removeAdmin() {
         isAdmin = false;
     }
+
+    public boolean checkHashedPassword(String suggestedHashedPassword) {
+        return PasswordHasher.hashPassword(suggestedHashedPassword).equals(hashedPassword);
+    }
+
+    //Only for testing purposes
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
 }

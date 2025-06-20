@@ -17,11 +17,12 @@ public class UserDao {
     @Autowired
     private BasicDataSource db;
 
+    //Only for testing purposes
     public BasicDataSource getBasicDataSource() {
         return db;
     }
 
-    public User get(String name) {
+    private User get(String name) {
         String sql = "SELECT name,hashedpassword,isadmin FROM users WHERE name = ?;";
 
         try (Connection con = db.getConnection();
@@ -32,8 +33,8 @@ public class UserDao {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return new User(rs.getString("name"),
-                                    rs.getString("hashedpassword"),
-                                    rs.getBoolean("isadmin"));
+                            rs.getString("hashedpassword"),
+                            rs.getBoolean("isadmin"));
                 } else {
                     return null;
                 }
@@ -43,12 +44,13 @@ public class UserDao {
         }
     }
 
-    public boolean contains(String name) {
+    public boolean exists(String name) {
         return get(name) != null;
     }
 
     public boolean add(String name, String password) {
-        if (contains(name)) return false;
+        User user = get(name);
+        if (user != null) return false;
 
         String sql = "INSERT INTO users (name, hashedpassword, isadmin) VALUES (?,?, false)";
 
@@ -65,30 +67,16 @@ public class UserDao {
         }
     }
 
-
     public boolean correctPassword(String name, String suggestedPassword) {
-        if (!contains(name)) return false;
-
-        String sql = "SELECT hashedpassword FROM users WHERE name = ?;";
-
-        try (Connection con = db.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setString(1, name);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return PasswordHasher.checkPassword(suggestedPassword, rs.getString("hashedpassword"));
-                } else {
-                    return false;
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Password check failed for user: " + name, e);
-        }
+        User user = get(name);
+        if (user == null) return false;
+        return user.checkHashedPassword(suggestedPassword);
     }
 
-
-
+/*    public boolean isAdmin(String name) {
+        User user = get(name);
+        if (user == null) return false;
+        return user.isAdmin();
+    }*/
 
 }

@@ -77,19 +77,15 @@ public class UserDaoTest {
     }
 
     @Test
-    public void get() {
-        assertTrue(users.get("Admin").getName().equals("Admin"));
-        assertTrue(users.get("Davit").getName().equals("Davit"));
-        assertFalse(users.get("Davit").getName().equals("Admin"));
-        assertTrue(users.get("Giorgi") == null);
-    }
-
-    @Test
-    public void contains() {
-        assertTrue(users.contains("Davit"));
-        assertFalse(users.contains("Giorgi"));
-        assertTrue(users.contains("Admin"));
-        assertFalse(users.contains("2025"));
+    public void exists() {
+        assertTrue(users.exists("Davit"));
+        assertFalse(users.exists("Giorgi"));
+        assertTrue(users.exists("Admin"));
+        assertFalse(users.exists("2025"));
+        assertTrue(users.exists("Davit"));
+        assertFalse(users.exists("Giorgi"));
+        assertTrue(users.exists("Admin"));
+        assertFalse(users.exists("2025"));
     }
 
     @Test

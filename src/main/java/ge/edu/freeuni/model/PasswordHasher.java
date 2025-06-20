@@ -7,11 +7,6 @@ public class PasswordHasher {
 
     private static final String ALGORITHM = "SHA-1";
 
-
-    public static boolean checkPassword(String password, String hashedPassword) {
-        return hashPassword(password).equals(hashedPassword);
-    }
-
     /**
      * Generates hashed password
      *
