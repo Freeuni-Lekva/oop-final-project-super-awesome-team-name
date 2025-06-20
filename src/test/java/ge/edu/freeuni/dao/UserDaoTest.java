@@ -24,17 +24,17 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UserDaoTest {
 
     @Autowired
-    UserDao dao;
+    private UserDao users;
 
     @BeforeEach
     public void setUp() throws Exception {
 
         String createTableSQL = "CREATE TABLE IF NOT EXISTS users " +
-                "(login VARCHAR(100) PRIMARY KEY, " +
+                "(name VARCHAR(100) PRIMARY KEY, " +
                 "hashedpassword VARCHAR(255) NOT NULL, " +
                 "isadmin BOOLEAN NOT NULL)";
 
-        try (Connection con = dao.getBasicDataSource().getConnection();
+        try (Connection con = users.getBasicDataSource().getConnection();
              PreparedStatement ps = con.prepareStatement(createTableSQL)) {
             ps.execute();
         }
@@ -48,9 +48,9 @@ public class UserDaoTest {
 
         for (User us : users) {
 
-            String sql = "INSERT INTO users (login, hashedpassword, isadmin) VALUES (?,?,?)";
+            String sql = "INSERT INTO users (name, hashedpassword, isadmin) VALUES (?,?,?)";
 
-            try (Connection con = dao.getBasicDataSource().getConnection();
+            try (Connection con = this.users.getBasicDataSource().getConnection();
                  PreparedStatement ps = con.prepareStatement(sql)) {
 
                 ps.setString(1, us.getName());
@@ -68,7 +68,7 @@ public class UserDaoTest {
 
     @AfterEach
     public void tearDown() throws Exception {
-        try (Connection conn = dao.getBasicDataSource().getConnection();
+        try (Connection conn = users.getBasicDataSource().getConnection();
              PreparedStatement ps = conn.prepareStatement("DELETE FROM users")) {
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -78,34 +78,34 @@ public class UserDaoTest {
 
     @Test
     public void get() {
-        assertTrue(dao.get("Admin").getName().equals("Admin"));
-        assertTrue(dao.get("Davit").getName().equals("Davit"));
-        assertFalse(dao.get("Davit").getName().equals("Admin"));
-        assertTrue(dao.get("Giorgi") == null);
+        assertTrue(users.get("Admin").getName().equals("Admin"));
+        assertTrue(users.get("Davit").getName().equals("Davit"));
+        assertFalse(users.get("Davit").getName().equals("Admin"));
+        assertTrue(users.get("Giorgi") == null);
     }
 
     @Test
     public void contains() {
-        assertTrue(dao.contains("Davit"));
-        assertFalse(dao.contains("Giorgi"));
-        assertTrue(dao.contains("Admin"));
-        assertFalse(dao.contains("2025"));
+        assertTrue(users.contains("Davit"));
+        assertFalse(users.contains("Giorgi"));
+        assertTrue(users.contains("Admin"));
+        assertFalse(users.contains("2025"));
     }
 
     @Test
     public void add() {
-        assertFalse(dao.add("Davit", "56g8"));
-        assertTrue(dao.add("Giorgi", "56g8"));
-        assertFalse(dao.add("Giorgi", "56ee"));
+        assertFalse(users.add("Davit", "56g8"));
+        assertTrue(users.add("Giorgi", "56g8"));
+        assertFalse(users.add("Giorgi", "56ee"));
 
-        String sql = "SELECT * FROM users WHERE login = 'Giorgi'";
+        String sql = "SELECT * FROM users WHERE name = 'Giorgi'";
 
-        try (Connection con = dao.getBasicDataSource().getConnection();
+        try (Connection con = users.getBasicDataSource().getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             try (ResultSet rs = ps.executeQuery()) {
                 assertTrue(rs.next());
-                assertEquals("Giorgi", rs.getString("login"));
+                assertEquals("Giorgi", rs.getString("name"));
                 assertEquals(rs.getString("hashedpassword"), PasswordHasher.hashPassword("56g8"));
             }
 
@@ -116,10 +116,10 @@ public class UserDaoTest {
 
     @Test
     public void correctPassword() {
-        assertTrue(dao.correctPassword("Davit", "1234"));
-        assertTrue(dao.correctPassword("Admin", "fm"));
-        assertFalse(dao.correctPassword("Davit", "1235"));
-        assertFalse(dao.correctPassword("Giorgi", "fm"));
+        assertTrue(users.correctPassword("Davit", "1234"));
+        assertTrue(users.correctPassword("Admin", "fm"));
+        assertFalse(users.correctPassword("Davit", "1235"));
+        assertFalse(users.correctPassword("Giorgi", "fm"));
     }
 
 }
