@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @Controller
 public class UserController {
@@ -22,7 +24,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ModelAndView login(HttpSession session, @RequestParam String name, @RequestParam String password) {
+    public ModelAndView login(HttpSession session,
+                              @RequestParam String name, @RequestParam String password) throws IOException {
         ModelAndView mav = new ModelAndView("login");
         if (!users.exists(name)) {
             mav.addObject("error", "User does not exist.");
@@ -30,8 +33,9 @@ public class UserController {
             mav.addObject("error", "Incorrect password.");
         } else {
             session.setAttribute("name", name);
-            if(users.isAdmin(name)) {
+            if (users.isAdmin(name)) {
                 session.setAttribute("isAdmin", true);
+                mav = new ModelAndView("redirect:/"); //homepage
             }
         }
         return mav;
@@ -43,7 +47,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ModelAndView register(@RequestParam String name, @RequestParam String password) {
+    public ModelAndView register(@RequestParam String name, @RequestParam String password) throws IOException {
         ModelAndView mav = new ModelAndView("register");
         if (!users.add(name, password)) {
             mav.addObject("error", "User already exists.");
@@ -56,11 +60,6 @@ public class UserController {
     public String logout(HttpSession session) {
         session.invalidate();
         return "login";
-    }
-
-    @GetMapping("/admin")
-    public String admin(HttpSession session) {
-        return "admin";
     }
 
 
