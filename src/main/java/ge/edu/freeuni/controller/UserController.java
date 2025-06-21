@@ -30,6 +30,9 @@ public class UserController {
             mav.addObject("error", "Incorrect password.");
         } else {
             session.setAttribute("name", name);
+            if(users.isAdmin(name)) {
+                session.setAttribute("admin", true);
+            }
         }
         return mav;
     }
@@ -53,6 +56,11 @@ public class UserController {
     public String logout(HttpSession session) {
         session.invalidate();
         return "login";
+    }
+
+    @GetMapping("/admin")
+    public String admin(HttpSession session) {
+        return "admin";
     }
 
 

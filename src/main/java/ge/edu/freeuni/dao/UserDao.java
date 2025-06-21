@@ -34,9 +34,10 @@ public class UserDao {
                 if (rs.next()) {
                     User user = new User(rs.getString("name"),
                             rs.getString("hashedpassword"));
-                    user.setAdminStatus(rs.getBoolean("isadmin"));
+                    if(rs.getBoolean("isAdmin")){
+                        user.setAdmin();
+                    }
                     return user;
-
                 } else {
                     return null;
                 }
@@ -51,10 +52,9 @@ public class UserDao {
     }
 
     public boolean add(String name, String password) {
-        User user = get(name);
-        if (user != null) return false;
+        if (exists(name)) return false;
 
-        String sql = "INSERT INTO users (name, hashedpassword, isadmin) VALUES (?,?, false)";
+        String sql = "INSERT INTO users VALUES (?,?, false)";
 
         try (Connection con = db.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -75,10 +75,57 @@ public class UserDao {
         return user.checkHashedPassword(suggestedPassword);
     }
 
-/*    public boolean isAdmin(String name) {
+    public boolean isAdmin(String name) {
         User user = get(name);
         if (user == null) return false;
         return user.isAdmin();
-    }*/
+    }
+
+    public boolean removeUser(String name) {
+
+        String sql = "DELETE FROM users WHERE name = ?";
+
+        try (Connection con = db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, name);
+            return ps.executeUpdate() == 1;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to remove user: " + name, e);
+        }
+
+    }
+
+    public boolean setAdmin(String name) {
+        String sql = "UPDATE users SET isadmin = true WHERE name = ?";
+
+        try (Connection con = db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, name);
+
+            return ps.executeUpdate() == 1;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to promote user to admin: " + name, e);
+        }
+    }
+
+    public int numberOfUsers() {
+        String sql = "SELECT COUNT(*) FROM users;";
+
+        try (Connection con = db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            rs.next();
+
+            return rs.getInt(1);
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to count users." + e);
+        }
+    }
 
 }

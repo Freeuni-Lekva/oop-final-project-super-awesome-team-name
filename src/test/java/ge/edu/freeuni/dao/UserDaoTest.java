@@ -75,10 +75,6 @@ public class UserDaoTest {
         assertFalse(users.exists("Giorgi"));
         assertTrue(users.exists("Admin"));
         assertFalse(users.exists("2025"));
-        assertTrue(users.exists("Davit"));
-        assertFalse(users.exists("Giorgi"));
-        assertTrue(users.exists("Admin"));
-        assertFalse(users.exists("2025"));
     }
 
     @Test
@@ -110,5 +106,44 @@ public class UserDaoTest {
         assertFalse(users.correctPassword("Davit", "1235"));
         assertFalse(users.correctPassword("Giorgi", "fm"));
     }
+
+    @Test
+    public void isAdmin() {
+        assertTrue(users.isAdmin("Admin"));
+        assertFalse(users.isAdmin("Giorgi"));
+        assertFalse(users.isAdmin("Davit"));
+    }
+
+    @Test
+    public void removeUser() {
+        assertTrue(users.removeUser("Davit"));
+        assertFalse(users.removeUser("Giorgi"));
+        assertFalse(users.removeUser("Davit"));
+        users.add("Giorgi", "56g8");
+        assertTrue(users.removeUser("Giorgi"));
+        assertTrue(users.removeUser("Admin"));
+    }
+
+    @Test
+    public void setAdmin() {
+        assertTrue(users.setAdmin("Davit"));
+        assertFalse(users.setAdmin("Giorgi"));
+        assertTrue(users.setAdmin("Davit"));
+        assertTrue(users.isAdmin("Admin"));
+        assertTrue(users.isAdmin("Davit"));
+    }
+
+    @Test
+    public void numberOfUsers() {
+        assertTrue(users.numberOfUsers() == 2);
+        users.add("Giorgi", "56g8");
+        assertTrue(users.numberOfUsers() == 3);
+        users.removeUser("Admin");
+        assertTrue(users.numberOfUsers() == 2);
+        users.add("Davit", "56g8");
+        assertTrue(users.numberOfUsers() == 2);
+    }
+
+    //RuntimeException test
 
 }

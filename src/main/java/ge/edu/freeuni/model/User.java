@@ -20,8 +20,8 @@ public class User {
         return isAdmin;
     }
 
-    public void setAdminStatus(Boolean isAdmin) {
-        this.isAdmin = isAdmin;
+    public void setAdmin () {
+        this.isAdmin = true;
     }
 
     public boolean checkHashedPassword(String suggestedHashedPassword) {
