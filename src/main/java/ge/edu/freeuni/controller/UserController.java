@@ -31,7 +31,7 @@ public class UserController {
         } else {
             session.setAttribute("name", name);
             if(users.isAdmin(name)) {
-                session.setAttribute("admin", true);
+                session.setAttribute("isAdmin", true);
             }
         }
         return mav;

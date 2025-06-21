@@ -22,11 +22,11 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
     <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/"></mvc:mapping>
-            <!--<mvc:mapping path="/admin"></mvc:mapping>-->
+            <mvc:mapping path="/**"/>
             <bean class="ge.edu.freeuni.interceptor.AuthInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
+
 
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
