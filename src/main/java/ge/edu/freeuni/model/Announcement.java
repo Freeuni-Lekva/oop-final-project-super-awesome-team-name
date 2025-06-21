@@ -7,15 +7,15 @@ public class Announcement {
 
     private final int id;
     private final String title;
-    private final String author;
+    private final String name;
     private final String text;
     private final Timestamp date;
 
-    public Announcement(int id, String title, String text, String author, Timestamp date) {
+    public Announcement(int id, String title, String name, String text, Timestamp date) {
         this.id = id;
         this.title = title;
+        this.name = name;
         this.text = text;
-        this.author = author;
         this.date = date;
     }
 
@@ -27,8 +27,8 @@ public class Announcement {
         return title;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getName() {
+        return name;
     }
 
     public String getText() {
