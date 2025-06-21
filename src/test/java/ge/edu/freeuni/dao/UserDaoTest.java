@@ -1,7 +1,6 @@
 package ge.edu.freeuni.dao;
 
 import ge.edu.freeuni.model.PasswordHasher;
-import ge.edu.freeuni.model.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,36 +33,30 @@ public class UserDaoTest {
                 "hashedpassword VARCHAR(255) NOT NULL, " +
                 "isadmin BOOLEAN NOT NULL)";
 
-        try (Connection con = users.getBasicDataSource().getConnection();
-             PreparedStatement ps = con.prepareStatement(createTableSQL)) {
-            ps.execute();
-        }
+        String insertSQL = "INSERT INTO users (name, hashedpassword, isadmin) VALUES (?, ?, ?)";
 
-        User user = new User("Davit", "1234");
-        User Admin = new User("Admin", "fm", true);
+        String passwordHash1 = PasswordHasher.hashPassword("1234");
+        String passwordHash2 = PasswordHasher.hashPassword("fm");
 
-        List<User> users = new ArrayList<>();
-        users.add(user);
-        users.add(Admin);
+        try (Connection con = users.getBasicDataSource().getConnection()) {
 
-        for (User us : users) {
-
-            String sql = "INSERT INTO users (name, hashedpassword, isadmin) VALUES (?,?,?)";
-
-            try (Connection con = this.users.getBasicDataSource().getConnection();
-                 PreparedStatement ps = con.prepareStatement(sql)) {
-
-                ps.setString(1, us.getName());
-                ps.setString(2, PasswordHasher.hashPassword(us.getHashedPassword()));
-                ps.setBoolean(3, us.isAdmin());
-
-                ps.executeUpdate();
-
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+            try (PreparedStatement ps1 = con.prepareStatement(createTableSQL)) {
+                ps1.execute();
             }
 
+            try (PreparedStatement ps2 = con.prepareStatement(insertSQL)) {
+                ps2.setString(1, "Davit");
+                ps2.setString(2, passwordHash1);
+                ps2.setBoolean(3, false);
+                ps2.executeUpdate();
+
+                ps2.setString(1, "Admin");
+                ps2.setString(2, passwordHash2);
+                ps2.setBoolean(3, true);
+                ps2.executeUpdate();
+            }
         }
+
     }
 
     @AfterEach

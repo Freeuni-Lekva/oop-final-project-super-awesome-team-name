@@ -32,9 +32,11 @@ public class UserDao {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return new User(rs.getString("name"),
-                            rs.getString("hashedpassword"),
-                            rs.getBoolean("isadmin"));
+                    User user = new User(rs.getString("name"),
+                            rs.getString("hashedpassword"));
+                    user.setAdminStatus(rs.getBoolean("isadmin"));
+                    return user;
+
                 } else {
                     return null;
                 }

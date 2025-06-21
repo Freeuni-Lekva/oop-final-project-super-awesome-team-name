@@ -12,12 +12,6 @@ public class User {
         this.isAdmin = false;
     }
 
-    public User(String name, String hashedPassword, boolean isAdmin) {
-        this.name = name;
-        this.hashedPassword = hashedPassword;
-        this.isAdmin = isAdmin;
-    }
-
     public String getName() {
         return name;
     }
@@ -26,21 +20,12 @@ public class User {
         return isAdmin;
     }
 
-    public void setAdmin() {
-        isAdmin = true;
-    }
-
-    public void removeAdmin() {
-        isAdmin = false;
+    public void setAdminStatus(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
     public boolean checkHashedPassword(String suggestedHashedPassword) {
         return PasswordHasher.hashPassword(suggestedHashedPassword).equals(hashedPassword);
-    }
-
-    //Only for testing purposes
-    public String getHashedPassword() {
-        return hashedPassword;
     }
 
 }
