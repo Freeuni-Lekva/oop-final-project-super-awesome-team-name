@@ -10,3 +10,13 @@ CREATE TABLE users (
     isadmin boolean NOT NULL
 );
 
+DROP TABLE IF EXISTS announcements;
+
+CREATE TABLE announcements (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    text TEXT NOT NULL,
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
