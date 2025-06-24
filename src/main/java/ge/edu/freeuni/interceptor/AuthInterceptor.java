@@ -17,6 +17,10 @@ public class AuthInterceptor implements HandlerInterceptor {
         Boolean isAdmin = (session != null) ? (Boolean) session.getAttribute("isAdmin") : null;
         String uri = request.getRequestURI();
 
+        if (uri.startsWith("/css") || uri.startsWith("/js") || uri.startsWith("/images")) {
+            return true;
+        }
+
         if (name == null && !(uri.equals("/login") || uri.equals("/register"))) {
             response.sendRedirect("/login");
             return false;
