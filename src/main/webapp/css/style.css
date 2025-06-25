@@ -54,6 +54,12 @@ p, label {
     font-weight: normal;
 }
 
+#formSubtitle.error {
+    color: red;
+    font-weight: normal;
+    font-size: x-small;
+}
+
 .solid {
     margin: 25px 0;
 }

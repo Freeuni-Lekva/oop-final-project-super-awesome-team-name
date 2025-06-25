@@ -3,6 +3,17 @@ let isLogin = true;
 function toggleForm() {
     isLogin = !isLogin;
 
+    const formSubtitle = document.getElementById("formSubtitle");
+    formSubtitle.classList.remove("error");
+
+    formSubtitle.textContent = isLogin
+        ? "Welcome back! Log in to your account:"
+        : "Let's get started! Create a new account:";
+
+    document.getElementById("authMode").value = isLogin
+        ? "login"
+        : "signup";
+
     document.getElementById("introPanel").classList.toggle("reverse");
 
     document.getElementById("sideImage").src = isLogin
@@ -17,13 +28,8 @@ function toggleForm() {
         ? "Sign in to Quizzes"
         : "Register for Quizzes";
 
-    document.getElementById("formSubtitle").textContent = isLogin
-        ? "Welcome back! Log in to your account:"
-        : "Let's get started! Create a new account:";
-
-    document.getElementById("authForm").action = isLogin
-        ? "${pageContext.request.contextPath}/login"
-        : "${pageContext.request.contextPath}/register";
+    document.getElementById("name").value = "";
+    document.getElementById("password").value = "";
 
     const submitButton = document.getElementById("submitButton");
     submitButton.value = isLogin

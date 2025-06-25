@@ -21,12 +21,12 @@ public class AuthInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        if (name == null && !(uri.equals("/login") || uri.equals("/register"))) {
-            response.sendRedirect("/login");
+        if (name == null && !uri.equals("/welcome")) {
+            response.sendRedirect("/welcome");
             return false;
         }
 
-        if (name != null && (uri.equals("/login") || uri.equals("/register"))) {
+        if (name != null && uri.equals("/welcome")) {
             response.sendRedirect("/"); // homepage
             return false;
         }
