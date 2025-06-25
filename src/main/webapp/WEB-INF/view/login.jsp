@@ -10,24 +10,27 @@
 
 <html>
 <head>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css?v=1.2">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <script src="${pageContext.request.contextPath}/js/authToggle.js"></script>
     <title>Welcome | Quizes </title>
 </head>
 <body>
 <div id="introPanel">
-    <img src="${pageContext.request.contextPath}/images/gradient1.jpg" alt="Gradient">
+    <img id="sideImage" src="${pageContext.request.contextPath}/images/gradient1.jpg" alt="Gradient">
     <div id="entryForm">
-        <h3>Sign in to Quizes</h3>
-        <p class="lightFont">Welcome back! Log in to your account:</p>
+        <h3 id="formTitle">Sign in to Quizes</h3>
+        <p id="formSubtitle">Welcome back! Log in to your account:</p>
         <hr class="solid">
-        <form action="${pageContext.request.contextPath}/login" method="post">
-            <p for="name">Username: </p>
+        <form id="authForm" action="${pageContext.request.contextPath}/login" method="post">
+            <label for="name">Username: </label>
             <input type="text" id="name" name="name">
-            <p for="password">Password: </p>
+
+            <label for="password">Password: </label>
             <input type="password" id="password" name="password">
-            <input type="submit" value="Log in">
+
+            <input type="submit" id="submitButton" class="btn-login" value="Log in">
         </form>
-        <p class="lightFont" id="signUp">Don't have an account? <a href="${pageContext.request.contextPath}/register">Sign up</a>
+        <p id="toggleText">Don't have an account? <a href="#" onclick="toggleForm()">Sign up</a>
         </p>
     </div>
 

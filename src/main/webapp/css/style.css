@@ -20,17 +20,23 @@ body {
     transform: translate(-50%, -50%);
 }
 
-img {
+#introPanel.reverse {
+    flex-direction: row-reverse;
+}
+
+#sideImage {
     height: 400px;
     width: auto;
     margin: 25px;
     border-radius: 15px;
+    transition: opacity 0.3s ease;
 }
 
 #entryForm {
     width: 275px;
     margin: auto;
     transform: translate(-12.5px, 0);
+    transition: transform 0.3s ease;
 }
 
 h3 {
@@ -39,12 +45,12 @@ h3 {
     margin-top: 0;
 }
 
-p {
+p, label {
     font-size: x-small;
     font-weight: bold;
 }
 
-.lightFont{
+#formSubtitle, #toggleText {
     font-weight: normal;
 }
 
@@ -52,6 +58,10 @@ p {
     margin: 25px 0;
 }
 
+label {
+    display: block;
+    margin-bottom: 10px;
+}
 
 input[type=text], input[type=password], select {
     width: 100%;
@@ -66,7 +76,6 @@ input[type=text], input[type=password], select {
 
 input[type=submit] {
     width: 100%;
-    background-color: #130931;
     color: white;
     padding: 15px 20px;
     margin-top: 20px;
@@ -75,15 +84,25 @@ input[type=submit] {
     cursor: pointer;
 }
 
-input[type=submit]:hover {
-    background-color:#5B2778;
+input[type=submit].btn-login {
+    background-color: #38077F;
+}
+input[type=submit].btn-login:hover {
+    background-color: #5B2778;
 }
 
-#signUp {
+input[type=submit].btn-signup {
+    background-color: #870C06;
+}
+input[type=submit].btn-signup:hover {
+    background-color: #C7140D;
+}
+
+#toggleText {
     text-align: center;
 }
 
-a{
+a {
     font-weight: bold;
 }
 
