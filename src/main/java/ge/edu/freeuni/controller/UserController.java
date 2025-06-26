@@ -28,8 +28,9 @@ public class UserController {
                                 @RequestParam String password,
                                 @RequestParam String mode) throws IOException {
         ModelAndView mav = new ModelAndView("welcome");
+        mav.addObject("mode", mode);
+        mav.addObject("mode", mode);
         if ("login".equals(mode)) {
-            mav.addObject("mode", "login");
             if (!users.exists(name)) {
                 mav.addObject("error", "User does not exist: " + name);
             } else if (!users.correctPassword(name, password)) {
@@ -38,12 +39,11 @@ public class UserController {
                 session.setAttribute("name", name);
                 if (users.isAdmin(name)) {
                     session.setAttribute("isAdmin", true);
-                    mav = new ModelAndView("redirect:/"); //homepage
                 }
+                mav = new ModelAndView("redirect:/"); //homepage
             }
             return mav;
         } else if ("signup".equals(mode)) {
-            mav.addObject("mode", "signup");
             if (!users.add(name, password)) {
                 mav.addObject("error", "User already exists: "+name);
                 return mav;

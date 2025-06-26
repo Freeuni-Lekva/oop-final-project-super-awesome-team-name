@@ -50,14 +50,5 @@
     </div>
 </div>
 
-<c:if test="${not empty error && mode == 'signup'}">
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            toggleForm();
-        });
-    </script>
-</c:if>
-
-
 </body>
 </html>
