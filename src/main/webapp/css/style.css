@@ -8,16 +8,32 @@ body {
     background-color: #0D0D0D;
 }
 
-#introPanel {
+.panel {
     display: flex;
     background-color: #FFFFFF;
     border-radius: 25px;
-    width: 730px;
     height: 450px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+#adminContainer {
+    text-align: center;
+    margin: 25px auto;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#introPanel {
+    width: 730px;
+}
+
+#adminPanel {
+    width: 280px;
 }
 
 #introPanel.reverse {
@@ -32,11 +48,19 @@ body {
     transition: opacity 0.3s ease;
 }
 
+.form {
+    transition: transform 0.3s ease;
+}
+
 #entryForm {
     width: 275px;
     margin: auto;
     transform: translate(-12.5px, 0);
-    transition: transform 0.3s ease;
+}
+
+#adminFunc {
+    font-size: x-small;
+    margin-bottom: 20px;
 }
 
 h3 {
@@ -45,16 +69,24 @@ h3 {
     margin-top: 0;
 }
 
+#adminHead {
+    margin-bottom: 20px;
+}
+
 p, label {
     font-size: x-small;
     font-weight: bold;
 }
 
-#formSubtitle, #toggleText {
+label {
+    text-align: left;
+}
+
+#formSubtitle, #toggleText, #result {
     font-weight: normal;
 }
 
-#formSubtitle.error {
+#formSubtitle.error, #result.error {
     color: red;
     font-weight: normal;
     font-size: x-small;
@@ -72,7 +104,7 @@ label {
 input[type=text], input[type=password], select {
     width: 100%;
     font-size: small;
-    padding: 10px 10px;
+    padding: 9px 10px;
     margin-bottom: 15px;
     display: inline-block;
     border: 1px solid #ccc;
@@ -83,16 +115,24 @@ input[type=text], input[type=password], select {
 input[type=submit] {
     width: 100%;
     color: white;
-    padding: 15px 20px;
+    padding: 12px 20px;
     margin-top: 20px;
+    margin-bottom: 0;
     border: none;
     border-radius: 5px;
+    font-size: small;
     cursor: pointer;
 }
+
+#submitButton {
+    margin-top: 10px;
+}
+
 
 input[type=submit].btn-login {
     background-color: #38077F;
 }
+
 input[type=submit].btn-login:hover {
     background-color: #5B2778;
 }
@@ -100,8 +140,17 @@ input[type=submit].btn-login:hover {
 input[type=submit].btn-signup {
     background-color: #870C06;
 }
+
 input[type=submit].btn-signup:hover {
     background-color: #C7140D;
+}
+
+input[type=submit].btn-admin {
+    background-color: #006A50;
+}
+
+input[type=submit].btn-admin:hover {
+    background-color: #00A881;
 }
 
 #toggleText {
@@ -112,3 +161,25 @@ a {
     font-weight: bold;
 }
 
+#result {
+    margin: auto;
+    transform: translate(0, 0px);
+}
+
+.hide {
+    display: none;
+}
+
+#announceText {
+    width: 100%;
+    height: 75px;
+    min-height: 75px;
+    max-height: 75px;
+    margin-bottom: 15px;
+    resize: vertical;
+    box-sizing: border-box;
+    font-size: x-small;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}

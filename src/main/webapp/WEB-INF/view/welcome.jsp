@@ -16,9 +16,9 @@
     <title>Welcome | Quizzes </title>
 </head>
 <body>
-<div id="introPanel">
+<div id="introPanel" class="panel">
     <img id="sideImage" src="${pageContext.request.contextPath}/images/gradient1.jpg" alt="Gradient">
-    <div id="entryForm">
+    <div id="entryForm" class="form">
         <h3 id="formTitle">Sign in to Quizzes</h3>
         <p id="formSubtitle" class="${not empty error ? 'error' : ''}">
             <c:choose>

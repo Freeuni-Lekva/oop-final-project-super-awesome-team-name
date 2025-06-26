@@ -2,7 +2,6 @@ package ge.edu.freeuni.controller;
 
 import ge.edu.freeuni.dao.AnnouncementDao;
 import ge.edu.freeuni.dao.UserDao;
-import ge.edu.freeuni.model.Announcement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,42 +30,53 @@ public class AdminController {
 
     @PostMapping
     public ModelAndView adminAction(HttpSession session,
-                                    @RequestParam String action,
-                                    @RequestParam(required = false) String name,
-                                    @RequestParam(required = false) String title,
-                                    @RequestParam(required = false) String text) {
+                                    @RequestParam("adminFunc") String action,
+                                    @RequestParam(value = "text", required = false) String text,
+                                    @RequestParam(value = "bigText", required = false) String bigText) {
         ModelAndView mav = new ModelAndView("admin");
 
         switch (action) {
             case "announce": {
                 try {
-                    int key = announcements.add(title, (String) session.getAttribute("name"),
-                            text, new Timestamp(System.currentTimeMillis()));
-                    mav.addObject("announcement", announcements.get(key));
+                    announcements.add(text, (String) session.getAttribute("name"),
+                            bigText, new Timestamp(System.currentTimeMillis()));
+                    mav.addObject("result", "Announcement added");
                 } catch (RuntimeException e) {
-                    mav.addObject("error", "Announcement failed.");
+                    mav.addObject("error", "Announcement failed");
                 }
+                break;
             }
-            break;
 
-            case "remove": {
-                if (users.removeUser(name)) {
-                    mav.addObject("removed", name);
+            case "removeUser": {
+                if (users.removeUser(text)) {
+                    mav.addObject("result", "User removed: " + text);
                 } else {
                     mav.addObject("error", "User not found.");
                 }
+                break;
             }
-            break;
 
-            case "promote": {
-                if (users.setAdmin(name)) {
-                    mav.addObject("promoted", name);
+            case "removeQuiz": {
+                break;
+            }
+
+            case "clearHistory": {
+                break;
+            }
+
+            case "promoteUser": {
+                if (users.setAdmin(text)) {
+                    mav.addObject("result", "User promoted: " + text);
                 } else {
                     mav.addObject("error", "User not found.");
                 }
-
+                break;
             }
-            break;
+
+            case "seeStatistics": {
+                mav.addObject("result", "Number of users: " + users.numberOfUsers());
+                break;
+            }
 
         }
 
