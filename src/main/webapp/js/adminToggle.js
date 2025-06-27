@@ -2,16 +2,13 @@ function updateFields() {
     const announceBlock = document.getElementById("announce");
     const smallBLock = document.getElementById("notAnnounce");
     const textLabel = document.querySelector("label[for='smallText']");
-    const result = document.getElementById("result");
+
+    document.getElementById("smallText").value = "";
+    document.getElementById("announceText").value = "";
 
     announceBlock.classList.add("hide");
     smallBLock.classList.remove("hide");
-
-    if (result.classList.contains("error") || result.classList.contains("success")) {
-        result.textContent = "";
-        result.classList.remove("error");
-        result.classList.remove("success");
-    }
+    document.getElementById("result").classList.add("hide");
 
     switch (document.getElementById("adminFunc").value) {
         case "announce":
@@ -37,7 +34,40 @@ function updateFields() {
     }
 }
 
-window.addEventListener("DOMContentLoaded", function () {
+
+window.addEventListener("load", function () {
+    const form = document.getElementById("adminForm");
+    if (!form) return;
+
     document.getElementById("adminFunc").addEventListener("change", updateFields);
     updateFields();
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const params = new URLSearchParams(formData);
+
+        fetch(form.getAttribute("action") || window.location.pathname, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: params.toString()
+        })
+            .then(res => res.json())
+            .then(data => {
+                const result = document.getElementById("result");
+                result.textContent = data.message;
+                result.className = data.status === "success" ? "success" :
+                    data.status === "error" ? "error" : "info";
+                document.getElementById("smallText").value = "";
+                document.getElementById("announceText").value = "";
+            })
+            .catch(err => {
+                const result = document.getElementById("result");
+                result.textContent = "AJAX error occurred.";
+                result.className = "error";
+            });
+    });
 });

@@ -6,10 +6,12 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
     <script src="${pageContext.request.contextPath}/js/adminToggle.js"></script>
+    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/favicon.ico">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
     <title>Admin | Quizzes</title>
 </head>
 <body>
@@ -19,14 +21,14 @@
             <h3 id="adminHead">Admin Panel</h3>
             <label for="adminFunc">Choose a category:</label>
             <select name="adminFunc" id="adminFunc">
-                <option value="announce">Create an announcements</option>
+                <option value="announce">Create an announcement</option>
                 <option value="removeUser">Remove a user</option>
                 <option value="removeQuiz">Remove a quiz</option>
                 <option value="clearHistory">Clear history of a quiz</option>
                 <option value="promoteUser">Promote a user</option>
                 <option value="seeStatistics">See site statistics</option>
             </select>
-            <div id="notAnnounce" class="hide">
+            <div id="notAnnounce">
                 <label for="smallText"></label>
                 <input type="text" id="smallText" name="text">
             </div>
@@ -36,15 +38,8 @@
             </div>
             <input type="submit" id="submitButton" class="btn-admin" value="Submit">
         </form>
-        <c:if test="${not empty result}">
-            <p id="result" class="success">${result}</p>
-        </c:if>
-        <c:if test="${not empty error}">
-            <p id="error" class="error">${error}</p>
-        </c:if>
+        <p id="result"></p>
     </div>
-
 </div>
-
 </body>
 </html>
