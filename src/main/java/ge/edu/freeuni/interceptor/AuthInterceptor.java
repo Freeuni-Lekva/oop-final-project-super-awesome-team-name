@@ -1,6 +1,5 @@
 package ge.edu.freeuni.interceptor;
 
-import ge.edu.freeuni.model.User;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;

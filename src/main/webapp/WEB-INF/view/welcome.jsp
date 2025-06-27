@@ -11,8 +11,8 @@
 
 <html>
 <head>
+    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/favicon.ico">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
-    <script src="${pageContext.request.contextPath}/js/authToggle.js"></script>
     <title>Welcome | Quizzes </title>
 </head>
 <body>
@@ -20,19 +20,7 @@
     <img id="sideImage" src="${pageContext.request.contextPath}/images/gradient1.jpg" alt="Gradient">
     <div id="entryForm" class="form">
         <h3 id="formTitle">Sign in to Quizzes</h3>
-        <p id="formSubtitle" class="${not empty error ? 'error' : ''}">
-            <c:choose>
-                <c:when test="${not empty error}">
-                    ${error}
-                </c:when>
-                <c:when test="${mode == 'signup'}">
-                    Let's get started! Create a new account:
-                </c:when>
-                <c:otherwise>
-                    Welcome back! Log in to your account:
-                </c:otherwise>
-            </c:choose>
-        </p>
+        <p id="formSubtitle">Welcome back! Log in to your account:</p>
         <hr class="solid">
         <form id="authForm" action="${pageContext.request.contextPath}/welcome" method="post">
             <input type="hidden" id="authMode" name="mode" value="login">
@@ -45,10 +33,11 @@
 
             <input type="submit" id="submitButton" class="btn-login" value="Log in">
         </form>
-        <p id="toggleText">Don't have an account? <a href="#" onclick="toggleForm()">Sign up</a>
+        <p id="toggleText">Don't have an account? <a href="#" id="redirect" onclick="toggleForm()">Sign up</a>
         </p>
     </div>
 </div>
+<script src="${pageContext.request.contextPath}/js/authToggle.js"></script>
 
 </body>
 </html>

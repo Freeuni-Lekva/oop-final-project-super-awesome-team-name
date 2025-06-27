@@ -36,11 +36,11 @@ function updateFields() {
 
 
 window.addEventListener("load", function () {
+    updateFields();
+    document.getElementById("adminFunc").addEventListener("change", updateFields);
+
     const form = document.getElementById("adminForm");
     if (!form) return;
-
-    document.getElementById("adminFunc").addEventListener("change", updateFields);
-    updateFields();
 
     form.addEventListener("submit", function (e) {
         e.preventDefault();
@@ -57,12 +57,14 @@ window.addEventListener("load", function () {
         })
             .then(res => res.json())
             .then(data => {
+
+                document.getElementById("smallText").value = "";
+                document.getElementById("announceText").value = "";
+
                 const result = document.getElementById("result");
                 result.textContent = data.message;
                 result.className = data.status === "success" ? "success" :
                     data.status === "error" ? "error" : "info";
-                document.getElementById("smallText").value = "";
-                document.getElementById("announceText").value = "";
             })
             .catch(err => {
                 const result = document.getElementById("result");

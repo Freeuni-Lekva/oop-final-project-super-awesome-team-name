@@ -2,8 +2,6 @@ package ge.edu.freeuni.dao;
 
 
 import ge.edu.freeuni.model.Announcement;
-import ge.edu.freeuni.model.PasswordHasher;
-import ge.edu.freeuni.model.User;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

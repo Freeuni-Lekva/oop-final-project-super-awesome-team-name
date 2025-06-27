@@ -47,3 +47,40 @@ function toggleForm() {
         ? `Don't have an account? <a href="#" onclick="toggleForm()">Sign up</a>`
         : `Already have an account? <a href="#" onclick="toggleForm()">Log in</a>`;
 }
+
+window.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("authForm");
+    if (!form) return;
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const params = new URLSearchParams(formData);
+
+        fetch(form.getAttribute("action") || window.location.pathname, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: params.toString()
+        })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("name").value = "";
+                document.getElementById("password").value = "";
+
+                if (data.status === "success") {
+                    window.location.href = data.redirectUrl;
+                } else {
+                    const subtitle = document.getElementById("formSubtitle");
+                    subtitle.className = "error";
+                    subtitle.textContent = data.message;
+                }
+            })
+            .catch(err => {
+                const subtitle = document.getElementById("formSubtitle");
+                subtitle.className = "error";
+                subtitle.textContent = "AJAX error occurred.";
+            });
+    });
+});
