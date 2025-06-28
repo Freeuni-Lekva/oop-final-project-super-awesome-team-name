@@ -25,10 +25,10 @@
             <input type="hidden" id="authMode" name="mode" value="login">
 
             <label for="name">Username: </label>
-            <input type="text" id="name" name="name">
+            <input type="text" id="name" name="name" required oninput="validateFillInTheBlank">
 
             <label for="password">Password: </label>
-            <input type="password" id="password" name="password">
+            <input type="password" id="password" name="password" required oninput="validateFillInTheBlank">
 
             <input type="submit" id="submitButton" class="btn-login" value="Log in">
         </form>

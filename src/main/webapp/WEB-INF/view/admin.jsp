@@ -29,11 +29,12 @@
             </select>
             <div id="notAnnounce">
                 <label for="smallText"></label>
-                <input type="text" id="smallText" name="text">
+                <input type="text" id="smallText" name="text" required oninput="validateFillInTheBlank">
             </div>
             <div id="announce">
                 <label for="announceText"></label>
-                <textarea id="announceText" name="bigText" class="wide"></textarea>
+                <textarea id="announceText" name="bigText" class="wide" required
+                          oninput="validateFillInTheBlank"></textarea>
             </div>
             <input type="submit" id="submitButton" class="btn-admin" value="Submit">
         </form>
