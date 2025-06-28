@@ -10,7 +10,6 @@
 <html>
 <head>
     <script src="${pageContext.request.contextPath}/js/adminToggle.js"></script>
-    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/favicon.ico">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
     <title>Admin | Quizzes</title>
 </head>

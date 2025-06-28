@@ -72,7 +72,7 @@ public class UserDao {
     public boolean correctPassword(String name, String suggestedPassword) {
         User user = get(name);
         if (user == null) return false;
-        return user.checkHashedPassword(suggestedPassword);
+        return user.checkPassword(suggestedPassword);
     }
 
     public boolean isAdmin(String name) {
