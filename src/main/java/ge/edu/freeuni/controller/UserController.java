@@ -6,11 +6,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class UserController {
@@ -18,49 +19,51 @@ public class UserController {
     @Autowired
     private UserDao users;
 
-    @GetMapping("/login")
-    public String login() {
-        return "login";
+    @GetMapping("/welcome")
+    public String welcome() {
+        return "welcome";
     }
 
-    @PostMapping("/login")
-    public ModelAndView login(HttpSession session,
-                              @RequestParam String name, @RequestParam String password) throws IOException {
-        ModelAndView mav = new ModelAndView("login");
-        if (!users.exists(name)) {
-            mav.addObject("error", "User does not exist.");
-        } else if (!users.correctPassword(name, password)) {
-            mav.addObject("error", "Incorrect password.");
-        } else {
-            session.setAttribute("name", name);
-            if (users.isAdmin(name)) {
-                session.setAttribute("isAdmin", true);
-                mav = new ModelAndView("redirect:/"); //homepage
+    @PostMapping("/welcome")
+    @ResponseBody
+    public Map<String, String> welcome(HttpSession session,
+                                       @RequestParam String name,
+                                       @RequestParam String password,
+                                       @RequestParam String mode) throws IOException {
+        Map<String, String> result = new HashMap<String, String>();
+
+        if ("login".equals(mode)) {
+            if (!users.exists(name)) {
+                result.put("status", "error");
+                result.put("message", "User does not exist: " + name);
+            } else if (!users.correctPassword(name, password)) {
+                result.put("status", "error");
+                result.put("message", "Incorrect password for user: " + name);
+            } else {
+                session.setAttribute("name", name);
+                result.put("status", "success");
+                result.put("redirectUrl", "/admin"); //homepageURl
+                if (users.isAdmin(name)) {
+                    session.setAttribute("isAdmin", true);
+                }
+            }
+        } else if ("signup".equals(mode)) {
+            if (!users.add(name, password)) {
+                result.put("status", "error");
+                result.put("message", "User already exists: " + name);
+            } else {
+                session.setAttribute("name", name);
+                result.put("status", "success");
+                result.put("redirectUrl", "/admin"); //homepageURl
             }
         }
-        return mav;
-    }
-
-    @GetMapping("/register")
-    public String register() {
-        return "register";
-    }
-
-    @PostMapping("/register")
-    public ModelAndView register(@RequestParam String name, @RequestParam String password) throws IOException {
-        ModelAndView mav = new ModelAndView("register");
-        if (!users.add(name, password)) {
-            mav.addObject("error", "User already exists.");
-            return mav;
-        }
-        return new ModelAndView("redirect:/login");
+        return result;
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "login";
+        return "welcome";
     }
-
 
 }

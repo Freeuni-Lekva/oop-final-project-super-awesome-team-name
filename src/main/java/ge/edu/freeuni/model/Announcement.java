@@ -1,6 +1,5 @@
 package ge.edu.freeuni.model;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 
 public class Announcement {
@@ -17,10 +16,6 @@ public class Announcement {
         this.name = name;
         this.text = text;
         this.date = date;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getTitle() {
