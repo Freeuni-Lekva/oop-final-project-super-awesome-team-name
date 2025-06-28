@@ -16,17 +16,16 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/QuizWebsite"/>
         <property name="username" value="root"/>
-        <property name="password" value=""/>
+        <property name="password" value="151631"/>
         <property name="initialSize" value="3"/>
     </bean>
 
-    <mvc:interceptors>
-        <mvc:interceptor>
-            <mvc:mapping path="/**"/>
-            <bean class="ge.edu.freeuni.interceptor.AuthInterceptor"/>
-        </mvc:interceptor>
-    </mvc:interceptors>
-
+    <!--<mvc:interceptors>
+      <mvc:interceptor>
+          <mvc:mapping path="/**"/>
+          <bean class="ge.edu.freeuni.interceptor.AuthInterceptor"/>
+      </mvc:interceptor>
+  </mvc:interceptors>-->
 
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
