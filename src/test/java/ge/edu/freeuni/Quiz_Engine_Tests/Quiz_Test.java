@@ -1,4 +1,4 @@
-package Quiz_Engine_Tests;
+package ge.edu.freeuni.Quiz_Engine_Tests;
 
 import ge.edu.freeuni.model.Quiz_Engine.Question.*;
 import ge.edu.freeuni.model.Quiz_Engine.Quiz;

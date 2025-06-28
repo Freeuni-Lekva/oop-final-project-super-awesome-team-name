@@ -22,7 +22,7 @@
 
     <servlet>
         <servlet-name>Create_Quiz_Servlet</servlet-name>
-        <servlet-class>ge.edu.freeuni.controller.Quiz_Engine_Servlets.Create_Quiz_Servlet</servlet-class>
+        <servlet-class>ge.edu.freeuni.controller.Create_Quiz_Servlet</servlet-class>
     </servlet>
 
     <servlet-mapping>

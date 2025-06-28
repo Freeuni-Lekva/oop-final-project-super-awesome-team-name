@@ -1,4 +1,4 @@
-package ge.edu.freeuni.controller.Quiz_Engine_Servlets;
+package ge.edu.freeuni.controller;
 
 import ge.edu.freeuni.model.Quiz_Engine.DBConnection;
 import ge.edu.freeuni.model.Quiz_Engine.Question.*;
