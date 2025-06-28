@@ -16,7 +16,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost/Quiz-Website"/>
         <property name="username" value="root"/>
-        <property name="password" value=""/>
+        <property name="password" value="paroli"/>
         <property name="initialSize" value="3"/>
     </bean>
 

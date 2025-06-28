@@ -14,9 +14,20 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Create_Quiz_Servlet</servlet-name>
+        <servlet-class>Quiz_Engine_Servlets.Create_Quiz_Servlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Create_Quiz_Servlet</servlet-name>
+        <url-pattern>/CreateQuizServlet</url-pattern>
     </servlet-mapping>
     
 
