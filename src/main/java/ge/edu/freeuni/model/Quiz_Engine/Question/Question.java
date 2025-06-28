@@ -1,6 +1,5 @@
-package Quiz_Engine.Question;
+package ge.edu.freeuni.model.Quiz_Engine.Question;
 
-import java.util.List;
 import java.util.Objects;
 
 public abstract class Question {

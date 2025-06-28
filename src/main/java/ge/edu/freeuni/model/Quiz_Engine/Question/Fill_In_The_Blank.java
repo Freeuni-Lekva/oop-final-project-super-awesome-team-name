@@ -1,4 +1,4 @@
-package Quiz_Engine.Question;
+package ge.edu.freeuni.model.Quiz_Engine.Question;
 
 public class Fill_In_The_Blank extends Question {
 

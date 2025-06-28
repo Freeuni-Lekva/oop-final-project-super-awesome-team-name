@@ -1,9 +1,9 @@
-package Quiz_Engine_Servlets;
+package ge.edu.freeuni.controller.Quiz_Engine_Servlets;
 
-import Quiz_Engine.DBConnection;
-import Quiz_Engine.Question.*;
-import Quiz_Engine.Quiz;
-import Quiz_Engine.QuizDAO;
+import ge.edu.freeuni.model.Quiz_Engine.DBConnection;
+import ge.edu.freeuni.model.Quiz_Engine.Question.*;
+import ge.edu.freeuni.model.Quiz_Engine.Quiz;
+import ge.edu.freeuni.model.Quiz_Engine.QuizDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletException;

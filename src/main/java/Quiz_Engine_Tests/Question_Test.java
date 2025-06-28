@@ -1,6 +1,6 @@
 package Quiz_Engine_Tests;
 
-import Quiz_Engine.Question.*;
+import ge.edu.freeuni.model.Quiz_Engine.Question.*;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

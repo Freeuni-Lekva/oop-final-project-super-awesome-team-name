@@ -1,7 +1,7 @@
 package Quiz_Engine_Tests;
 
-import Quiz_Engine.Question.*;
-import Quiz_Engine.Quiz;
+import ge.edu.freeuni.model.Quiz_Engine.Question.*;
+import ge.edu.freeuni.model.Quiz_Engine.Quiz;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;

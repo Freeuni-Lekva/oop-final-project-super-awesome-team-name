@@ -1,4 +1,4 @@
-package Quiz_Engine;
+package ge.edu.freeuni.model.Quiz_Engine;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

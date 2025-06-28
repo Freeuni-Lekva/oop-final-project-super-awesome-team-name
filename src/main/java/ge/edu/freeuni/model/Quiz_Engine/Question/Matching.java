@@ -1,6 +1,5 @@
-package Quiz_Engine.Question;
+package ge.edu.freeuni.model.Quiz_Engine.Question;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class Matching extends Question {

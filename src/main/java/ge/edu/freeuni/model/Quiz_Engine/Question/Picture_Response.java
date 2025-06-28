@@ -1,4 +1,4 @@
-package Quiz_Engine.Question;
+package ge.edu.freeuni.model.Quiz_Engine.Question;
 
 public class Picture_Response extends Question {
 
