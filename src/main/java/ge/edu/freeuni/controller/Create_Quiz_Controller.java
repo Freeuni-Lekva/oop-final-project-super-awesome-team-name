@@ -127,6 +127,6 @@ public class Create_Quiz_Controller {
             request.setAttribute("message", "Failed to create quiz: " + e.getMessage());
         }
 
-        return "view/Created_Quiz_Result.jsp";
+        return "Created_Quiz_Result";
     }
 }

@@ -25,17 +25,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Create Quiz - Step 2</title>
-    <style>
-        .error-message {
-            color: red;
-            font-weight: bold;
-            margin-top: 5px;
-        }
-    </style>
-    <script src="<c:url value='/js/Create_Quiz_Form.js' />" defer></script>
+    <script src="${pageContext.request.contextPath}/js/Create_Quiz_Form.js" defer></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Create_Quiz_Form_Style.css">
+    <title>Create Quiz form</title>
+
+
 </head>
 <body>
+<div class="quiz-panel">
 <h2>Design Questions for Quiz: <%= quizTitle %></h2>
 
 <form action="Create-Quiz" method="post" onsubmit="return validateForm();">
@@ -73,7 +70,8 @@
         }
     %>
 
-    <a href="Created_Quiz_Result.jsp"><input type="submit" value="Save Quiz" /></a>
+    <a href="${pageContext.request.contextPath}/Created_Quiz_Result"><input type="submit" value="Save Quiz" /></a>
 </form>
+</div>
 </body>
 </html>

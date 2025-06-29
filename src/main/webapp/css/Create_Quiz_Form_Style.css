@@ -1,0 +1,116 @@
+/* Universal style to match your base theme */
+* {
+    box-sizing: border-box;
+    font-family: 'Century Gothic', 'Segoe UI', 'Arial', 'Helvetica', sans-serif;
+    color: #0D0D0D;
+}
+
+/* Dark background */
+body {
+    background-color: #0D0D0D;
+    margin: 0;
+    padding: 15px 15px;
+}
+
+/* Centered white panel container */
+.quiz-panel {
+    max-width: 900px;
+    background-color: #FFFFFF;
+    border-radius: 25px;
+    padding: 40px 45px;
+    margin: 0 auto;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Headings */
+h2 {
+    font-size: 1.8rem;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #1E1E1E;
+}
+
+/* Fieldsets for each question */
+fieldset {
+    border: 1px solid #E0E0E0;
+    border-radius: 12px;
+    padding: 25px 20px;
+    margin-bottom: 30px;
+    background-color: #F8F8F8;
+}
+
+/* Legend styling */
+legend {
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 0 8px;
+}
+
+/* Labels */
+label {
+    display: block;
+    margin: 10px 0 6px;
+    font-size: 0.95rem;
+    font-weight: bold;
+}
+
+/* Inputs and selects */
+select, textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1.5px solid #CCC;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+    font-family: inherit;
+}
+
+select:focus, textarea:focus {
+    outline: none;
+    border-color: #38077F;
+}
+
+/* Textareas */
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Error messages */
+.error-message {
+    color: #C7140D;
+    font-size: 0.8rem;
+    margin-top: 3px;
+    min-height: 18px;
+}
+
+/* Submit button */
+input[type="submit"] {
+    display: block;
+    width: 100%;
+    background-color: #006A50;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 14px 0;
+    border: none;
+    border-radius: 8px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #00A881;
+}
+
+/* Link behavior override inside form */
+form a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Dynamic field area */
+#dynamicFields {
+    margin-top: 10px;
+}

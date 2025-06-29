@@ -39,8 +39,10 @@
 %>
 <html>
 <head>
+    <script src="${pageContext.request.contextPath}/js/Create_Quiz.js" defer></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Create_Quiz_Style.css">
     <title>Create Quiz</title>
-    <script src="<c:url value='/js/Create_Quiz.js' />" defer></script>
+
 </head>
 <body>
 <h1>Create a new Quiz</h1>
@@ -49,7 +51,7 @@
 <p style="color: red;"><%= errorMessage %></p>
 <% } %>
 
-<form id="quizForm" action="Create_Quiz_Form.jsp" method="get">
+<form id="quizForm" action="${pageContext.request.contextPath}/Create_Quiz_Form" method="get">
     <label for="QuizName">What is the name of the Quizz?</label><br/>
     <input type="text" id="QuizName" name="QuizName" required
            value="<%= quizTitle != null ? quizTitle : "" %>"/><br/><br/>
