@@ -234,7 +234,7 @@
 <body>
 <h2>Design Questions for Quiz: <%= quizTitle %></h2>
 
-<form action="CreateQuizServlet" method="post" onsubmit="return validateForm();">
+<form action="Create-Quiz" method="post" onsubmit="return validateForm();">
     <input type="hidden" name="QuizName" value="<%= quizTitle %>" />
     <input type="hidden" name="QuizDescription" value="<%= quizDescription %>" />
     <input type="hidden" name="NQuestions" value="<%= numQuestions %>" />

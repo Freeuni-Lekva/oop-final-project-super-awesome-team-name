@@ -1,59 +1,57 @@
-package ge.edu.freeuni.model.Quiz_Engine;
+package ge.edu.freeuni.dao;
 
 import ge.edu.freeuni.model.Quiz_Engine.Question.*;
-import org.apache.commons.dbcp2.BasicDataSource;
-import org.springframework.stereotype.Component;
+import ge.edu.freeuni.model.Quiz_Engine.Quiz;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.*;
 
-
-@Component("quizzes")
+@Repository
 public class QuizDAO {
-    private final Connection conn;
 
+    private final DataSource dataSource;
 
-    //@Autowired
-    private BasicDataSource dataSource;
-
-
-    public QuizDAO(Connection conn) {
-        this.conn = conn;
+    @Autowired
+    public QuizDAO(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
-    // INSERT a new quiz and return its generated ID
     public int insertQuiz(Quiz quiz) throws SQLException {
-        String sql = "INSERT INTO quizzes (name, description, num_questions, random_order, one_page,immediate_correction, practice_mode) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        String sql = "INSERT INTO quizzes (name, description,num_questions,random_order, one_page, immediate_correction, practice_mode,creator_username) VALUES (?, ?, ?, ?, ?, ?,?,?)";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
             stmt.setString(1, quiz.getQuizzName());
             stmt.setString(2, quiz.getDescription());
-            stmt.setBoolean(3, quiz.isRandomOrder());
-            stmt.setBoolean(4, quiz.isOnePage());
-            stmt.setBoolean(5, quiz.isImmediateCorrection());
-            stmt.setBoolean(6, quiz.isPracticeMode());
+            stmt.setInt(3,quiz.getNQuestions());
+            stmt.setBoolean(4, quiz.isRandomOrder());
+            stmt.setBoolean(5, quiz.isOnePage());
+            stmt.setBoolean(6, quiz.isImmediateCorrection());
+            stmt.setBoolean(7, quiz.isPracticeMode());
+            stmt.setString(8, quiz.getCreatorUsername());
             stmt.executeUpdate();
 
             try (ResultSet rs = stmt.getGeneratedKeys()) {
-                if (rs.next()) {
-                    return rs.getInt(1); // return the generated quiz ID
-                }
+                if (rs.next()) return rs.getInt(1);
             }
         }
         throw new SQLException("Failed to insert quiz.");
     }
 
-    // INSERT multiple questions for a quiz
     public void insertQuestions(int quizId, List<Question> questions) throws SQLException {
         String sql = "INSERT INTO questions (quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             for (Question question : questions) {
                 stmt.setInt(1, quizId);
                 stmt.setString(2, question.getQuestion());
                 stmt.setString(3, question.getQuestionType());
 
-                // Defaults
                 String possibleAnswers = null;
                 String correctAnswer = null;
                 String imageURL = null;
@@ -79,13 +77,12 @@ public class QuizDAO {
                     correctAnswer = String.join(",", mcm.getCorrectAnswer());
                 } else if (question instanceof Matching) {
                     Matching match = (Matching) question;
-                    Map<String,String> pairs = match.getCorrectAnswer();
+                    Map<String, String> pairs = match.getCorrectAnswer();
                     StringBuilder sb = new StringBuilder();
-
-                    for (var entry : pairs.entrySet()) {
+                    for (Map.Entry<String, String> entry : pairs.entrySet()) {
                         sb.append(entry.getKey()).append("=").append(entry.getValue()).append(";");
                     }
-                    correctAnswer = sb.toString(); // reuse correct_answer column
+                    correctAnswer = sb.toString();
                 }
 
                 stmt.setString(4, possibleAnswers);
@@ -95,25 +92,24 @@ public class QuizDAO {
 
                 stmt.addBatch();
             }
-
             stmt.executeBatch();
         }
     }
 
-
-    // DELETE a quiz by ID (with ON DELETE CASCADE to auto-remove questions)
     public void deleteQuiz(int quizId) throws SQLException {
         String sql = "DELETE FROM quizzes WHERE id = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, quizId);
             stmt.executeUpdate();
         }
     }
 
-    // GET a quiz by ID
     public Quiz getQuiz(int quizId) throws SQLException {
         String sql = "SELECT * FROM quizzes WHERE id = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setInt(1, quizId);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -133,11 +129,13 @@ public class QuizDAO {
         return null;
     }
 
-    // GET all questions for a quiz
     public List<Question> getQuestions(int quizId) throws SQLException {
         List<Question> questions = new ArrayList<>();
         String sql = "SELECT * FROM questions WHERE quiz_id = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setInt(1, quizId);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -148,10 +146,8 @@ public class QuizDAO {
                     String choices = rs.getString("possible_answers");
                     String image = rs.getString("imageURL");
                     boolean orderMatters = rs.getBoolean("order_matters");
-                    String extra = rs.getString("extra_data"); // for things like matching pairs or multi-answers
 
                     Question q;
-
                     switch (type) {
                         case "Question-Response":
                             q = new Question_Response(prompt, type, correct);
@@ -161,14 +157,14 @@ public class QuizDAO {
                             break;
                         case "Multiple Choice":
                             List<String> choiceList = Arrays.asList(choices.split(","));
-                            q = new Multiple_Choice(prompt, type,choiceList,correct);
+                            q = new Multiple_Choice(prompt, type, choiceList, correct);
                             break;
                         case "Picture-Response":
-                            q = new Picture_Response(prompt, type, image,correct);
+                            q = new Picture_Response(prompt, type, image, correct);
                             break;
                         case "Multi-Answer":
                             List<String> correctAnswers = Arrays.asList(correct.split(","));
-                            q = new Multi_Answer(prompt, type,orderMatters ,correctAnswers);
+                            q = new Multi_Answer(prompt, type, orderMatters, correctAnswers);
                             break;
                         case "Multiple Choice with Multiple Answers":
                             List<String> multiChoices = Arrays.asList(choices.split(","));
@@ -176,9 +172,8 @@ public class QuizDAO {
                             q = new Multi_Choice_Multi_Answer(prompt, type, multiChoices, multiCorrect);
                             break;
                         case "Matching":
-                            // Assume extra is like: "term1=match1;term2=match2"
-                            q = new Matching(prompt,type,new HashMap<String,String>());
-
+                            // NOTE: this should be improved by parsing actual key-value pairs from DB
+                            q = new Matching(prompt, type, new HashMap<>());
                             break;
                         default:
                             throw new SQLException("Unknown question type: " + type);
@@ -193,14 +188,14 @@ public class QuizDAO {
         return questions;
     }
 
-
-
-    // GET all quizzes
     public List<Quiz> getAllQuizzes() throws SQLException {
         List<Quiz> quizzes = new ArrayList<>();
         String sql = "SELECT * FROM quizzes";
-        try (Statement stmt = conn.createStatement();
+
+        try (Connection conn = dataSource.getConnection();
+             Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
+
             while (rs.next()) {
                 Quiz quiz = new Quiz();
                 int quizId = rs.getInt("id");

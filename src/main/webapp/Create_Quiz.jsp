@@ -97,7 +97,7 @@
            value="<%= quizTitle != null ? quizTitle : "" %>"/><br/><br/>
 
     <label for="QuizDescription">Description of your Quizz</label><br/>
-    <textarea id="QuizDescription" name="QuizDescription" rows="4" cols="30"><%= quizDescription != null ? quizDescription : "" %></textarea><br/><br/>
+    <textarea id="QuizDescription" name="QuizDescription" rows="4" cols="30" required><%= quizDescription != null ? quizDescription : "" %></textarea><br/><br/>
 
     <label for="NQuestions">How many questions?</label>
     <input type="number" id="NQuestions" name="NQuestions" min="1" max="20" required
@@ -129,7 +129,7 @@
         <option value="Yes" <%= "Yes".equals(practiceMode) ? "selected" : "" %>>Yes</option>
     </select><br/><br/>
 
-    <input type="submit" value="Create Quizz Form"/>
+    <input type="submit" value="Create Quiz Form"/>
 </form>
 </body>
 </html>

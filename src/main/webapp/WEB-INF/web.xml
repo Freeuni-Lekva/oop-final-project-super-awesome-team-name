@@ -20,16 +20,6 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>Create_Quiz_Servlet</servlet-name>
-        <servlet-class>ge.edu.freeuni.controller.Create_Quiz_Servlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>Create_Quiz_Servlet</servlet-name>
-        <url-pattern>/CreateQuizServlet</url-pattern>
-    </servlet-mapping>
-    
 
 </web-app>
 

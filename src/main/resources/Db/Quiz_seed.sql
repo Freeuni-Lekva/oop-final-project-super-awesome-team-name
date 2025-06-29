@@ -240,24 +240,21 @@ INSERT INTO quizzes(id, name, description, num_questions, random_order, one_page
 VALUES(7,'The Matching Quiz','can you match all the pairs correctly?',5,1,1,0,0,'Admin');
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(65,7,'Match the Game to Their Developer','Matching','The Legend of Zelda=CD Projekt Red;Fortnite=Obsidian Entertainment;Cyberpunk=Epic Games;Fallout: New Vegas=Nintendo','The Legend of Zelda=Nintendo;Fortnite=Epic Games;Cyberpunk=CD Projekt Red;Fallout: New Vegas=Obsidian Entertainment',NULL,NULL);
+VALUES(66,7,'Match the Game to Their Developer','Matching','The Legend of Zelda=CD Projekt Red;Fortnite=Obsidian Entertainment;Cyberpunk=Epic Games;Fallout: New Vegas=Nintendo','The Legend of Zelda=Nintendo;Fortnite=Epic Games;Cyberpunk=CD Projekt Red;Fallout: New Vegas=Obsidian Entertainment',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(66,7,'Match each artist to one of their famous songs','Matching','Taylor Swift=God''s Plan;The Weeknd=Shake It Off;Ed Sheeran=Blinding Lights;Billie Eilish=Bad Guy;Drake=Shape of You','Taylor Swift=Shake It Off;The Weeknd=Blinding Lights;Ed Sheeran=Shape of You;Billie Eilish=Bad Guy;Drake=God''s Plan',NULL,NULL);
+VALUES(67,7,'Match each artist to one of their famous songs','Matching','Taylor Swift=God''s Plan;The Weeknd=Shake It Off;Ed Sheeran=Blinding Lights;Billie Eilish=Bad Guy;Drake=Shape of You','Taylor Swift=Shake It Off;The Weeknd=Blinding Lights;Ed Sheeran=Shape of You;Billie Eilish=Bad Guy;Drake=God''s Plan',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(67,7,'Match the Movie to Its Director','Matching','Inception=James Cameron;Pulp Fiction=Martin Scorsese;Titanic=Quentin Tarantino;Parasite=Bong Joon-ho;The Irishman=Christopher Nolan','Inception=Christopher Nolan;Pulp Fiction=Quentin Tarantino;Titanic=James Cameron;Parasite=Bong Joon-ho;The Irishman=Martin Scorsese',NULL,NULL);
+VALUES(68,7,'Match the Movie to Its Director','Matching','Inception=James Cameron;Pulp Fiction=Martin Scorsese;Titanic=Quentin Tarantino;Parasite=Bong Joon-ho;The Irishman=Christopher Nolan','Inception=Christopher Nolan;Pulp Fiction=Quentin Tarantino;Titanic=James Cameron;Parasite=Bong Joon-ho;The Irishman=Martin Scorsese',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(68,7,'Match the App to Its Main Function','Matching','Spotify=Team Communication;TikTok=Productivity;Slack=Music Streaming;Notion=Photo Sharing;Instagram=Short Videos
+VALUES(69,7,'Match the App to Its Main Function','Matching','Spotify=Team Communication;TikTok=Productivity;Slack=Music Streaming;Notion=Photo Sharing;Instagram=Short Videos
 ','Spotify=Music Streaming;TikTok=Short Videos;Slack=Team Communication;Notion=Productivity;Instagram=Photo Sharing',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(69,7,'Match the Gaming Console to Its Manufacturer','Matching','PlayStation 5=Microsoft;Xbox Series X=Nintendo;Nintendo Switch=Atari;Steam Deck=Sony;Atari VCS=Valve
+VALUES(70,7,'Match the Gaming Console to Its Manufacturer','Matching','PlayStation 5=Microsoft;Xbox Series X=Nintendo;Nintendo Switch=Atari;Steam Deck=Sony;Atari VCS=Valve
 ','PlayStation 5=Sony;Xbox Series X=Microsoft;Nintendo Switch=Nintendo;Steam Deck=Valve;Atari VCS=Atari',NULL,NULL);
-
-INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(70,7,'Match the YouTuber to Their Specialty','Matching','MrBeast=Gaming;Markiplier=Streaming/Commentary;Marques Brownlee=Challenges/Giveaways;Emma Chamberlain=Tech Reviews;Ludwig=Vlogs','MrBeast=Challenges/Giveaways;Markiplier=Gaming;Marques Brownlee=Tech Reviews;Emma Chamberlain=Vlogs;Ludwig=Streaming/Commentary',NULL,NULL);
 
 
 
@@ -285,9 +282,6 @@ VALUES (76,8,'Which Country won Overwatch World Cup 2016','Multiple Choice','Sin
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES (77,8,'Name 4 Popular battle Royale games','Multi-Answer',NULL,'Fortnite,PUBG,Call of duty:Warzone,Apex Legends',NULL,0);
-
-INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES (77,8,'Where will the First Esports World Cup Take Place?','Question-Response',NULL,'Saudi Arabia',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(78,8,'Who was Selected as MVP player in Valorant Masters Toronto Final','Multiple Choice','leaf,zekken,something,f0rsaken','f0rsaken',NULL,NULL);

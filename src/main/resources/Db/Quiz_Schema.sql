@@ -2,6 +2,10 @@ CREATE DATABASE IF NOT EXISTS quiz_app;
 
 use quiz_app;
 
+DROP TABLE IF EXISTS questions;
+
+DROP TABLE IF EXISTS quizzes;
+
 CREATE TABLE quizzes (
                          id INT AUTO_INCREMENT PRIMARY KEY,
                          name VARCHAR(255),
@@ -13,6 +17,8 @@ CREATE TABLE quizzes (
                          practice_mode BOOLEAN,
                          creator_username VARCHAR(255)
 );
+
+DROP TABLE IF EXISTS questions;
 
 CREATE TABLE questions (
                            id INT AUTO_INCREMENT PRIMARY KEY,
