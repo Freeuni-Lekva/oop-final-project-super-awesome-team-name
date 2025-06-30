@@ -1,7 +1,7 @@
 package ge.edu.freeuni.dao;
 
-import ge.edu.freeuni.model.Quiz_Engine.Question.*;
-import ge.edu.freeuni.model.Quiz_Engine.Quiz;
+import ge.edu.freeuni.model.QuizEngine.Question.*;
+import ge.edu.freeuni.model.QuizEngine.Quiz;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

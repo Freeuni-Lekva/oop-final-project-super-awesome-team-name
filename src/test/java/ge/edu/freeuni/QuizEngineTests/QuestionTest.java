@@ -1,6 +1,6 @@
-package ge.edu.freeuni.Quiz_Engine_Tests;
+package ge.edu.freeuni.QuizEngineTests;
 
-import ge.edu.freeuni.model.Quiz_Engine.Question.*;
+import ge.edu.freeuni.model.QuizEngine.Question.*;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class Question_Test {
+public class QuestionTest {
 
     @Test
     public void testQuestionResponse() {

@@ -1,10 +1,11 @@
 package ge.edu.freeuni.controller;
 
-import ge.edu.freeuni.model.Quiz_Engine.Question.*;
-import ge.edu.freeuni.model.Quiz_Engine.Quiz;
+import ge.edu.freeuni.model.QuizEngine.Question.*;
+import ge.edu.freeuni.model.QuizEngine.Quiz;
 import ge.edu.freeuni.dao.QuizDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,20 +15,20 @@ import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @Controller
-@RequestMapping("/Create-Quiz")
-public class Create_Quiz_Controller {
+@RequestMapping("/CreateQuizForm")
+public class CreateQuizFormController {
 
     private final QuizDAO quizzes;
 
     @Autowired
-    public Create_Quiz_Controller(QuizDAO quizzes) {
+    public CreateQuizFormController(QuizDAO quizzes) {
         this.quizzes = quizzes;
     }
 
     @PostMapping
-    public String createQuiz(@RequestParam Map<String, String> requestParams,
-                             HttpSession session,
-                             HttpServletRequest request) {
+    public String createQuizForm(@RequestParam Map<String, String> requestParams,
+                                 HttpSession session,
+                                 HttpServletRequest request) {
         try {
             String creator = (String) session.getAttribute("creatorUsername");
 
@@ -47,7 +48,7 @@ public class Create_Quiz_Controller {
 
                 switch (type) {
                     case "Question-Response": {
-                        String correct = requestParams.get("correctAnswer");
+                        String correct = requestParams.get("correctAnswer_" + i);
                         questions.add(new Question_Response(text, type, correct));
                         break;
                     }
@@ -127,6 +128,11 @@ public class Create_Quiz_Controller {
             request.setAttribute("message", "Failed to create quiz: " + e.getMessage());
         }
 
-        return "Created_Quiz_Result";
+        return "CreatedQuizResult";
+    }
+
+    @GetMapping("/CreateQuizForm")
+    public String viewQuizForm() {
+        return "CreateQuizForm";
     }
 }

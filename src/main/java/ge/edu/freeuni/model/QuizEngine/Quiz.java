@@ -1,6 +1,6 @@
-package ge.edu.freeuni.model.Quiz_Engine;
+package ge.edu.freeuni.model.QuizEngine;
 
-import ge.edu.freeuni.model.Quiz_Engine.Question.Question;
+import ge.edu.freeuni.model.QuizEngine.Question.Question;
 
 import java.util.ArrayList;
 import java.util.List;

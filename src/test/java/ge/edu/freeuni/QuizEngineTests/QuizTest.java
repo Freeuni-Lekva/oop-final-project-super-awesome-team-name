@@ -1,14 +1,14 @@
-package ge.edu.freeuni.Quiz_Engine_Tests;
+package ge.edu.freeuni.QuizEngineTests;
 
-import ge.edu.freeuni.model.Quiz_Engine.Question.*;
-import ge.edu.freeuni.model.Quiz_Engine.Quiz;
+import ge.edu.freeuni.model.QuizEngine.Question.*;
+import ge.edu.freeuni.model.QuizEngine.Quiz;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class Quiz_Test {
+public class QuizTest {
 
     @Test
     public void testInitialState() {
