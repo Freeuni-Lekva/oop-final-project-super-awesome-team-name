@@ -7,9 +7,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
+@RequestMapping("/CreateQuiz")
 public class CreateQuizController {
 
-    @PostMapping("/CreateQuiz")
+    @PostMapping()
     public String handleQuizForm(
             HttpServletRequest request,
             RedirectAttributes redirectAttributes
@@ -37,17 +38,18 @@ public class CreateQuizController {
         }
 
         // Redirect to quiz form page with query parameters
-        return "redirect:/createQuizForm.jsp"
-                + "?quizTitle=" + quizName
-                + "&quizDescription=" + quizDescription
-                + "&numQuestions=" + numQuestions
+        return "redirect:/CreateQuizForm"
+                + "?QuizName=" + quizName
+                + "&QuizDescription=" + quizDescription
+                + "&NQuestions=" + numQuestions
                 + "&randomOrder=" + randomOrder
                 + "&onePage=" + onePage
                 + "&immediateCorrection=" + immediateCorrection
                 + "&practiceMode=" + practiceMode;
+
     }
 
-    @GetMapping("/CreateQuiz")
+    @GetMapping()
     public String showQuizCreation(){
         return "CreateQuiz";
     }

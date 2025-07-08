@@ -1,6 +1,5 @@
-package ge.edu.freeuni.inceptor;
+package ge.edu.freeuni.interceptor;
 
-import ge.edu.freeuni.model.User;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,12 +16,16 @@ public class AuthInterceptor implements HandlerInterceptor {
         Boolean isAdmin = (session != null) ? (Boolean) session.getAttribute("isAdmin") : null;
         String uri = request.getRequestURI();
 
-        if (name == null && !(uri.equals("/login") || uri.equals("/register"))) {
-            response.sendRedirect("/login");
+        if (uri.startsWith("/css") || uri.startsWith("/js") || uri.startsWith("/images")) {
+            return true;
+        }
+
+        if (name == null && !uri.equals("/welcome")) {
+            response.sendRedirect("/welcome");
             return false;
         }
 
-        if (name != null && (uri.equals("/login") || uri.equals("/register"))) {
+        if (name != null && uri.equals("/welcome")) {
             response.sendRedirect("/"); // homepage
             return false;
         }

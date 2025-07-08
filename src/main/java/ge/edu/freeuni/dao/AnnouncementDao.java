@@ -17,7 +17,7 @@ public class AnnouncementDao {
     private BasicDataSource db;
 
     //Only for testing purposes
-    public BasicDataSource getBasicDataSource(){
+    public BasicDataSource getBasicDataSource() {
         return db;
     }
 
@@ -50,7 +50,7 @@ public class AnnouncementDao {
         String sql = "INSERT INTO announcements (title,name,text,date) VALUES (?,?,?,?)";
 
         try (Connection con = db.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, title);
             ps.setString(2, name);
@@ -76,7 +76,7 @@ public class AnnouncementDao {
 
     public List<Announcement> getReversedList() {
         List<Announcement> announcements = new ArrayList<>();
-        String sql = "SELECT * FROM announcements;";
+        String sql = "SELECT * FROM announcements ORDER BY id DESC;";
 
         try (Connection con = db.getConnection();
              PreparedStatement ps = con.prepareStatement(sql);
@@ -93,7 +93,7 @@ public class AnnouncementDao {
             return announcements;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to count users." + e);
+            throw new RuntimeException("Failed to retrieve reversed list of announcements." + e);
         }
     }
 

@@ -128,10 +128,10 @@ public class CreateQuizFormController {
             request.setAttribute("message", "Failed to create quiz: " + e.getMessage());
         }
 
-        return "CreatedQuizResult";
+        return "";
     }
 
-    @GetMapping("/CreateQuizForm")
+    @GetMapping()
     public String viewQuizForm() {
         return "CreateQuizForm";
     }

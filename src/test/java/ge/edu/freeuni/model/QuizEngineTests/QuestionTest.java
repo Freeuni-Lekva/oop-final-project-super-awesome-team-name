@@ -1,4 +1,4 @@
-package ge.edu.freeuni.QuizEngineTests;
+package ge.edu.freeuni.model.QuizEngineTests;
 
 import ge.edu.freeuni.model.QuizEngine.Question.*;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ public class QuestionTest {
     public void testFillInTheBlank() {
         Question q = new Fill_In_The_Blank("The capital of France is _.", "Fill in the Blank","Paris");
         assertEquals("The capital of France is _.", q.getQuestion());
-        assertTrue(q.isCorrect("Paris"));
+        assertTrue(q.isCorrect("paris"));
         assertEquals("Paris", q.getCorrectAnswer());
         assertFalse(q.isCorrect("Lyon"));
     }

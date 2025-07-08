@@ -12,7 +12,7 @@
         </div>
 
         <div class="right-panel">
-            <form action="${pageContext.request.contextPath}/CreateQuizForm" method="post">
+            <form action="${pageContext.request.contextPath}/CreateQuiz" method="post">
                 <label for="QuizName">Quiz Name:</label>
                 <input type="text" id="QuizName" name="QuizName" required/><br/><br/>
 
