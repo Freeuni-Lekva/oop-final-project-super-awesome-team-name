@@ -13,22 +13,22 @@ public class QuizTest {
     @Test
     public void testInitialState() {
         Quiz quiz = new Quiz();
-        assertNull(quiz.getQuizzName());
+        assertNull(quiz.getQuizName());
         assertNull(quiz.getDescription());
         assertFalse(quiz.isRandomOrder());
         assertFalse(quiz.isOnePage());
         assertFalse(quiz.isImmediateCorrection());
         assertFalse(quiz.isPracticeMode());
         assertNull(quiz.getCreatorUsername());
-        assertEquals(0, quiz.getQuizzID());
+        assertEquals(0, quiz.getQuizID());
         assertNull(quiz.getQuestions());
     }
 
     @Test
     public void testSettersAndGetters() {
         Quiz quiz = new Quiz();
-        quiz.setQuizzID(42);
-        quiz.setQuizzName("Science Quiz");
+        quiz.setQuizID(42);
+        quiz.setQuizName("Science Quiz");
         quiz.setDescription("A quiz about science.");
         quiz.setRandomOrder(true);
         quiz.setOnePage(true);
@@ -36,8 +36,8 @@ public class QuizTest {
         quiz.setPracticeMode(true);
         quiz.setCreatorUsername("adminUser");
 
-        assertEquals(42, quiz.getQuizzID());
-        assertEquals("Science Quiz", quiz.getQuizzName());
+        assertEquals(42, quiz.getQuizID());
+        assertEquals("Science Quiz", quiz.getQuizName());
         assertEquals("A quiz about science.", quiz.getDescription());
         assertTrue(quiz.isRandomOrder());
         assertTrue(quiz.isOnePage());

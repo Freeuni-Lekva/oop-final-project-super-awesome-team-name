@@ -8,8 +8,8 @@ import java.util.List;
 public class Quiz {
 
     // private literals
-    private int QuizzID;
-    private String QuizzName;
+    private int QuizID;
+    private String QuizName;
     private String Description;
     private int NQuestions;
     private boolean RandomOrder;
@@ -24,7 +24,7 @@ public class Quiz {
     public Quiz(String QuizzName, String Description, int NQuestions, boolean RandomOrder,
                 boolean OnePage, boolean ImmediateCorrection, boolean PracticeMode, List<Question> Questions,
                  String CreatorUsername) {
-        this.QuizzName = QuizzName;
+        this.QuizName = QuizzName;
         this.Description = Description;
         this.NQuestions = NQuestions;
         this.RandomOrder = RandomOrder;
@@ -35,20 +35,20 @@ public class Quiz {
         this.CreatorUsername = CreatorUsername;
     }
 
-    public int getQuizzID() {
-        return QuizzID;
+    public int getQuizID() {
+        return QuizID;
     }
 
-    public void setQuizzID(int QuizzID) {
-        this.QuizzID = QuizzID;
+    public void setQuizID(int QuizID) {
+        this.QuizID = QuizID;
     }
 
-    public String getQuizzName() {
-        return QuizzName;
+    public String getQuizName() {
+        return QuizName;
     }
 
-    public void setQuizzName(String QuizzName) {
-        this.QuizzName = QuizzName;
+    public void setQuizName(String QuizName) {
+        this.QuizName = QuizName;
     }
 
     public String getDescription() {

@@ -24,7 +24,7 @@ public class QuizDAO {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setString(1, quiz.getQuizzName());
+            stmt.setString(1, quiz.getQuizName());
             stmt.setString(2, quiz.getDescription());
             stmt.setInt(3,quiz.getNQuestions());
             stmt.setBoolean(4, quiz.isRandomOrder());
@@ -114,8 +114,8 @@ public class QuizDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     Quiz quiz = new Quiz();
-                    quiz.setQuizzID(rs.getInt("id"));
-                    quiz.setQuizzName(rs.getString("title"));
+                    quiz.setQuizID(rs.getInt("id"));
+                    quiz.setQuizName(rs.getString("title"));
                     quiz.setDescription(rs.getString("description"));
                     quiz.setRandomOrder(rs.getBoolean("random_order"));
                     quiz.setOnePage(rs.getBoolean("one_page"));
@@ -199,8 +199,8 @@ public class QuizDAO {
             while (rs.next()) {
                 Quiz quiz = new Quiz();
                 int quizId = rs.getInt("id");
-                quiz.setQuizzID(quizId);
-                quiz.setQuizzName(rs.getString("title"));
+                quiz.setQuizID(quizId);
+                quiz.setQuizName(rs.getString("title"));
                 quiz.setDescription(rs.getString("description"));
                 quiz.setRandomOrder(rs.getBoolean("random_order"));
                 quiz.setOnePage(rs.getBoolean("one_page"));
