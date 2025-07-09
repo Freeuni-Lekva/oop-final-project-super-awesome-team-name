@@ -35,21 +35,21 @@ public class QuizHistoryController {
     public ModelAndView showHistory(HttpSession session) {
         String userName = (String) session.getAttribute("name");
         if (userName == null) {
-            userName = "TestUser"; // Use test user since auth is disabled
+            userName = "TestUser";
         }
 
         ModelAndView mav = new ModelAndView("quiz-history");
 
-        // Get user's quiz attempts
+
         List<QuizAttempt> attempts = quizAttempts.getAttemptsForUser(userName);
         mav.addObject("attempts", attempts);
         mav.addObject("userName", userName);
-
-        // Get user's achievements
         List<UserAchievement> userAchievements = achievements.getUserAchievements(userName);
         mav.addObject("achievements", userAchievements);
 
-        // Calculate some basic stats
+
+
+
         int totalAttempts = attempts.size();
         double averageScore = 0;
         if (!attempts.isEmpty()) {
@@ -66,21 +66,21 @@ public class QuizHistoryController {
         return mav;
     }
 
-    // Test method to add a sample quiz attempt AND check for new achievements
+
     @GetMapping("/test")
     public ModelAndView testAddAttempt(HttpSession session) {
         String userName = (String) session.getAttribute("name");
         if (userName == null) {
-            userName = "TestUser"; // Use test user if not logged in
+            userName = "TestUser";
         }
 
-        // Add a sample quiz attempt
+
         int attemptId = quizAttempts.add(userName, 1, 3, 4, 120,
                 "[\"Paris\", \"South America\", \"Atlantic Ocean\", \"Nile\"]",
                 "[\"Paris\", \"South America\", \"Pacific Ocean\", \"Nile\"]",
                 false);
 
-        // Check for new achievements after adding the attempt
+
         List<Achievement> newAchievements = achievements.checkAndAwardAchievements(userName);
 
         ModelAndView mav = new ModelAndView("quiz-history");
@@ -94,16 +94,14 @@ public class QuizHistoryController {
         }
         mav.addObject("message", message);
 
-        // Get updated attempts
+
         List<QuizAttempt> attempts = quizAttempts.getAttemptsForUser(userName);
         mav.addObject("attempts", attempts);
         mav.addObject("userName", userName);
-
-        // Get updated achievements
         List<UserAchievement> userAchievements = achievements.getUserAchievements(userName);
         mav.addObject("achievements", userAchievements);
 
-        // Calculate stats
+        //statebistvis
         int totalAttempts = attempts.size();
         double averageScore = 0;
         if (!attempts.isEmpty()) {

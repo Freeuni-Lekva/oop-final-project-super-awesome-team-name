@@ -33,7 +33,7 @@ public class QuizAttempt {
         return totalQuestions > 0 ? (double) score / totalQuestions * 100 : 0;
     }
 
-    // Getters
+    // getterebi
     public int getAttemptId() { return attemptId; }
     public String getUserName() { return userName; }
     public int getQuizId() { return quizId; }

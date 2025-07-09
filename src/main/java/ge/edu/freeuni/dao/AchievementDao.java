@@ -81,7 +81,7 @@ public class AchievementDao {
 
     public int awardAchievement(String userName, int achievementId) {
         if (hasAchievement(userName, achievementId)) {
-            return -1; // Already has achievement
+            return -1;
         }
 
         String sql = "INSERT INTO user_achievements (user_name, achievement_id) VALUES (?, ?)";
@@ -109,12 +109,12 @@ public class AchievementDao {
         }
     }
 
-    // Check and award achievements automatically
+
     public List<Achievement> checkAndAwardAchievements(String userName) {
         List<Achievement> newAchievements = new ArrayList<>();
 
         try {
-            // Check Amateur Author (created 1 quiz)
+            //  Amateur Author (created 1 quiz)
             if (!hasAchievement(userName, 1)) {
                 int quizCreatedCount = getQuizCreatedCount(userName);
                 if (quizCreatedCount >= 1) {
@@ -123,7 +123,7 @@ public class AchievementDao {
                 }
             }
 
-            // Check Prolific Author (created 5 quizzes)
+
             if (!hasAchievement(userName, 2)) {
                 int quizCreatedCount = getQuizCreatedCount(userName);
                 if (quizCreatedCount >= 5) {
@@ -132,7 +132,7 @@ public class AchievementDao {
                 }
             }
 
-            // Check Prodigious Author (created 10 quizzes)
+            //  Prodigious Author (created 10 quizzes)
             if (!hasAchievement(userName, 3)) {
                 int quizCreatedCount = getQuizCreatedCount(userName);
                 if (quizCreatedCount >= 10) {
@@ -141,7 +141,7 @@ public class AchievementDao {
                 }
             }
 
-            // Check Quiz Machine (took 10 quizzes)
+            //  Quiz Machine (did 10 quizzes)
             if (!hasAchievement(userName, 4)) {
                 int quizCount = quizAttempts.getUserQuizCount(userName);
                 if (quizCount >= 10) {
@@ -150,7 +150,7 @@ public class AchievementDao {
                 }
             }
 
-            // Check I am the Greatest (highest score on any quiz)
+            //  I am the Greatest (highest score on any quiz)
             if (!hasAchievement(userName, 5)) {
                 if (hasHighestScore(userName)) {
                     awardAchievement(userName, 5);
@@ -158,7 +158,7 @@ public class AchievementDao {
                 }
             }
 
-            // Check Practice Makes Perfect (took quiz in practice mode)
+            //  Practice Makes Perfect (used practice mode)
             if (!hasAchievement(userName, 6)) {
                 if (hasPracticeMode(userName)) {
                     awardAchievement(userName, 6);
@@ -166,7 +166,7 @@ public class AchievementDao {
                 }
             }
 
-            // Check Perfectionist (scored 100% on any quiz)
+            //  Perfectionist (got 100% on anuthing)
             if (!hasAchievement(userName, 7)) {
                 if (hasPerfectScore(userName)) {
                     awardAchievement(userName, 7);
@@ -174,7 +174,7 @@ public class AchievementDao {
                 }
             }
 
-            // Check Speed Demon (completed quiz in under 30 seconds)
+            //  Speed Demon (less than 30secs)
             if (!hasAchievement(userName, 8)) {
                 if (hasSpeedRun(userName)) {
                     awardAchievement(userName, 8);
@@ -182,7 +182,7 @@ public class AchievementDao {
                 }
             }
 
-            // Check Dedicated Learner (took 25 quizzes)
+            //  Dedicated Learner (did 25 quizzes)
             if (!hasAchievement(userName, 9)) {
                 int quizCount = quizAttempts.getUserQuizCount(userName);
                 if (quizCount >= 25) {
@@ -191,7 +191,7 @@ public class AchievementDao {
                 }
             }
 
-            // Check Quiz Master (took 50 quizzes)
+            //  Quiz Master (did 50 quizzes)
             if (!hasAchievement(userName, 10)) {
                 int quizCount = quizAttempts.getUserQuizCount(userName);
                 if (quizCount >= 50) {
@@ -200,7 +200,7 @@ public class AchievementDao {
                 }
             }
 
-            // Check Consistent Performer (scored 80%+ on 5 quizzes in a row)
+            //  Consistent Performer (scored 80% + 5 quizzes)
             if (!hasAchievement(userName, 11)) {
                 if (hasConsistentPerformance(userName)) {
                     awardAchievement(userName, 11);
@@ -215,7 +215,7 @@ public class AchievementDao {
         return newAchievements;
     }
 
-    // Helper method to count quizzes created by user
+
     private int getQuizCreatedCount(String userName) {
         String sql = "SELECT COUNT(*) FROM quizzes WHERE creator_name = ?";
 
@@ -235,7 +235,7 @@ public class AchievementDao {
         return 0;
     }
 
-    // Helper method to check if user has highest score on any quiz
+    //helper for highest score davinaxo
     private boolean hasHighestScore(String userName) {
         String sql = "SELECT COUNT(*) FROM quiz_attempts qa1 " +
                 "WHERE qa1.user_name = ? AND qa1.is_practice_mode = FALSE " +
@@ -281,8 +281,6 @@ public class AchievementDao {
     }
 
     private boolean hasSpeedRun(String userName) {
-        // Note: Database shows 30 seconds, but your original code used 60
-        // Using 30 seconds to match the database description
         String sql = "SELECT COUNT(*) FROM quiz_attempts WHERE user_name = ? AND time_taken <= 30 AND is_practice_mode = FALSE";
 
         try (Connection con = db.getConnection();
@@ -337,10 +335,10 @@ public class AchievementDao {
                     if (percentage >= 80.0) {
                         count++;
                     } else {
-                        return false; // Not consecutive
+                        return false;
                     }
                 }
-                return count >= 5; // Must have at least 5 consecutive 80%+ scores
+                return count >= 5; //minimum 5unda hqondes
             }
         } catch (SQLException e) {
             throw new RuntimeException("Failed to check consistent performance for user: " + userName, e);

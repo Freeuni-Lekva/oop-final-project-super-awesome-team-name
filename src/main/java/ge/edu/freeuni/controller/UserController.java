@@ -35,7 +35,7 @@ public class UserController {
             session.setAttribute("name", name);
             if (users.isAdmin(name)) {
                 session.setAttribute("isAdmin", true);
-                mav = new ModelAndView("redirect:/"); //homepage
+                mav = new ModelAndView("redirect:/"); //main hp
             }
         }
         return mav;

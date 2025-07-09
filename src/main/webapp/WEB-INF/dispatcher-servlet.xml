@@ -16,7 +16,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
     <mvc:annotation-driven/>
 
     <!-- Serve static resources (images, CSS, JS) -->
-    <mvc:resources mapping="/Images/**" location="/Images/" />
+    <mvc:resources mapping="/css/**" location="/css/" />
     <mvc:resources mapping="/images/**" location="/images/" />
     <mvc:resources mapping="/static/**" location="/static/" />
 

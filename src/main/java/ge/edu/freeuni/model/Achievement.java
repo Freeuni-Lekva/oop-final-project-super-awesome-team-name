@@ -20,7 +20,7 @@ public class Achievement {
         this.conditionValue = conditionValue;
     }
 
-    // Getters
+    //getterebi
     public int getAchievementId() { return achievementId; }
     public String getName() { return name; }
     public String getDescription() { return description; }

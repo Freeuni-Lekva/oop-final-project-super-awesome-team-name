@@ -28,7 +28,7 @@ public class Quiz {
         this.allowPracticeMode = allowPracticeMode;
     }
 
-    // Getters
+    // getterebi
     public int getQuizId() { return quizId; }
     public String getTitle() { return title; }
     public String getDescription() { return description; }

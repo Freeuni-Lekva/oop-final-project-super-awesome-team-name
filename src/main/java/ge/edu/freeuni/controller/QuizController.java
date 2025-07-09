@@ -44,7 +44,7 @@ public class QuizController {
         return "Quiz controller is working!";
     }
 
-    // List all available quizzes
+
     @GetMapping
     public ModelAndView listQuizzes() {
         ModelAndView mav = new ModelAndView("quiz-list");
@@ -58,12 +58,12 @@ public class QuizController {
         return mav;
     }
 
-    // Show quiz details and start quiz option
+
     @GetMapping("/{quizId}")
     public ModelAndView showQuizDetails(@PathVariable int quizId, HttpSession session) {
         String userName = (String) session.getAttribute("name");
         if (userName == null) {
-            userName = "TestUser"; // For testing without auth
+            userName = "TestUser";
         }
 
         ModelAndView mav = new ModelAndView("quiz-details");
@@ -75,7 +75,7 @@ public class QuizController {
             return mav;
         }
 
-        // Get user's past attempts on this quiz
+
         List<QuizAttempt> allUserAttempts = quizAttempts.getAttemptsForUser(userName);
         List<QuizAttempt> userAttempts = new ArrayList<>();
         for (QuizAttempt attempt : allUserAttempts) {
@@ -84,7 +84,7 @@ public class QuizController {
             }
         }
 
-        // Get top performers on this quiz
+
         List<QuizAttempt> topScores = quizAttempts.getTopScoresForQuiz(quizId, 5);
 
         int questionCount = questions.getQuestionCount(quizId);
@@ -98,14 +98,14 @@ public class QuizController {
         return mav;
     }
 
-    // Start taking a quiz
+
     @GetMapping("/{quizId}/take")
     public ModelAndView takeQuiz(@PathVariable int quizId,
                                  @RequestParam(defaultValue = "false") boolean practiceMode,
                                  HttpSession session) {
         String userName = (String) session.getAttribute("name");
         if (userName == null) {
-            userName = "TestUser"; // For testing without auth
+            userName = "TestUser";
         }
 
         Quiz quiz = quizzes.get(quizId);
@@ -115,7 +115,7 @@ public class QuizController {
             return mav;
         }
 
-        // Check if practice mode is allowed
+
         if (practiceMode && !quiz.isAllowPracticeMode()) {
             ModelAndView mav = new ModelAndView("redirect:/quiz/" + quizId);
             mav.addObject("error", "Practice mode not available for this quiz");
@@ -130,13 +130,13 @@ public class QuizController {
         mav.addObject("practiceMode", practiceMode);
         mav.addObject("userName", userName);
 
-        // Store quiz start time in session
+
         session.setAttribute("quizStartTime", System.currentTimeMillis());
 
         return mav;
     }
 
-    // Handle quiz submission
+
     @PostMapping("/{quizId}/submit")
     public ModelAndView submitQuiz(@PathVariable int quizId,
                                    HttpServletRequest request,
@@ -144,7 +144,7 @@ public class QuizController {
                                    HttpSession session) {
         String userName = (String) session.getAttribute("name");
         if (userName == null) {
-            userName = "TestUser"; // For testing without auth
+            userName = "TestUser";
         }
 
         Quiz quiz = quizzes.get(quizId);
@@ -154,20 +154,20 @@ public class QuizController {
             return mav;
         }
 
-        // Calculate time taken
+
         Long startTime = (Long) session.getAttribute("quizStartTime");
         int timeTaken = startTime != null ?
                 (int) ((System.currentTimeMillis() - startTime) / 1000) : 0;
 
-        // Get questions for this quiz
-        List<Question> quizQuestions = questions.getQuestionsForQuiz(quizId, false); // Don't randomize for grading
 
-        // Collect user answers and grade the quiz
+        List<Question> quizQuestions = questions.getQuestionsForQuiz(quizId, false); 
+
+
         Map<String, String> userAnswers = new HashMap<>();
         Map<String, List<String>> correctAnswersMap = new HashMap<>();
         int score = 0;
 
-        // Debug: Print all request parameters
+
         System.out.println("=== DEBUG: Request Parameters ===");
         Enumeration<String> paramNames = request.getParameterNames();
         while (paramNames.hasMoreElements()) {
@@ -185,21 +185,21 @@ public class QuizController {
             System.out.println("User answer: " + userAnswer);
             System.out.println("Correct answers JSON: " + question.getCorrectAnswers());
 
-            // Store user answer (even if null/empty)
+
             if (userAnswer != null && !userAnswer.trim().isEmpty()) {
                 userAnswers.put(String.valueOf(question.getQuestionId()), userAnswer.trim());
             } else {
                 userAnswers.put(String.valueOf(question.getQuestionId()), "");
             }
 
-            // Parse correct answers from JSON
+
             Type listType = new TypeToken<List<String>>(){}.getType();
             List<String> correctAnswers = gson.fromJson(question.getCorrectAnswers(), listType);
             correctAnswersMap.put(String.valueOf(question.getQuestionId()), correctAnswers);
 
             System.out.println("Parsed correct answers: " + correctAnswers);
 
-            // Check if answer is correct (case-insensitive)
+            //case sens
             boolean isCorrect = false;
             if (userAnswer != null && !userAnswer.trim().isEmpty()) {
                 for (String correct : correctAnswers) {
@@ -217,7 +217,7 @@ public class QuizController {
             }
         }
 
-        // Convert answers to JSON for storage
+
         String userAnswersJson = gson.toJson(userAnswers);
         String correctAnswersJson = gson.toJson(correctAnswersMap);
 
@@ -225,17 +225,17 @@ public class QuizController {
         System.out.println("User answers JSON: " + userAnswersJson);
         System.out.println("Correct answers JSON: " + correctAnswersJson);
 
-        // Save the quiz attempt (only if not practice mode)
+
         int attemptId = -1;
         if (!practiceMode) {
             attemptId = quizAttempts.add(userName, quizId, score, quizQuestions.size(),
                     timeTaken, userAnswersJson, correctAnswersJson, false);
-
-            // Check for new achievements
             List<Achievement> newAchievements = achievements.checkAndAwardAchievements(userName);
         }
 
-        // Prepare results page
+
+
+
         ModelAndView mav = new ModelAndView("quiz-results");
         mav.addObject("quiz", quiz);
         mav.addObject("score", score);
@@ -244,8 +244,8 @@ public class QuizController {
         mav.addObject("practiceMode", practiceMode);
         mav.addObject("userName", userName);
         mav.addObject("questions", quizQuestions);
-        mav.addObject("userAnswers", userAnswers); // Pass the Map directly
-        mav.addObject("correctAnswersMap", correctAnswersMap); // Pass the Map directly
+        mav.addObject("userAnswers", userAnswers); //pirdapir map
+        mav.addObject("correctAnswersMap", correctAnswersMap); //pirdapir map
 
         double percentage = quizQuestions.size() > 0 ?
                 (double) score / quizQuestions.size() * 100 : 0;

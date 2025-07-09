@@ -2,7 +2,7 @@ package ge.edu.freeuni.model;
 
 import java.sql.Timestamp;
 
-// User's earned achievement
+// achievements the person has
 public class UserAchievement {
     private final int userAchievementId;
     private final String userName;
@@ -19,7 +19,7 @@ public class UserAchievement {
         this.achievement = achievement;
     }
 
-    // Getters
+    //getterebi
     public int getUserAchievementId() { return userAchievementId; }
     public String getUserName() { return userName; }
     public int getAchievementId() { return achievementId; }

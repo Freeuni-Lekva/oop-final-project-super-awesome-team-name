@@ -6,8 +6,8 @@ public class Question {
     private final String questionText;
     private final String questionType;
     private final int questionOrder;
-    private final String correctAnswers; // JSON string
-    private final String choices; // JSON string for multiple choice
+    private final String correctAnswers;
+    private final String choices;
     private final String imageUrl;
 
     public Question(int questionId, int quizId, String questionText, String questionType,
@@ -22,7 +22,7 @@ public class Question {
         this.imageUrl = imageUrl;
     }
 
-    // Getters
+    //getterebi
     public int getQuestionId() { return questionId; }
     public int getQuizId() { return quizId; }
     public String getQuestionText() { return questionText; }
