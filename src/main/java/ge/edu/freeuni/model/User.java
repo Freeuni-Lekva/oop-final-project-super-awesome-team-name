@@ -28,4 +28,5 @@ public class User {
         return PasswordHasher.hashPassword(suggestedPassword).equals(hashedPassword);
     }
 
+
 }
