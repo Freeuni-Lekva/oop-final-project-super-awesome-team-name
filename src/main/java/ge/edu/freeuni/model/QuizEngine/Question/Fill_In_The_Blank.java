@@ -18,6 +18,7 @@ public class Fill_In_The_Blank extends Question {
         return correctAnswer;
     }
 
+
     @Override
     public boolean isCorrect(String userAnswer) {
         boolean answer =  correctAnswer.equalsIgnoreCase(userAnswer.trim());

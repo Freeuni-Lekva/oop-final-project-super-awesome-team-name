@@ -18,11 +18,11 @@ public abstract class Question {
         this.questiontype = questiontype;
     }
 
-    public int getQuizzID(){
+    public int getQuizID(){
         return quizID;
     }
 
-    public void setQuizzID(int QuizID) {
+    public void setQuizID(int QuizID) {
         this.quizID = QuizID;
     }
 
@@ -87,6 +87,7 @@ public abstract class Question {
                 ", creator='" + CreatorUsername + '\'' +
                 '}';
     }
+
 
 
     public abstract boolean isCorrect(String userAnswer);

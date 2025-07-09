@@ -1,6 +1,9 @@
 package ge.edu.freeuni.model.QuizEngine.Question;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class Matching extends Question {
 
@@ -31,5 +34,21 @@ public class Matching extends Question {
     @Override
     public Map<String,String> getCorrectAnswer() {
         return correctPairs;
+    }
+
+
+    public Object getPossibleAnswers() {
+        ArrayList<String> keys = new ArrayList<String>(correctPairs.keySet());
+        ArrayList<String> values = new ArrayList<>(correctPairs.values());
+        HashMap<String,String> possibleAnswers = new HashMap<String,String>();
+
+        while(!keys.isEmpty()){
+            int keyIndex = new Random().nextInt(keys.size());
+            int valueIndex = new Random().nextInt(values.size());
+            possibleAnswers.put(keys.get(keyIndex),values.get(valueIndex));
+            keys.remove(keyIndex);
+            values.remove(valueIndex);
+        }
+        return possibleAnswers;
     }
 }

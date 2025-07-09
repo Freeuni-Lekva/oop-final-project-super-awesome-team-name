@@ -22,6 +22,7 @@ public class Picture_Response extends Question {
         return correctAnswer;
     }
 
+
     @Override
     public boolean isCorrect(String userAnswer) {
         boolean answer =  correctAnswer.equalsIgnoreCase(userAnswer.trim());

@@ -21,7 +21,8 @@ public class Multi_Choice_Multi_Answer extends Question {
         return correctAnswers;
     }
 
-    public List<String> getPossbileAnswers() {
+
+    public List<String> getPossibleAnswers() {
         return possbileAnswers;
     }
 

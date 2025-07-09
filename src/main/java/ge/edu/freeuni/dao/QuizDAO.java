@@ -73,7 +73,7 @@ public class QuizDAO {
                     orderMatters = ma.orderMatters();
                 } else if (question instanceof Multi_Choice_Multi_Answer) {
                     Multi_Choice_Multi_Answer mcm = (Multi_Choice_Multi_Answer) question;
-                    possibleAnswers = String.join(",", mcm.getPossbileAnswers());
+                    possibleAnswers = String.join(",", mcm.getPossibleAnswers());
                     correctAnswer = String.join(",", mcm.getCorrectAnswer());
                 } else if (question instanceof Matching) {
                     Matching match = (Matching) question;
@@ -172,15 +172,21 @@ public class QuizDAO {
                             q = new Multi_Choice_Multi_Answer(prompt, type, multiChoices, multiCorrect);
                             break;
                         case "Matching":
-                            // NOTE: this should be improved by parsing actual key-value pairs from DB
-                            q = new Matching(prompt, type, new HashMap<>());
+                            HashMap<String,String> pairs = new HashMap<>();
+                            String [] paired = correct.split(";");
+                            for (String pair : paired) {
+                                String[] keyValue = pair.split("=");
+                                pairs.put(keyValue[0], keyValue[1]);
+                            }
+
+                            q = new Matching(prompt, type, pairs);
                             break;
                         default:
                             throw new SQLException("Unknown question type: " + type);
                     }
 
                     q.setQuestionID(id);
-                    q.setQuizzID(rs.getInt("quiz_id"));
+                    q.setQuizID(rs.getInt("quiz_id"));
                     questions.add(q);
                 }
             }

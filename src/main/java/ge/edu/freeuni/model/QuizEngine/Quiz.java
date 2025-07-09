@@ -4,6 +4,7 @@ import ge.edu.freeuni.model.QuizEngine.Question.Question;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Quiz {
 
@@ -107,17 +108,16 @@ public class Quiz {
         this.Questions = Questions;
     }
 
-    public List<List<String>> getCorrectAnswer() {
-        List<List<String>> ans = new ArrayList<>();
+    public List<Object> getCorrectAnswer() {
+        List<Object> ans = new ArrayList<>();
         for(int i=0; i < NQuestions; i++) {
-
-
+            ans.add(Questions.get(i).getCorrectAnswer());
         }
         return ans;
     }
 
-    public List<List<String>> getPotentialAnswersList() {
-        List<List<String>> ans = new ArrayList<>();
+    public List<Objects> getPotentialAnswersList() {
+        List<Objects> ans = new ArrayList<>();
         for(int i=0; i < NQuestions; i++) {
 
         }

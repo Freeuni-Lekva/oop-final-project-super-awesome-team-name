@@ -243,7 +243,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(66,7,'Match the Game to Their Developer','Matching','The Legend of Zelda=CD Projekt Red;Fortnite=Obsidian Entertainment;Cyberpunk=Epic Games;Fallout: New Vegas=Nintendo','The Legend of Zelda=Nintendo;Fortnite=Epic Games;Cyberpunk=CD Projekt Red;Fallout: New Vegas=Obsidian Entertainment',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(67,7,'Match each artist to one of their famous songs','Matching','Taylor Swift=God''s Plan;The Weeknd=Shake It Off;Ed Sheeran=Blinding Lights;Billie Eilish=Bad Guy;Drake=Shape of You','Taylor Swift=Shake It Off;The Weeknd=Blinding Lights;Ed Sheeran=Shape of You;Billie Eilish=Bad Guy;Drake=God''s Plan',NULL,NULL);
+VALUES(67,7,'Match each artist to one of their famous songs','Matching','Taylor Swift=God''s Plan;The Weekend=Shake It Off;Ed Sheeran=Blinding Lights;Billie Eilish=Bad Guy;Drake=Shape of You','Taylor Swift=Shake It Off;The Weeknd=Blinding Lights;Ed Sheeran=Shape of You;Billie Eilish=Bad Guy;Drake=God''s Plan',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(68,7,'Match the Movie to Its Director','Matching','Inception=James Cameron;Pulp Fiction=Martin Scorsese;Titanic=Quentin Tarantino;Parasite=Bong Joon-ho;The Irishman=Christopher Nolan','Inception=Christopher Nolan;Pulp Fiction=Quentin Tarantino;Titanic=James Cameron;Parasite=Bong Joon-ho;The Irishman=Martin Scorsese',NULL,NULL);
