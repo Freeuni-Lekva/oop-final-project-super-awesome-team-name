@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Taking Quiz: ${quiz.title}</title>
+    <title>Quiz Results: ${quiz.title}</title>
     <style>
         * {
             box-sizing: border-box;
@@ -16,34 +16,26 @@
 
         body {
             background-color: #0D0D0D;
+            background: radial-gradient(ellipse 150% 120% at 80% 85%, #8A2BE2 0%, #7B68EE 8%, #6A5ACD 15%, #5D4E99 25%, #4B0082 35%, #3D2966 45%, #2E1B4D 55%, #1A0D33 65%, #000000 75%);
+            background-attachment: fixed;
             min-height: 100vh;
             margin: 0;
             padding: 0;
         }
 
         .panel {
-            background-color: #FFFFFF;
+            background-color: transparent;
             width: 100%;
             min-height: 100vh;
             overflow: hidden;
         }
 
         .quiz-header {
-            background: linear-gradient(135deg, #38077F 0%, #5B2778 100%);
+            background: transparent;
             color: white;
             text-align: center;
             padding: 40px;
             position: relative;
-        }
-
-        .quiz-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.1) 0%, transparent 70%);
         }
 
         .quiz-header-content {
@@ -193,11 +185,11 @@
         }
 
         .btn-primary {
-            background-color: #38077F;
+            background-color: #8A2BE2;
         }
 
         .btn-primary:hover {
-            background-color: #5B2778;
+            background-color: #7B68EE;
         }
 
         .btn-secondary {
@@ -222,8 +214,8 @@
         }
 
         .questions-review h2 {
-            color: #0D0D0D;
-            border-bottom: 2px solid #38077F;
+            color: white;
+            border-bottom: 2px solid #8A2BE2;
             padding-bottom: 15px;
             margin-bottom: 30px;
             font-size: large;
@@ -407,16 +399,18 @@
             <h2>Question Review</h2>
 
             <c:forEach items="${questions}" var="question" varStatus="status">
-                <c:set var="questionId" value="${question.questionId}" />
-                <c:set var="userAnswer" value="${userAnswers[questionId]}" />
-                <c:set var="correctAnswers" value="${correctAnswersMap[questionId]}" />
+                <!-- Use the userAnswers map directly with string keys -->
+                <c:set var="userAnswer" value="${userAnswers[question.questionId.toString()]}" />
+                <c:set var="correctAnswers" value="${correctAnswersMap[question.questionId.toString()]}" />
 
                 <c:set var="isCorrect" value="false" />
-                <c:forEach items="${correctAnswers}" var="correctAnswer">
-                    <c:if test="${fn:toLowerCase(userAnswer) == fn:toLowerCase(correctAnswer)}">
-                        <c:set var="isCorrect" value="true" />
-                    </c:if>
-                </c:forEach>
+                <c:if test="${not empty userAnswer}">
+                    <c:forEach items="${correctAnswers}" var="correctAnswer">
+                        <c:if test="${fn:toLowerCase(fn:trim(userAnswer)) == fn:toLowerCase(fn:trim(correctAnswer))}">
+                            <c:set var="isCorrect" value="true" />
+                        </c:if>
+                    </c:forEach>
+                </c:if>
 
                 <div class="question-review ${isCorrect ? 'correct' : 'incorrect'}">
                     <div class="question-review-header">

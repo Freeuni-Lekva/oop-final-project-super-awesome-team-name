@@ -15,34 +15,26 @@
 
         body {
             background-color: #0D0D0D;
+            background: radial-gradient(ellipse 150% 120% at 80% 85%, #FF3690 0%, #E91E63 8%, #C2185B 15%, #AD1457 25%, #880E4F 35%, #6D0B37 45%, #4A0725 55%, #2A0414 65%, #000000 75%);
+            background-attachment: fixed;
             min-height: 100vh;
             margin: 0;
             padding: 0;
         }
 
         .panel {
-            background-color: #FFFFFF;
+            background-color: transparent;
             width: 100%;
             min-height: 100vh;
             overflow: hidden;
         }
 
         .quiz-header {
-            background: linear-gradient(135deg, #38077F 0%, #5B2778 100%);
+            background: transparent;
             color: white;
             text-align: center;
             padding: 40px;
             position: relative;
-        }
-
-        .quiz-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.1) 0%, transparent 70%);
         }
 
         .quiz-header-content {
@@ -79,13 +71,13 @@
         .main-quiz-title h2 {
             font-size: xx-large;
             margin: 0;
-            color: #0D0D0D;
+            color: white;
             font-weight: bold;
         }
 
         .main-quiz-title p {
             font-size: small;
-            color: #666;
+            color: rgba(255, 255, 255, 0.8);
             margin: 10px 0 0 0;
             font-weight: normal;
         }
@@ -100,19 +92,20 @@
 
         .nav a {
             padding: 10px 25px;
-            background: transparent;
-            color: #38077F;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
             text-decoration: none;
             border-radius: 5px;
-            border: 1px solid #38077F;
+            border: 1px solid rgba(255, 255, 255, 0.3);
             font-weight: bold;
             font-size: small;
             transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
         }
 
         .nav a:hover {
-            background-color: #38077F;
-            color: white;
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
         }
 
         .quiz-grid {
@@ -123,17 +116,18 @@
         }
 
         .quiz-card {
-            background: #f9f9f9;
+            background: rgba(255, 255, 255, 0.95);
             padding: 30px;
             border-radius: 15px;
-            border: 1px solid #ccc;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
         }
 
         .quiz-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border-color: #38077F;
+            border-color: rgba(255, 255, 255, 0.4);
         }
 
         .quiz-title {
@@ -179,36 +173,36 @@
         }
 
         .btn-primary {
-            background-color: #38077F;
+            background: linear-gradient(135deg, #FF3690, #E91E63);
         }
 
         .btn-primary:hover {
-            background-color: #5B2778;
+            background: linear-gradient(135deg, #E91E63, #C2185B);
         }
 
         .btn-secondary {
-            background-color: #666;
+            background: linear-gradient(135deg, #666, #888);
             color: white;
         }
 
         .btn-secondary:hover {
-            background-color: #888;
+            background: linear-gradient(135deg, #888, #999);
         }
 
         .btn-success {
-            background-color: #006A50;
+            background: linear-gradient(135deg, #006A50, #00A881);
         }
 
         .btn-success:hover {
-            background-color: #00A881;
+            background: linear-gradient(135deg, #00A881, #00C49A);
         }
 
         .section-title {
-            color: #0D0D0D;
+            color: white;
             font-size: large;
             margin: 40px 0 25px 0;
             font-weight: bold;
-            border-bottom: 2px solid #38077F;
+            border-bottom: 2px solid #FF3690;
             padding-bottom: 10px;
         }
 
@@ -216,9 +210,10 @@
             text-align: center;
             padding: 50px;
             color: #666;
-            background: #f9f9f9;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
-            border: 1px solid #ccc;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
         }
 
         .no-quizzes h3 {
@@ -233,7 +228,7 @@
         }
 
         .creator-link {
-            color: #38077F;
+            color: #FF3690;
             text-decoration: none;
             font-weight: bold;
         }
@@ -357,7 +352,7 @@
             </c:otherwise>
         </c:choose>
 
-        <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #ddd; color: #666;">
+        <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7);">
             <p style="font-size: x-small;"><em>Quiz Website - Person 3 Implementation</em></p>
         </div>
     </div>

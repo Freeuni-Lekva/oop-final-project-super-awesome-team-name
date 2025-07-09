@@ -167,37 +167,63 @@ public class QuizController {
         Map<String, List<String>> correctAnswersMap = new HashMap<>();
         int score = 0;
 
+        // Debug: Print all request parameters
+        System.out.println("=== DEBUG: Request Parameters ===");
+        Enumeration<String> paramNames = request.getParameterNames();
+        while (paramNames.hasMoreElements()) {
+            String paramName = paramNames.nextElement();
+            String paramValue = request.getParameter(paramName);
+            System.out.println("Parameter: " + paramName + " = " + paramValue);
+        }
+
         for (Question question : quizQuestions) {
             String paramName = "question_" + question.getQuestionId();
             String userAnswer = request.getParameter(paramName);
 
-            if (userAnswer != null) {
-                userAnswer = userAnswer.trim();
-                userAnswers.put(String.valueOf(question.getQuestionId()), userAnswer);
+            System.out.println("=== DEBUG: Question " + question.getQuestionId() + " ===");
+            System.out.println("Parameter name: " + paramName);
+            System.out.println("User answer: " + userAnswer);
+            System.out.println("Correct answers JSON: " + question.getCorrectAnswers());
 
-                // Parse correct answers from JSON
-                Type listType = new TypeToken<List<String>>(){}.getType();
-                List<String> correctAnswers = gson.fromJson(question.getCorrectAnswers(), listType);
-                correctAnswersMap.put(String.valueOf(question.getQuestionId()), correctAnswers);
+            // Store user answer (even if null/empty)
+            if (userAnswer != null && !userAnswer.trim().isEmpty()) {
+                userAnswers.put(String.valueOf(question.getQuestionId()), userAnswer.trim());
+            } else {
+                userAnswers.put(String.valueOf(question.getQuestionId()), "");
+            }
 
-                // Check if answer is correct (case-insensitive)
-                boolean isCorrect = false;
+            // Parse correct answers from JSON
+            Type listType = new TypeToken<List<String>>(){}.getType();
+            List<String> correctAnswers = gson.fromJson(question.getCorrectAnswers(), listType);
+            correctAnswersMap.put(String.valueOf(question.getQuestionId()), correctAnswers);
+
+            System.out.println("Parsed correct answers: " + correctAnswers);
+
+            // Check if answer is correct (case-insensitive)
+            boolean isCorrect = false;
+            if (userAnswer != null && !userAnswer.trim().isEmpty()) {
                 for (String correct : correctAnswers) {
-                    if (correct.equalsIgnoreCase(userAnswer)) {
+                    if (correct.equalsIgnoreCase(userAnswer.trim())) {
                         isCorrect = true;
                         break;
                     }
                 }
+            }
 
-                if (isCorrect) {
-                    score++;
-                }
+            System.out.println("Is correct: " + isCorrect);
+
+            if (isCorrect) {
+                score++;
             }
         }
 
         // Convert answers to JSON for storage
         String userAnswersJson = gson.toJson(userAnswers);
         String correctAnswersJson = gson.toJson(correctAnswersMap);
+
+        System.out.println("=== DEBUG: Final JSON ===");
+        System.out.println("User answers JSON: " + userAnswersJson);
+        System.out.println("Correct answers JSON: " + correctAnswersJson);
 
         // Save the quiz attempt (only if not practice mode)
         int attemptId = -1;
@@ -218,8 +244,8 @@ public class QuizController {
         mav.addObject("practiceMode", practiceMode);
         mav.addObject("userName", userName);
         mav.addObject("questions", quizQuestions);
-        mav.addObject("userAnswers", userAnswers);
-        mav.addObject("correctAnswersMap", correctAnswersMap);
+        mav.addObject("userAnswers", userAnswers); // Pass the Map directly
+        mav.addObject("correctAnswersMap", correctAnswersMap); // Pass the Map directly
 
         double percentage = quizQuestions.size() > 0 ?
                 (double) score / quizQuestions.size() * 100 : 0;
