@@ -26,6 +26,7 @@ public class Fill_In_The_Blank extends Question {
         //if the userAnswer and Correct answer don't match, try checking if it's a short version of the answer
         if(!answer){
             int spaceIndex = correctAnswer.indexOf(' ');
+            if(spaceIndex == -1)return false;
            String before = correctAnswer.substring(0, spaceIndex);
            String after = correctAnswer.substring(spaceIndex+1);
 

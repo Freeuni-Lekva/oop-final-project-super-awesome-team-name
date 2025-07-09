@@ -71,7 +71,7 @@ public class QuestionTest {
     public void testMCWithMultipleAnswers() {
         List<String> correct = Arrays.asList("1", "3");
         List<String> incorrect = Arrays.asList("2", "4");
-        Question q = new Multi_Choice_Multi_Answer("Pick odd numbers", "Multiple Choice with Multiple Answers",correct, incorrect);
+        Question q = new Multi_Choice_Multi_Answer("Pick odd numbers", "Multiple Choice with Multiple Answers", incorrect,correct);
 
         assertTrue(q.isCorrect("1,3"));
         assertEquals(correct, q.getCorrectAnswer());
