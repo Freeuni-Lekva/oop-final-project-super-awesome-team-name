@@ -13,12 +13,14 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
     <context:component-scan base-package="ge.edu.freeuni"/>
 
     <bean id="db" destroy-method="close" class="org.apache.commons.dbcp2.BasicDataSource">
+
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost/quizwebsite"/>
         <property name="username" value="root"/>
         <property name="password" value=""/>
         <property name="initialSize" value="3"/>
     </bean>
+
 
     <bean id="quizDB" destroy-method="close" class="org.apache.commons.dbcp2.BasicDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
@@ -32,6 +34,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
         <constructor-arg ref="quizDB"/>
     </bean>
 
+
     <mvc:annotation-driven />
     <mvc:resources mapping="/css/**" location="/css/" />
     <mvc:resources mapping="/images/**" location="/images/"/>
@@ -40,16 +43,13 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
 
 
+    <mvc:interceptors>
 
-
-
-    <!--<mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/"></mvc:mapping>
-            <mvc:mapping path="/"></mvc:mapping>
+            <mvc:mapping path="/**"/>
             <bean class="ge.edu.freeuni.interceptor.AuthInterceptor"/>
         </mvc:interceptor>
-    </mvc:interceptors>-->
+    </mvc:interceptors>
 
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

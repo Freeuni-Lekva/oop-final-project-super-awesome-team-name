@@ -8,12 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.sql.*;
+import java.time.Instant;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,7 +24,9 @@ public class UserDaoTest {
     private UserDao users;
 
     @BeforeEach
-    public void setUp() throws Exception {
+
+    public void testSetUp() throws Exception {
+
 
         String createTableSQL = "CREATE TABLE IF NOT EXISTS users " +
                 "(name VARCHAR(100) PRIMARY KEY, " +
@@ -60,9 +60,11 @@ public class UserDaoTest {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+
+    public void testTearDown() throws Exception {
         try (Connection conn = users.getBasicDataSource().getConnection();
-             PreparedStatement ps = conn.prepareStatement("DELETE FROM users")) {
+             PreparedStatement ps = conn.prepareStatement("DROP TABLE IF EXISTS users")) {
+
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to delete all users", e);
@@ -70,7 +72,9 @@ public class UserDaoTest {
     }
 
     @Test
-    public void exists() {
+
+    public void testExists() {
+
         assertTrue(users.exists("Davit"));
         assertFalse(users.exists("Giorgi"));
         assertTrue(users.exists("Admin"));
@@ -78,7 +82,9 @@ public class UserDaoTest {
     }
 
     @Test
-    public void add() {
+
+    public void testAdd() {
+
         assertFalse(users.add("Davit", "56g8"));
         assertTrue(users.add("Giorgi", "56g8"));
         assertFalse(users.add("Giorgi", "56ee"));
@@ -100,7 +106,9 @@ public class UserDaoTest {
     }
 
     @Test
-    public void correctPassword() {
+
+    public void testCorrectPassword() {
+
         assertTrue(users.correctPassword("Davit", "1234"));
         assertTrue(users.correctPassword("Admin", "fm"));
         assertFalse(users.correctPassword("Davit", "1235"));
@@ -108,14 +116,18 @@ public class UserDaoTest {
     }
 
     @Test
-    public void isAdmin() {
+
+    public void testIsAdmin() {
+
         assertTrue(users.isAdmin("Admin"));
         assertFalse(users.isAdmin("Giorgi"));
         assertFalse(users.isAdmin("Davit"));
     }
 
     @Test
-    public void removeUser() {
+
+    public void testRemoveUser() {
+
         assertTrue(users.removeUser("Davit"));
         assertFalse(users.removeUser("Giorgi"));
         assertFalse(users.removeUser("Davit"));
@@ -125,7 +137,9 @@ public class UserDaoTest {
     }
 
     @Test
-    public void setAdmin() {
+
+    public void testSetAdmin() {
+
         assertTrue(users.setAdmin("Davit"));
         assertFalse(users.setAdmin("Giorgi"));
         assertTrue(users.setAdmin("Davit"));
@@ -134,16 +148,47 @@ public class UserDaoTest {
     }
 
     @Test
-    public void numberOfUsers() {
-        assertTrue(users.numberOfUsers() == 2);
+
+    public void testNumberOfUsers() {
+        assertEquals(2, users.numberOfUsers());
         users.add("Giorgi", "56g8");
-        assertTrue(users.numberOfUsers() == 3);
+        assertEquals(3, users.numberOfUsers());
         users.removeUser("Admin");
-        assertTrue(users.numberOfUsers() == 2);
+        assertEquals(2, users.numberOfUsers());
         users.add("Davit", "56g8");
-        assertTrue(users.numberOfUsers() == 2);
+        assertEquals(2, users.numberOfUsers());
     }
 
-    //RuntimeException test
+    @Test
+    public void testExceptions() {
+
+        try (Connection con = users.getBasicDataSource().getConnection();
+             PreparedStatement ps = con.prepareStatement("DROP TABLE IF EXISTS users")) {
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertThrows(RuntimeException.class, () ->
+                users.exists("random")
+        );
+
+        assertThrows(RuntimeException.class, () ->
+                users.add("nonExistantUser","pass")
+        );
+
+        assertThrows(RuntimeException.class, () ->
+                users.removeUser("RandomName")
+        );
+
+        assertThrows(RuntimeException.class, () ->
+                users.setAdmin("")
+        );
+
+        assertThrows(RuntimeException.class, () ->
+                users.numberOfUsers()
+        );
+    }
+
 
 }
