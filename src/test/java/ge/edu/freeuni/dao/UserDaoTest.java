@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
+
 import java.sql.*;
 import java.time.Instant;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,7 +24,9 @@ public class UserDaoTest {
     private UserDao users;
 
     @BeforeEach
+
     public void testSetUp() throws Exception {
+
 
         String createTableSQL = "CREATE TABLE IF NOT EXISTS users " +
                 "(name VARCHAR(100) PRIMARY KEY, " +
@@ -56,9 +60,11 @@ public class UserDaoTest {
     }
 
     @AfterEach
+
     public void testTearDown() throws Exception {
         try (Connection conn = users.getBasicDataSource().getConnection();
              PreparedStatement ps = conn.prepareStatement("DROP TABLE IF EXISTS users")) {
+
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to delete all users", e);
@@ -66,7 +72,9 @@ public class UserDaoTest {
     }
 
     @Test
+
     public void testExists() {
+
         assertTrue(users.exists("Davit"));
         assertFalse(users.exists("Giorgi"));
         assertTrue(users.exists("Admin"));
@@ -74,7 +82,9 @@ public class UserDaoTest {
     }
 
     @Test
+
     public void testAdd() {
+
         assertFalse(users.add("Davit", "56g8"));
         assertTrue(users.add("Giorgi", "56g8"));
         assertFalse(users.add("Giorgi", "56ee"));
@@ -96,7 +106,9 @@ public class UserDaoTest {
     }
 
     @Test
+
     public void testCorrectPassword() {
+
         assertTrue(users.correctPassword("Davit", "1234"));
         assertTrue(users.correctPassword("Admin", "fm"));
         assertFalse(users.correctPassword("Davit", "1235"));
@@ -104,14 +116,18 @@ public class UserDaoTest {
     }
 
     @Test
+
     public void testIsAdmin() {
+
         assertTrue(users.isAdmin("Admin"));
         assertFalse(users.isAdmin("Giorgi"));
         assertFalse(users.isAdmin("Davit"));
     }
 
     @Test
+
     public void testRemoveUser() {
+
         assertTrue(users.removeUser("Davit"));
         assertFalse(users.removeUser("Giorgi"));
         assertFalse(users.removeUser("Davit"));
@@ -121,7 +137,9 @@ public class UserDaoTest {
     }
 
     @Test
+
     public void testSetAdmin() {
+
         assertTrue(users.setAdmin("Davit"));
         assertFalse(users.setAdmin("Giorgi"));
         assertTrue(users.setAdmin("Davit"));
@@ -130,6 +148,7 @@ public class UserDaoTest {
     }
 
     @Test
+
     public void testNumberOfUsers() {
         assertEquals(2, users.numberOfUsers());
         users.add("Giorgi", "56g8");
@@ -170,5 +189,6 @@ public class UserDaoTest {
                 users.numberOfUsers()
         );
     }
+
 
 }

@@ -33,4 +33,6 @@ public class Announcement {
     public Timestamp getDate() {
         return date;
     }
+
 }
+

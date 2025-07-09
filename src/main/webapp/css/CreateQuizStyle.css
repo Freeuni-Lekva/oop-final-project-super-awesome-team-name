@@ -1,0 +1,105 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Century Gothic', 'Segoe UI', 'Arial', 'Helvetica', sans-serif;
+    color: #0D0D0D;
+}
+
+body{
+    background: linear-gradient(135deg, #000000 0%, #1a0000 20%, #cc1100 40%, #660800 60%, #1a0000 80%, #000000 100%);
+    background-color: #000000;
+    padding: 20px;
+    margin:0;
+
+}
+
+.panel {
+    display: flex;
+    background-color: #FFFFFF;
+    border-radius: 35px;
+    height: 499px;
+    Width: 520px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.left-panel {
+    background-image: url("/images/CreateImage.jpg");
+    background-repeat: no-repeat;
+    background-position: bottom right;
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top-left-radius: 35px;
+    border-bottom-left-radius: 35px;
+}
+
+
+
+.left-panel h1 {
+    font-size: 48px;
+    text-align: center;
+    top:40%;
+    color: #FFFFFF;
+}
+
+.right-panel {
+    width: 60%;
+    padding: 40px;
+    box-sizing: border-box;
+
+    /* New styles to center content */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Make form fields and labels larger for better visibility */
+.right-panel input[type="text"],
+.right-panel input[type="number"],
+.right-panel textarea {
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid #aaa;
+    box-sizing: border-box;
+}
+
+.right-panel select{
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid #aaa;
+}
+
+
+.right-panel label {
+    margin-bottom: 5px;
+    width: 100%;
+    font-size: x-small;
+    font-weight: bold;
+}
+
+
+
+.right-panel input[type="submit"] {
+    font-size: x-small;
+    padding: 12px 40px;               /* Wider button */
+    border: none;
+    border-radius: 8px;
+    background-color: #ff3300;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;                      /* Full width */
+    max-width: 300px;                 /* Optional: limit width on large screens */
+}
+
+.right-panel input[type="submit"]:hover {
+    background-color: #cc2900; /* Darker red on hover */
+}
+
+
+
+

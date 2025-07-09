@@ -1,0 +1,103 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Century Gothic', 'Segoe UI', 'Arial', 'Helvetica', sans-serif;
+    color: #0D0D0D;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: linear-gradient(135deg, #000000 0%, #00264d 30%, #0059b3 70%, #000000 100%);
+    background-color: #000000;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+/* Main container */
+.quiz-panel {
+    background-color: #ffffff;
+    border-radius: 35px;
+    width: 90%;
+    max-width: 560px;
+    padding: 30px 40px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    overflow-y: visible;
+    max-height: none;
+}
+
+/* Title styling */
+.quiz-panel h2 {
+    color: #003366;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* Fieldset for each question */
+fieldset {
+    border: 2px solid #0066cc;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+    background-color: #f0f8ff;
+}
+
+legend {
+    font-weight: bold;
+    color: #004080;
+}
+
+/* Labels and inputs styling */
+label {
+    font-size: small;
+    font-weight: bold;
+    margin-top: 5px;
+    color: #003366;
+}
+
+select,
+input[type="text"],
+input[type="number"],
+textarea {
+    width: 100%;
+    padding: 8px;
+    font-size: small;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+    background-color: #ffffff;
+}
+
+textarea{
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid #aaa;
+}
+
+/* Error messages */
+.error-message {
+    color: red;
+    font-size: x-small;
+    margin-top: 4px;
+}
+
+/* Submit button styling */
+input[type="submit"] {
+    font-size: small;
+    padding: 12px 40px;
+    border: none;
+    border-radius: 8px;
+    background-color: #0066cc;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    max-width: 300px;
+    display: block;
+    margin: 20px auto 0 auto;
+}
+
+input[type="submit"]:hover {
+    background-color: #004d99;
+}
