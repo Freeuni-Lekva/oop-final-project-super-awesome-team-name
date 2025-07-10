@@ -9,7 +9,7 @@
     String onePage = request.getParameter("onePage");
     String immediateCorrection = request.getParameter("immediateCorrection");
     String practiceMode = request.getParameter("practiceMode");
-    String creatorUsername = (String) session.getAttribute("username");
+    String creatorUsername = (String) session.getAttribute("name");
 
     String[] questionTypes = {
             "Question-Response",
