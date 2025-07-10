@@ -42,7 +42,7 @@ public class UserController {
             } else {
                 session.setAttribute("name", name);
                 result.put("status", "success");
-                result.put("redirectUrl", "/admin"); //homepageURl
+                result.put("redirectUrl", "/home"); //homepageURl
                 if (users.isAdmin(name)) {
                     session.setAttribute("isAdmin", true);
                 }
@@ -54,7 +54,7 @@ public class UserController {
             } else {
                 session.setAttribute("name", name);
                 result.put("status", "success");
-                result.put("redirectUrl", "/admin"); //homepageURl
+                result.put("redirectUrl", "/home"); //homepageURl
             }
         }
         return result;
