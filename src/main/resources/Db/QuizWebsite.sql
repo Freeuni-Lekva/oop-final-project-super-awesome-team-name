@@ -2,6 +2,11 @@ CREATE DATABASE IF NOT EXISTS QuizWebsite;
 
 USE QuizWebsite;
 
+
+
+DROP TABLE IF EXISTS announcements;
+DROP TABLE IF EXISTS questions;
+DROP TABLE IF EXISTS quizzes;
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
@@ -10,7 +15,7 @@ CREATE TABLE users (
     isadmin boolean NOT NULL
 );
 
-DROP TABLE IF EXISTS announcements;
+
 
 CREATE TABLE announcements (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -20,9 +25,7 @@ CREATE TABLE announcements (
     date TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP(3)
 );
 
-DROP TABLE IF EXISTS questions;
 
-DROP TABLE IF EXISTS quizzes;
 
 CREATE TABLE quizzes (
                          id INT AUTO_INCREMENT PRIMARY KEY,
