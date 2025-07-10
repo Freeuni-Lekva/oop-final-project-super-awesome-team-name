@@ -14,7 +14,8 @@ public class QuizDAO {
     @Autowired
     private BasicDataSource db;
 
-    public int insertQuiz(Quiz quiz) throws SQLException {
+    //Inserts Quizzes into Quiz Table
+    public void insertQuiz(Quiz quiz,List<Question> questions) throws SQLException {
         String sql = "INSERT INTO quizzes (name, description,num_questions,random_order, one_page, immediate_correction, practice_mode,creator_username) VALUES (?, ?, ?, ?, ?, ?,?,?)";
         try (Connection conn = db.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -30,13 +31,21 @@ public class QuizDAO {
             stmt.executeUpdate();
 
             try (ResultSet rs = stmt.getGeneratedKeys()) {
-                if (rs.next()) return rs.getInt(1);
+                if (rs.next()){
+                    int quizId = rs.getInt(1);
+                    insertQuestions(quizId, questions);
+
+
+                }else{
+                    throw new SQLException("Failed to insert quiz.");
+                }
             }
         }
-        throw new SQLException("Failed to insert quiz.");
+
     }
 
-    public void insertQuestions(int quizId, List<Question> questions) throws SQLException {
+    //Inserts Questions into the Questions Table
+    private void insertQuestions(int quizId, List<Question> questions) throws SQLException {
         String sql = "INSERT INTO questions (quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = db.getConnection();
@@ -91,6 +100,7 @@ public class QuizDAO {
         }
     }
 
+    //Deletes a Quiz(Admin Functionality)
     public void deleteQuiz(int quizId) throws SQLException {
         String sql = "DELETE FROM quizzes WHERE id = ?";
         try (Connection conn = db.getConnection();
@@ -100,6 +110,7 @@ public class QuizDAO {
         }
     }
 
+    //Gets quiz using quiId
     public Quiz getQuiz(int quizId) throws SQLException {
         String sql = "SELECT * FROM quizzes WHERE id = ?";
         try (Connection conn = db.getConnection();
@@ -110,13 +121,14 @@ public class QuizDAO {
                 if (rs.next()) {
                     Quiz quiz = new Quiz();
                     quiz.setQuizID(rs.getInt("id"));
-                    quiz.setQuizName(rs.getString("title"));
+                    quiz.setQuizName(rs.getString("name"));
                     quiz.setDescription(rs.getString("description"));
                     quiz.setRandomOrder(rs.getBoolean("random_order"));
                     quiz.setOnePage(rs.getBoolean("one_page"));
                     quiz.setImmediateCorrection(rs.getBoolean("immediate_correction"));
                     quiz.setPracticeMode(rs.getBoolean("practice_mode"));
                     quiz.setQuestions(getQuestions(quizId));
+                    quiz.setCreatorUsername(rs.getString("creator_username"));
                     return quiz;
                 }
             }
@@ -124,6 +136,7 @@ public class QuizDAO {
         return null;
     }
 
+    //Gets all the questions of the specified quiz
     public List<Question> getQuestions(int quizId) throws SQLException {
         List<Question> questions = new ArrayList<>();
         String sql = "SELECT * FROM questions WHERE quiz_id = ?";
@@ -189,6 +202,7 @@ public class QuizDAO {
         return questions;
     }
 
+    //Returns all the Existing Quizzes
     public List<Quiz> getAllQuizzes() throws SQLException {
         List<Quiz> quizzes = new ArrayList<>();
         String sql = "SELECT * FROM quizzes";
@@ -201,16 +215,67 @@ public class QuizDAO {
                 Quiz quiz = new Quiz();
                 int quizId = rs.getInt("id");
                 quiz.setQuizID(quizId);
-                quiz.setQuizName(rs.getString("title"));
+                quiz.setQuizName(rs.getString("name"));
                 quiz.setDescription(rs.getString("description"));
                 quiz.setRandomOrder(rs.getBoolean("random_order"));
                 quiz.setOnePage(rs.getBoolean("one_page"));
                 quiz.setImmediateCorrection(rs.getBoolean("immediate_correction"));
                 quiz.setPracticeMode(rs.getBoolean("practice_mode"));
                 quiz.setQuestions(getQuestions(quizId));
+                quiz.setCreatorUsername(rs.getString("creator_username"));
                 quizzes.add(quiz);
             }
         }
         return quizzes;
     }
+
+    // return the number of existing Quizzes
+    public int numberOfQuizzes() throws SQLException {
+        int count = 0;
+        String query = "SELECT COUNT(*) FROM quizzes";
+
+        try (Connection conn = db.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        }
+
+        return count;
+    }
+
+    //Gets Only Those Quizzes that have a name alike the user Input
+    public List<Quiz> getQuizzesWithName(String name) throws SQLException {
+        List<Quiz> quizzes = new ArrayList<>();
+        String query = "SELECT id, name, description, creator, created_at FROM quizzes WHERE name LIKE ?";
+
+        try (Connection conn = db.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, "%" + name + "%"); // Wildcard for partial match
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Quiz quiz = new Quiz();
+                    int quizId = rs.getInt("id");
+                    quiz.setQuizID(quizId);
+                    quiz.setQuizName(rs.getString("name"));
+                    quiz.setDescription(rs.getString("description"));
+                    quiz.setRandomOrder(rs.getBoolean("random_order"));
+                    quiz.setOnePage(rs.getBoolean("one_page"));
+                    quiz.setImmediateCorrection(rs.getBoolean("immediate_correction"));
+                    quiz.setPracticeMode(rs.getBoolean("practice_mode"));
+                    quiz.setQuestions(getQuestions(quizId));
+                    quiz.setCreatorUsername(rs.getString("creator_username"));
+
+                    quizzes.add(quiz);
+                }
+            }
+        }
+
+        return quizzes;
+    }
+
 }
