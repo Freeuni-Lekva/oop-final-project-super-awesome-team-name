@@ -60,7 +60,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(16,2,'Identify this Marvel character from the image below','Picture-Response',NULL,'Spider-Man','https://th.bing.com/th/id/OIP.8YZK3A06HkAm8DatkDSQwQHaHa?w=212&h=204&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3',NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(17,2,'Name all origianl members of the Guardians of the Galaxy','Multi-Answer',NULL,'Star-Lord,Gamora,Drax,Rocket,Groot',NULL,0);
+VALUES(17,2,'Name all original members of the Guardians of the Galaxy','Multi-Answer',NULL,'Star-Lord,Gamora,Drax,Rocket,Groot',NULL,0);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(18,2,'Which of the following characters were in Avengers: Endgame?','Multiple Choice with Multiple Answers','Deadpool,Wolverine,Ant-Man,Captain America','Ant-man,Captain America',NULL,NULL);
@@ -208,7 +208,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(56,6,'Would you _ ...','Fill in the Blank',NULL,'Kindly',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(57,6,'Who was the DJ that was','Question-Response',NULL,'Marshmello',NULL,NULL);
+VALUES(57,6,'Who was the DJ that first performed in fortnite','Question-Response',NULL,'Marshmello',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(58,6,'Which of these are MOBA games?','Multiple Choice with Multiple Answers','CS:GO,Dota 2,League of Legends,Overwatch','Dota 2,League of Legends',NULL,NULL);

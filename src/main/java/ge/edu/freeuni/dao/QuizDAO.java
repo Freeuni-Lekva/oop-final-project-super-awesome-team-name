@@ -31,10 +31,17 @@ public class QuizDAO {
             stmt.executeUpdate();
 
             try (ResultSet rs = stmt.getGeneratedKeys()) {
-                if (rs.next()) insertQuestions(rs.getInt(1), questions);
+                if (rs.next()){
+                    int quizId = rs.getInt(1);
+                    insertQuestions(quizId, questions);
+
+
+                }else{
+                    throw new SQLException("Failed to insert quiz.");
+                }
             }
         }
-        throw new SQLException("Failed to insert quiz.");
+
     }
 
     //Inserts Questions into the Questions Table

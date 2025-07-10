@@ -20,6 +20,8 @@ CREATE TABLE announcements (
     date TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP(3)
 );
 
+DROP TABLE IF EXISTS questions;
+
 DROP TABLE IF EXISTS quizzes;
 
 CREATE TABLE quizzes (
@@ -34,7 +36,7 @@ CREATE TABLE quizzes (
                          creator_username VARCHAR(255)
 );
 
-DROP TABLE IF EXISTS questions;
+
 
 CREATE TABLE questions (
                            id INT AUTO_INCREMENT PRIMARY KEY,
