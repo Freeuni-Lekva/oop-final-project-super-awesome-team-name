@@ -115,14 +115,7 @@ public class Quiz {
         }
         return ans;
     }
-
-    public List<Objects> getPotentialAnswersList() {
-        List<Objects> ans = new ArrayList<>();
-        for(int i=0; i < NQuestions; i++) {
-
-        }
-        return ans;
-    }
+    
 
     public String getCreatorUsername() {
         return CreatorUsername;

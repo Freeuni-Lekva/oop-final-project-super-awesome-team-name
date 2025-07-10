@@ -383,7 +383,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(106,10,'The Renaissance began in _ during the 14th century','Fill in the Blank',NULL,'Italy',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(107,10,'Which civilization built Machu Picchu?','multiple Choice','Maya,Inca,Aztec,Olmec','Inca',NULL,NULL);
+VALUES(107,10,'Which civilization built Machu Picchu?','Multiple Choice','Maya,Inca,Aztec,Olmec','Inca',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(108,10,'Which of the following were Axis Powers during World War II?','Multiple Choice with Multiple Answers','France,Germany,Japan,China','Germany,Japan',NULL,NULL);
