@@ -113,8 +113,8 @@ public class CreateQuizFormController {
 
             Quiz quiz = new Quiz(QuizName, description, NQuestions, randomOrder, isOnePage,
                     immediateCorrection, allowPracticeMode, questions, creator);
-            int quizId = quizzes.insertQuiz(quiz);
-            quizzes.insertQuestions(quizId, questions);
+
+            quizzes.insertQuiz(quiz,questions);
 
             request.setAttribute("status", "success");
             request.setAttribute("message", "Quiz created successfully!");
