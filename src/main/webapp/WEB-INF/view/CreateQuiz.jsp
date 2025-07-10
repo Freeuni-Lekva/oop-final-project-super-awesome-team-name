@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
 
@@ -20,7 +21,7 @@
                 <textarea id="QuizDescription" name="QuizDescription" rows="3" cols="25" required></textarea><br/><br/>
 
                 <label for="NQuestions">Number of Questions:</label>
-                <input type="number" id="NQuestions" name="NQuestions" min="1" max="20" required/><br/><br/>
+                <input type="number" id="NQuestions" name="NQuestions" min="1" max="${maxQuestions}" required/><br/><br/>
 
                 <label for="randomOrder">Randomize Order:</label>
                 <select name="randomOrder" id="randomOrder">
