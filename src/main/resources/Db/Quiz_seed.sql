@@ -414,7 +414,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(114,11,'Which country has the most natural lakes?','Multiple Choice','Canada,Russia,Brazil,United States','Canada',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(115,11,'Which of the following are Scandinavian countries?','Multiple Choice with Multiple Answer','Sweden,Finland,Denmark,Germany','Sweden,Finland,Denmark',NULL,NULL);
+VALUES(115,11,'Which of the following are Scandinavian countries?','Multiple Choice with Multiple Answers','Sweden,Finland,Denmark,Germany','Sweden,Finland,Denmark',NULL,NULL);
 
 INSERT INTO  questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(116,11,'Match the capital to the country','Matching','Tokyo=Australia;Cairo=Canada;Canberra=Egypt;Ottawa=Japan','Tokyo=Japan;Cairo=Egypt;Canberra=Australia;Ottawa=Canada',NULL,NULL);
