@@ -24,8 +24,9 @@ public class User {
         this.isAdmin = true;
     }
 
-    public boolean checkHashedPassword(String suggestedHashedPassword) {
-        return PasswordHasher.hashPassword(suggestedHashedPassword).equals(hashedPassword);
+    public boolean checkPassword(String suggestedPassword) {
+        return PasswordHasher.hashPassword(suggestedPassword).equals(hashedPassword);
     }
+
 
 }

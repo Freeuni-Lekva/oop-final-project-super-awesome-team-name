@@ -20,7 +20,7 @@ public class QuizDAO {
 
     public QuizDAO() { }
 
-    public int insertQuiz(Quiz quiz) throws SQLException {
+    public void insertQuiz(Quiz quiz) throws SQLException {
         String sql = "INSERT INTO quizzes (name, description,num_questions,random_order, one_page, immediate_correction, practice_mode,creator_username) VALUES (?, ?, ?, ?, ?, ?,?,?)";
         try (Connection conn = quizDB.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -36,13 +36,20 @@ public class QuizDAO {
             stmt.executeUpdate();
 
             try (ResultSet rs = stmt.getGeneratedKeys()) {
-                if (rs.next()) return rs.getInt(1);
+                if (rs.next()){
+                    int quizId = rs.getInt(1);
+                    insertQuestions(quizId, quiz.getQuestions());
+
+
+                }else{
+                    throw new SQLException("Failed to insert new quiz");
+                }
             }
         }
-        throw new SQLException("Failed to insert quiz.");
+
     }
 
-    public void insertQuestions(int quizId, List<Question> questions) throws SQLException {
+    private void insertQuestions(int quizId, List<Question> questions) throws SQLException {
         String sql = "INSERT INTO questions (quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = quizDB.getConnection();

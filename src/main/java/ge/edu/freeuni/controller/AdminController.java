@@ -2,17 +2,15 @@ package ge.edu.freeuni.controller;
 
 import ge.edu.freeuni.dao.AnnouncementDao;
 import ge.edu.freeuni.dao.UserDao;
-import ge.edu.freeuni.model.Announcement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
@@ -30,46 +28,66 @@ public class AdminController {
     }
 
     @PostMapping
-    public ModelAndView adminAction(HttpSession session,
-                                    @RequestParam String action,
-                                    @RequestParam(required = false) String name,
-                                    @RequestParam(required = false) String title,
-                                    @RequestParam(required = false) String text) {
-        ModelAndView mav = new ModelAndView("admin");
+    @ResponseBody
+    public Map<String, String> adminAction(HttpSession session,
+                                           @RequestParam("adminFunc") String action,
+                                           @RequestParam(value = "text", required = false) String text,
+                                           @RequestParam(value = "bigText", required = false) String bigText) {
+        Map<String, String> result = new HashMap<String, String>();
 
         switch (action) {
             case "announce": {
                 try {
-                    int key = announcements.add(title, (String) session.getAttribute("name"),
-                            text, new Timestamp(System.currentTimeMillis()));
-                    mav.addObject("announcement", announcements.get(key));
+                    announcements.add(text, (String) session.getAttribute("name"),
+                            bigText, Timestamp.from(Instant.now()));
+                    result.put("status", "success");
+                    result.put("message", "Announcement added: \"" + text.split(" ", 2)[0] + "...\"");
                 } catch (RuntimeException e) {
-                    mav.addObject("error", "Announcement failed.");
+                    result.put("status", "error");
+                    result.put("message", "Announcement failed: \"" + text.split(" ", 2)[0] + "...\"");
                 }
+                break;
             }
-            break;
 
-            case "remove": {
-                if (users.removeUser(name)) {
-                    mav.addObject("removed", name);
+            case "removeUser": {
+                if (users.removeUser(text)) {
+                    result.put("status", "success");
+                    result.put("message", "User removed: " + text);
                 } else {
-                    mav.addObject("error", "User not found.");
+                    result.put("status", "error");
+                    result.put("message", "User does not exist: " + text);
                 }
+                break;
             }
-            break;
 
-            case "promote": {
-                if (users.setAdmin(name)) {
-                    mav.addObject("promoted", name);
+            case "removeQuiz": {
+                break;
+            }
+
+            case "clearHistory": {
+                break;
+            }
+
+            case "promoteUser": {
+                if (users.setAdmin(text)) {
+                    result.put("status", "success");
+                    result.put("message", "User promoted: " + text);
                 } else {
-                    mav.addObject("error", "User not found.");
+                    result.put("status", "error");
+                    result.put("message", "User not found.");
                 }
-
+                break;
             }
-            break;
+
+            case "seeStatistics": {
+                result.put("status", "success");
+                result.put("message", "Number of users: " + users.numberOfUsers());
+                break;
+            }
 
         }
 
-        return mav;
+        return result;
     }
+
 }

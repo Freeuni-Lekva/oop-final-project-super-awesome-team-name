@@ -5,7 +5,7 @@
 <html>
 <head>
     <link rel="stylesheet" href = ${pageContext.request.contextPath}/css/QuizDetailsStyle.css>
-    <title>Quiz Details - ${quiz.title}</title>
+    <title>Quiz Details - ${quiz.quizName}</title>
 
 </head>
 <body>
@@ -19,13 +19,12 @@
 
     <div class="content-area">
         <div class="quiz-title-section">
-            <h2>${quiz.title}</h2>
+            <h2>${quiz.quizName}</h2>
             <p>${quiz.description}</p>
         </div>
 
         <div class="quiz-creator">
-            Created by <a href="#" class="creator-link">${quiz.creatorName}</a>
-            | <fmt:formatDate value="${quiz.createdDate}" pattern="MMM dd, yyyy"/>
+            Created by <a href="#" class="creator-link">${quiz.creatorUsername}</a>
         </div>
 
         <div class="nav">
@@ -44,17 +43,17 @@
         <div class="quiz-info">
             <p><strong>Total Questions:</strong> ${questionCount}</p>
             <p><strong>Question Order:</strong> ${quiz.randomOrder ? 'Random' : 'Fixed'}</p>
-            <p><strong>Quiz Format:</strong> ${quiz.singlePage ? 'Single Page' : 'Multiple Pages'}</p>
-            <p><strong>Practice Mode:</strong> ${quiz.allowPracticeMode ? 'Available' : 'Not Available'}</p>
+            <p><strong>Quiz Format:</strong> ${quiz.onePage ? 'Single Page' : 'Multiple Pages'}</p>
+            <p><strong>Practice Mode:</strong> ${quiz.practiceMode ? 'Available' : 'Not Available'}</p>
             <c:if test="${quiz.immediateCorrection}">
                 <p><strong>Immediate Correction:</strong> Enabled</p>
             </c:if>
         </div>
 
         <div class="quiz-actions">
-            <a href="/quiz/${quiz.quizId}/take" class="btn btn-primary">Start Quiz</a>
-            <c:if test="${quiz.allowPracticeMode}">
-                <a href="/quiz/${quiz.quizId}/take?practiceMode=true" class="btn btn-success">Practice Mode</a>
+            <a href="/quiz/${quiz.quizID}/take" class="btn btn-primary">Start Quiz</a>
+            <c:if test="${quiz.practiceMode}">
+                <a href="/quiz/${quiz.quizID}/take?practiceMode=true" class="btn btn-success">Practice Mode</a>
             </c:if>
             <a href="/quiz" class="btn btn-secondary">Back to Quiz List</a>
         </div>
@@ -67,7 +66,7 @@
                     <c:when test="${not empty userAttempts}">
                         <c:forEach items="${userAttempts}" var="attempt" varStatus="status">
                             <c:if test="${status.index < 5}"> <!-- Show only last 5 attempts -->
-                                <c:set var="percentage" value="${attempt.percentage}" />
+                                <c:set var="percentage" value="${(attempt.score / attempt.totalQuestions) * 100}" />
                                 <c:set var="cssClass" value="attempt-item" />
                                 <c:if test="${percentage >= 80}">
                                     <c:set var="cssClass" value="attempt-item good" />
@@ -107,10 +106,11 @@
                 <c:choose>
                     <c:when test="${not empty topScores}">
                         <c:forEach items="${topScores}" var="topScore" varStatus="status">
+                            <c:set var="topPercentage" value="${(topScore.score / topScore.totalQuestions) * 100}" />
                             <div class="attempt-item good">
                                 <h4>#${status.index + 1} - ${topScore.userName}</h4>
                                 <p><strong>Score:</strong> ${topScore.score}/${topScore.totalQuestions}
-                                    (<fmt:formatNumber value="${topScore.percentage}" maxFractionDigits="1"/>%)</p>
+                                    (<fmt:formatNumber value="${topPercentage}" maxFractionDigits="1"/>%)</p>
                                 <p><strong>Time:</strong> ${topScore.timeTaken}s</p>
                                 <p><strong>Date:</strong> <fmt:formatDate value="${topScore.attemptDate}" pattern="MMM dd, yyyy"/></p>
                             </div>

@@ -36,7 +36,8 @@
 
                 console.log("Checking question " + questionId + " of type " + questionType);
 
-                if (questionType === 'multiple_choice') {
+                if (questionType === 'Multiple Choice') {
+                    // Check radio buttons
                     let radios = question.querySelectorAll('input[type="radio"]');
                     radios.forEach(function(radio) {
                         if (radio.checked) {
@@ -44,7 +45,26 @@
                             console.log("Found checked radio with value: " + radio.value);
                         }
                     });
+                } else if (questionType === 'Multiple Choice with Multiple Answers') {
+                    // Check checkboxes
+                    let checkboxes = question.querySelectorAll('input[type="checkbox"]');
+                    checkboxes.forEach(function(checkbox) {
+                        if (checkbox.checked) {
+                            answered = true;
+                            console.log("Found checked checkbox with value: " + checkbox.value);
+                        }
+                    });
+                } else if (questionType === 'Matching') {
+                    // Check if the matching order has been set (drag and drop)
+                    let hiddenInput = question.querySelector('input[name="question_' + index + '"]');
+                    if (hiddenInput && hiddenInput.value && hiddenInput.value.trim() !== '') {
+                        answered = true;
+                        console.log("Matching question answered with order: " + hiddenInput.value);
+                    } else {
+                        console.log("Matching question not answered - no order set");
+                    }
                 } else {
+                    // Check text inputs for other question types
                     let textInput = question.querySelector('input[type="text"], textarea');
                     if (textInput && textInput.value.trim() !== '') {
                         answered = true;
@@ -135,35 +155,40 @@
                     </div>
 
                     <div class="question-text">
-                            ${question.questionText}
+                            ${question.question}
                     </div>
 
-                    <c:if test="${not empty question.imageUrl}">
-                        <img src="${question.imageUrl}" alt="Question Image" class="question-image">
+                    <!-- Only show images for Picture-Response questions -->
+                    <c:if test="${question.questionType == 'Picture-Response'}">
+                        <c:if test="${not empty question.imageURL}">
+                            <img src="${question.imageURL}" alt="Question Image" class="question-image">
+                        </c:if>
                     </c:if>
 
+                    <!-- Multiple Choice (Radio Buttons) -->
                     <c:if test="${question.questionType == 'Multiple Choice'}">
                         <div class="answer-options">
-                            <c:set var="choices" value="${question.choices}" />
-                            <c:set var="cleanChoices" value="${fn:replace(choices, '[', '')}" />
-                            <c:set var="cleanChoices" value="${fn:replace(cleanChoices, ']', '')}" />
-                            <c:set var="cleanChoices" value="${fn:replace(cleanChoices, '\"', '')}" />
-
-                            <c:forTokens items="${cleanChoices}" delims="," var="choice">
-                                <c:set var="trimmedChoice" value="${fn:trim(choice)}" />
-                                <c:if test="${not empty trimmedChoice}">
-                                    <div class="radio-option">
-                                        <input type="radio"
-                                               name="question_${status.index}"
-                                               value="${trimmedChoice}"
-                                               id="choice_${status.index}_${status.index}">
-                                        <label for="choice_${status.index}_${status.index}">${trimmedChoice}</label>
-                                    </div>
-                                </c:if>
-                            </c:forTokens>
+                            <c:if test="${not empty question.possibleAnswers}">
+                                <c:set var="cleanAnswers" value="${fn:replace(question.possibleAnswers, '[', '')}" />
+                                <c:set var="cleanAnswers" value="${fn:replace(cleanAnswers, ']', '')}" />
+                                <c:set var="cleanAnswers" value="${fn:replace(cleanAnswers, '\"', '')}" />
+                                <c:forTokens items="${cleanAnswers}" delims="," var="choice">
+                                    <c:set var="trimmedChoice" value="${fn:trim(choice)}" />
+                                    <c:if test="${not empty trimmedChoice}">
+                                        <div class="radio-option">
+                                            <input type="radio"
+                                                   name="question_${status.index}"
+                                                   value="${trimmedChoice}"
+                                                   id="choice_${status.index}_${trimmedChoice}">
+                                            <label for="choice_${status.index}_${trimmedChoice}">${trimmedChoice}</label>
+                                        </div>
+                                    </c:if>
+                                </c:forTokens>
+                            </c:if>
                         </div>
                     </c:if>
 
+                    <!-- Question-Response (Text Input) -->
                     <c:if test="${question.questionType == 'Question-Response'}">
                         <div class="answer-options">
                             <input type="text"
@@ -173,6 +198,7 @@
                         </div>
                     </c:if>
 
+                    <!-- Fill in the Blank (Text Input) -->
                     <c:if test="${question.questionType == 'Fill in the Blank'}">
                         <div class="answer-options">
                             <input type="text"
@@ -182,12 +208,212 @@
                         </div>
                     </c:if>
 
+                    <!-- Picture-Response (Text Input) -->
                     <c:if test="${question.questionType == 'Picture-Response'}">
                         <div class="answer-options">
                             <input type="text"
                                    name="question_${status.index}"
                                    class="text-answer"
                                    placeholder="Describe what you see in the image...">
+                        </div>
+                    </c:if>
+
+                    <!-- Multi-Answer (Text Input with comma separation) -->
+                    <c:if test="${question.questionType == 'Multi-Answer'}">
+                        <div class="answer-options">
+                            <input type="text"
+                                   name="question_${status.index}"
+                                   class="text-answer"
+                                   placeholder="Enter multiple answers separated by commas...">
+                        </div>
+                    </c:if>
+
+                    <!-- Multiple Choice with Multiple Answers (Checkboxes) -->
+                    <c:if test="${question.questionType == 'Multiple Choice with Multiple Answers'}">
+                        <div class="answer-options">
+                            <c:if test="${not empty question.possibleAnswers}">
+                                <c:set var="cleanAnswers" value="${fn:replace(question.possibleAnswers, '[', '')}" />
+                                <c:set var="cleanAnswers" value="${fn:replace(cleanAnswers, ']', '')}" />
+                                <c:set var="cleanAnswers" value="${fn:replace(cleanAnswers, '\"', '')}" />
+                                <c:forTokens items="${cleanAnswers}" delims="," var="choice">
+                                    <c:set var="trimmedChoice" value="${fn:trim(choice)}" />
+                                    <c:if test="${not empty trimmedChoice}">
+                                        <div class="checkbox-option">
+                                            <input type="checkbox"
+                                                   name="question_${status.index}"
+                                                   value="${trimmedChoice}"
+                                                   id="choice_${status.index}_${trimmedChoice}">
+                                            <label for="choice_${status.index}_${trimmedChoice}">${trimmedChoice}</label>
+                                        </div>
+                                    </c:if>
+                                </c:forTokens>
+                            </c:if>
+                        </div>
+                    </c:if>
+
+                    <!-- Matching (Drag and Drop Interface) -->
+                    <c:if test="${question.questionType == 'Matching'}">
+                        <div class="answer-options">
+                            <c:set var="correctAnswer" value="${question.correctAnswer}" />
+                            <c:if test="${not empty correctAnswer}">
+                                <!-- Debug: Show what we're working with -->
+                                <div style="font-size: 10px; color: #999; margin-bottom: 10px;">
+                                    [DEBUG: Correct Answer = "${correctAnswer}"]
+                                </div>
+
+                                <!-- Parse the matching pairs properly -->
+                                <c:set var="leftItems" value="" />
+                                <c:set var="rightItems" value="" />
+
+                                <!-- Split by semicolon and extract items -->
+                                <c:forTokens items="${correctAnswer}" delims=";" var="pair" varStatus="pairStatus">
+                                    <c:if test="${fn:contains(pair, '=')}">
+                                        <c:set var="leftItem" value="${fn:trim(fn:substringBefore(pair, '='))}" />
+                                        <c:set var="rightItem" value="${fn:trim(fn:substringAfter(pair, '='))}" />
+
+                                        <c:choose>
+                                            <c:when test="${pairStatus.first}">
+                                                <c:set var="leftItems" value="${leftItem}" />
+                                                <c:set var="rightItems" value="${rightItem}" />
+                                            </c:when>
+                                            <c:otherwise>
+                                                <c:set var="leftItems" value="${leftItems}|${leftItem}" />
+                                                <c:set var="rightItems" value="${rightItems}|${rightItem}" />
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:if>
+                                </c:forTokens>
+
+                                <!-- Debug: Show parsed items -->
+                                <div style="font-size: 10px; color: #999; margin-bottom: 15px;">
+                                    [DEBUG: Left Items = "${leftItems}"]<br>
+                                    [DEBUG: Right Items = "${rightItems}"]
+                                </div>
+
+                                <!-- Create the matching interface -->
+                                <div class="matching-container" style="display: flex; gap: 40px; margin-top: 20px;">
+                                    <!-- Fixed Left Column -->
+                                    <div class="matching-left" style="flex: 1;">
+                                        <h4 style="margin-bottom: 15px; text-align: center;">Items to Match</h4>
+                                        <c:forTokens items="${leftItems}" delims="|" var="leftItem" varStatus="leftStatus">
+                                            <div class="fixed-item" data-index="${leftStatus.index}"
+                                                 style="display: flex; align-items: center; margin-bottom: 10px; padding: 15px;
+                                                        border: 2px solid #4CAF50; border-radius: 8px; background-color: #f1f8e9;
+                                                        font-weight: bold; min-height: 60px;">
+                                                <div class="item-number" style="min-width: 30px; color: #2E7D32; font-size: 18px;">
+                                                        ${leftStatus.index + 1}.
+                                                </div>
+                                                <div class="item-text" style="margin-left: 10px; color: #2E7D32;">
+                                                        ${leftItem}
+                                                </div>
+                                            </div>
+                                        </c:forTokens>
+                                    </div>
+
+                                    <!-- Draggable Right Column -->
+                                    <div class="matching-right" style="flex: 1;">
+                                        <h4 style="margin-bottom: 15px; text-align: center;">Drag to Match</h4>
+                                        <div id="dragContainer_${status.index}" class="drag-container" style="min-height: 200px;">
+                                            <c:forTokens items="${rightItems}" delims="|" var="rightItem" varStatus="rightStatus">
+                                                <div class="draggable-item" draggable="true" data-value="${rightItem}" data-index="${rightStatus.index}"
+                                                     style="display: flex; align-items: center; margin-bottom: 10px; padding: 15px;
+                                                            border: 2px solid #2196F3; border-radius: 8px; background-color: #e3f2fd;
+                                                            cursor: move; font-weight: bold; min-height: 60px; transition: all 0.3s ease;">
+                                                    <div class="drag-handle" style="margin-right: 10px; color: #1976D2; font-size: 16px;">
+                                                        ⋮⋮
+                                                    </div>
+                                                    <div class="item-text" style="color: #1976D2;">
+                                                            ${rightItem}
+                                                    </div>
+                                                </div>
+                                            </c:forTokens>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Hidden input to store the final order -->
+                                <input type="hidden" name="question_${status.index}" id="question_${status.index}_order" />
+
+                                <div style="margin-top: 15px; padding: 10px; background-color: #fff3cd; border-radius: 5px; border: 1px solid #ffeaa7;">
+                                    <strong>Instructions:</strong> Drag the items on the right to match them with the items on the left.
+                                    The correct answer is when each item on the left matches with the correct item on the right in the same row.
+                                </div>
+
+                                <script>
+                                    (function() {
+                                        const container = document.getElementById('dragContainer_${status.index}');
+                                        const hiddenInput = document.getElementById('question_${status.index}_order');
+                                        let draggedElement = null;
+
+                                        // Get the left items array for pairing
+                                        const leftItemsArray = '${leftItems}'.split('|');
+
+                                        // Update hidden input with current order
+                                        function updateOrder() {
+                                            const items = container.querySelectorAll('.draggable-item');
+                                            const order = [];
+                                            items.forEach((item, index) => {
+                                                const value = item.getAttribute('data-value');
+                                                const leftItem = leftItemsArray[index] || leftItemsArray[0];
+                                                order.push(leftItem + '=' + value);
+                                            });
+                                            hiddenInput.value = order.join(',');
+                                            console.log('Updated matching order:', hiddenInput.value);
+                                        }
+
+                                        // Add drag and drop event listeners
+                                        container.addEventListener('dragstart', function(e) {
+                                            if (e.target.classList.contains('draggable-item')) {
+                                                draggedElement = e.target;
+                                                e.target.style.opacity = '0.5';
+                                            }
+                                        });
+
+                                        container.addEventListener('dragend', function(e) {
+                                            if (e.target.classList.contains('draggable-item')) {
+                                                e.target.style.opacity = '1';
+                                                updateOrder();
+                                            }
+                                        });
+
+                                        container.addEventListener('dragover', function(e) {
+                                            e.preventDefault();
+                                        });
+
+                                        container.addEventListener('drop', function(e) {
+                                            e.preventDefault();
+                                            if (draggedElement && e.target.classList.contains('draggable-item')) {
+                                                const rect = e.target.getBoundingClientRect();
+
+                                                if (e.clientY > rect.top + rect.height / 2) {
+                                                    container.insertBefore(draggedElement, e.target.nextSibling);
+                                                } else {
+                                                    container.insertBefore(draggedElement, e.target);
+                                                }
+                                                updateOrder();
+                                            }
+                                        });
+
+                                        // Initialize the order
+                                        updateOrder();
+
+                                        // Add hover effects
+                                        container.addEventListener('mouseenter', function(e) {
+                                            if (e.target.classList.contains('draggable-item')) {
+                                                e.target.style.transform = 'translateY(-2px)';
+                                                e.target.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+                                            }
+                                        }, true);
+
+                                        container.addEventListener('mouseleave', function(e) {
+                                            if (e.target.classList.contains('draggable-item')) {
+                                                e.target.style.transform = 'translateY(0)';
+                                                e.target.style.boxShadow = 'none';
+                                            }
+                                        }, true);
+                                    })();
+                                </script>
+                            </c:if>
                         </div>
                     </c:if>
                 </div>
