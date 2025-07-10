@@ -18,19 +18,15 @@ import java.util.*;
 @RequestMapping("/CreateQuizForm")
 public class CreateQuizFormController {
 
-    private final QuizDAO quizzes;
-
     @Autowired
-    public CreateQuizFormController(QuizDAO quizzes) {
-        this.quizzes = quizzes;
-    }
+    private  QuizDAO quizzes;
 
     @PostMapping
     public String createQuizForm(@RequestParam Map<String, String> requestParams,
                                  HttpSession session,
                                  HttpServletRequest request) {
         try {
-            String creator = (String) session.getAttribute("creatorUsername");
+            String creator = (String) session.getAttribute("name");
 
             String QuizName = requestParams.get("QuizName");
             String description = requestParams.get("QuizDescription");
@@ -58,12 +54,14 @@ public class CreateQuizFormController {
                         break;
                     }
                     case "Multiple Choice": {
+                        String correct = requestParams.get("correctAnswer_" + i);
                         List<String> options = Arrays.asList(
                                 requestParams.get("answerOption1_" + i),
                                 requestParams.get("answerOption2_" + i),
-                                requestParams.get("answerOption3_" + i)
+                                requestParams.get("answerOption3_" + i),
+                                correct
                         );
-                        String correct = requestParams.get("correctAnswer_" + i);
+
                         questions.add(new Multiple_Choice(text, type, options, correct));
                         break;
                     }
@@ -86,10 +84,13 @@ public class CreateQuizFormController {
                     case "Multiple Choice with Multiple Answers": {
                         int correctCount = Integer.parseInt(requestParams.get("numCorrectMCMA_" + i));
                         List<String> correctAnswers = new ArrayList<>();
-                        for (int j = 1; j <= correctCount; j++) {
-                            correctAnswers.add(requestParams.get("correctAnswerMCMA_" + i + "_" + j));
-                        }
                         List<String> options = new ArrayList<>();
+                        for (int j = 1; j <= correctCount; j++) {
+                            String correct = requestParams.get("correctAnswerMCMA_" + i + "_" + j);
+                            correctAnswers.add(correct);
+                            options.add(correct);
+                        }
+
                         for (int j = 1; j <= 4 - correctCount; j++) {
                             String opt = requestParams.get("optionMCMA_" + i + "_" + j);
                             if (opt != null && !opt.trim().isEmpty()) {
@@ -117,8 +118,9 @@ public class CreateQuizFormController {
 
             Quiz quiz = new Quiz(QuizName, description, NQuestions, randomOrder, isOnePage,
                     immediateCorrection, allowPracticeMode, questions, creator);
-            int quizId = quizzes.insertQuiz(quiz);
-            quizzes.insertQuestions(quizId, questions);
+
+            quizzes.insertQuiz(quiz,questions);
+
 
             request.setAttribute("status", "success");
             request.setAttribute("message", "Quiz created successfully!");

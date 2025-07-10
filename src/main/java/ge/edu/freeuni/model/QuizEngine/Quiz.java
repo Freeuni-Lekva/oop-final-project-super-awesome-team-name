@@ -22,10 +22,10 @@ public class Quiz {
 
     public Quiz() {}
 
-    public Quiz(String QuizzName, String Description, int NQuestions, boolean RandomOrder,
+    public Quiz(String QuizName, String Description, int NQuestions, boolean RandomOrder,
                 boolean OnePage, boolean ImmediateCorrection, boolean PracticeMode, List<Question> Questions,
                  String CreatorUsername) {
-        this.QuizName = QuizzName;
+        this.QuizName = QuizName;
         this.Description = Description;
         this.NQuestions = NQuestions;
         this.RandomOrder = RandomOrder;
@@ -116,8 +116,10 @@ public class Quiz {
         return ans;
     }
 
-    public List<Objects> getPotentialAnswersList() {
-        List<Objects> ans = new ArrayList<>();
+
+    // to be Deleted
+    public List<Object> getPotentialAnswersList() {
+        List<Object> ans = new ArrayList<>();
         for(int i=0; i < NQuestions; i++) {
 
         }

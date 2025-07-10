@@ -2,26 +2,28 @@ package ge.edu.freeuni.dao;
 
 import ge.edu.freeuni.model.QuizEngine.Question.*;
 import ge.edu.freeuni.model.QuizEngine.Quiz;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
+
+
 import java.sql.*;
 import java.util.*;
 
-@Repository
+@Component("quizzes")
 public class QuizDAO {
 
-    private final DataSource dataSource;
+    @Autowired
+    private BasicDataSource quizDB;
 
     @Autowired
-    public QuizDAO(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public QuizDAO() {
     }
 
-    public int insertQuiz(Quiz quiz) throws SQLException {
+    public void insertQuiz(Quiz quiz,List<Question> questions) throws SQLException {
         String sql = "INSERT INTO quizzes (name, description,num_questions,random_order, one_page, immediate_correction, practice_mode,creator_username) VALUES (?, ?, ?, ?, ?, ?,?,?)";
-        try (Connection conn = dataSource.getConnection();
+        try (Connection conn = quizDB.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, quiz.getQuizName());
@@ -35,16 +37,17 @@ public class QuizDAO {
             stmt.executeUpdate();
 
             try (ResultSet rs = stmt.getGeneratedKeys()) {
-                if (rs.next()) return rs.getInt(1);
+
+                if (rs.next()) insertQuestions(rs.getInt(1),questions);
             }
         }
         throw new SQLException("Failed to insert quiz.");
     }
 
-    public void insertQuestions(int quizId, List<Question> questions) throws SQLException {
+    private void insertQuestions(int quizId, List<Question> questions) throws SQLException {
         String sql = "INSERT INTO questions (quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = dataSource.getConnection();
+        try (Connection conn = quizDB.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             for (Question question : questions) {
@@ -98,7 +101,7 @@ public class QuizDAO {
 
     public void deleteQuiz(int quizId) throws SQLException {
         String sql = "DELETE FROM quizzes WHERE id = ?";
-        try (Connection conn = dataSource.getConnection();
+        try (Connection conn = quizDB.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, quizId);
             stmt.executeUpdate();
@@ -107,7 +110,7 @@ public class QuizDAO {
 
     public Quiz getQuiz(int quizId) throws SQLException {
         String sql = "SELECT * FROM quizzes WHERE id = ?";
-        try (Connection conn = dataSource.getConnection();
+        try (Connection conn = quizDB.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, quizId);
@@ -117,11 +120,13 @@ public class QuizDAO {
                     quiz.setQuizID(rs.getInt("id"));
                     quiz.setQuizName(rs.getString("title"));
                     quiz.setDescription(rs.getString("description"));
+                    quiz.setNQuestions(rs.getInt("n_questions"));
                     quiz.setRandomOrder(rs.getBoolean("random_order"));
                     quiz.setOnePage(rs.getBoolean("one_page"));
                     quiz.setImmediateCorrection(rs.getBoolean("immediate_correction"));
                     quiz.setPracticeMode(rs.getBoolean("practice_mode"));
                     quiz.setQuestions(getQuestions(quizId));
+                    quiz.setCreatorUsername(rs.getString("creator_username"));
                     return quiz;
                 }
             }
@@ -133,7 +138,7 @@ public class QuizDAO {
         List<Question> questions = new ArrayList<>();
         String sql = "SELECT * FROM questions WHERE quiz_id = ?";
 
-        try (Connection conn = dataSource.getConnection();
+        try (Connection conn = quizDB.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, quizId);
@@ -198,7 +203,7 @@ public class QuizDAO {
         List<Quiz> quizzes = new ArrayList<>();
         String sql = "SELECT * FROM quizzes";
 
-        try (Connection conn = dataSource.getConnection();
+        try (Connection conn = quizDB.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -208,11 +213,13 @@ public class QuizDAO {
                 quiz.setQuizID(quizId);
                 quiz.setQuizName(rs.getString("title"));
                 quiz.setDescription(rs.getString("description"));
+                quiz.setNQuestions(rs.getInt("n_questions"));
                 quiz.setRandomOrder(rs.getBoolean("random_order"));
                 quiz.setOnePage(rs.getBoolean("one_page"));
                 quiz.setImmediateCorrection(rs.getBoolean("immediate_correction"));
                 quiz.setPracticeMode(rs.getBoolean("practice_mode"));
                 quiz.setQuestions(getQuestions(quizId));
+                quiz.setCreatorUsername(rs.getString("creator_username"));
                 quizzes.add(quiz);
             }
         }

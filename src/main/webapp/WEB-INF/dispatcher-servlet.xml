@@ -30,9 +30,6 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
         <property name="initialSize" value="3"/>
     </bean>
 
-    <bean id="quizDAO" class="ge.edu.freeuni.dao.QuizDAO">
-        <constructor-arg ref="quizDB"/>
-    </bean>
 
 
     <mvc:annotation-driven />

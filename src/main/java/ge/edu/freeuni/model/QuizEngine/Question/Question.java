@@ -11,7 +11,7 @@ public abstract class Question {
     private String questiontype;
     private String CreatorUsername;
 
-    public Question(){}
+
 
     public Question(String question, String questiontype) {
         this.question = question;
