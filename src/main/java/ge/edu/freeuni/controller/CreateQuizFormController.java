@@ -18,12 +18,8 @@ import java.util.*;
 @RequestMapping("/CreateQuizForm")
 public class CreateQuizFormController {
 
-    private final QuizDAO quizzes;
-
     @Autowired
-    public CreateQuizFormController(QuizDAO quizzes) {
-        this.quizzes = quizzes;
-    }
+    private QuizDAO quizzes;
 
     @PostMapping
     public String createQuizForm(@RequestParam Map<String, String> requestParams,
