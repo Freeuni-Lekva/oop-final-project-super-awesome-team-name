@@ -1,10 +1,10 @@
 package ge.edu.freeuni.controller;
 
-import ge.edu.freeuni.dao.QuizDao;
+import ge.edu.freeuni.dao.QuizDAO;
 import ge.edu.freeuni.dao.QuestionDao;
 import ge.edu.freeuni.dao.QuizAttemptDao;
 import ge.edu.freeuni.dao.AchievementDao;
-import ge.edu.freeuni.model.Quiz;
+import ge.edu.freeuni.model.QuizEngine.Quiz;
 import ge.edu.freeuni.model.Question;
 import ge.edu.freeuni.model.QuizAttempt;
 import ge.edu.freeuni.model.Achievement;
@@ -25,7 +25,7 @@ import java.util.*;
 public class QuizController {
 
     @Autowired
-    private QuizDao quizzes;
+    private QuizDAO quizzes;
 
     @Autowired
     private QuestionDao questions;
@@ -68,7 +68,7 @@ public class QuizController {
 
         ModelAndView mav = new ModelAndView("quiz-details");
 
-        Quiz quiz = quizzes.get(quizId);
+        Quiz quiz = quizzes.getQuiz(quizId);
         if (quiz == null) {
             mav.setViewName("redirect:/quiz");
             mav.addObject("error", "Quiz not found");
@@ -108,7 +108,7 @@ public class QuizController {
             userName = "TestUser";
         }
 
-        Quiz quiz = quizzes.get(quizId);
+        Quiz quiz = quizzes.getQuiz(quizId);
         if (quiz == null) {
             ModelAndView mav = new ModelAndView("redirect:/quiz");
             mav.addObject("error", "Quiz not found");
@@ -116,7 +116,7 @@ public class QuizController {
         }
 
 
-        if (practiceMode && !quiz.isAllowPracticeMode()) {
+        if (practiceMode && !quiz.isPracticeMode()) {
             ModelAndView mav = new ModelAndView("redirect:/quiz/" + quizId);
             mav.addObject("error", "Practice mode not available for this quiz");
             return mav;
@@ -147,7 +147,7 @@ public class QuizController {
             userName = "TestUser";
         }
 
-        Quiz quiz = quizzes.get(quizId);
+        Quiz quiz = quizzes.getQuiz(quizId);
         if (quiz == null) {
             ModelAndView mav = new ModelAndView("redirect:/quiz");
             mav.addObject("error", "Quiz not found");
@@ -160,7 +160,7 @@ public class QuizController {
                 (int) ((System.currentTimeMillis() - startTime) / 1000) : 0;
 
 
-        List<Question> quizQuestions = questions.getQuestionsForQuiz(quizId, false); 
+        List<Question> quizQuestions = questions.getQuestionsForQuiz(quizId, false);
 
 
         Map<String, String> userAnswers = new HashMap<>();

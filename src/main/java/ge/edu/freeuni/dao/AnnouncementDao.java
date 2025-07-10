@@ -43,7 +43,7 @@ public class AnnouncementDao {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to get the announcement N" + id, e);
+            throw new RuntimeException("Failed to getQuiz the announcement N" + id, e);
         }
     }
 

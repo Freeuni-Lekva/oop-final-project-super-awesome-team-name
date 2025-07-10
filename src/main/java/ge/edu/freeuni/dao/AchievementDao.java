@@ -54,7 +54,7 @@ public class AchievementDao {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to get user achievements for: " + userName, e);
+            throw new RuntimeException("Failed to getQuiz user achievements for: " + userName, e);
         }
         return userAchievements;
     }
@@ -366,7 +366,7 @@ public class AchievementDao {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to get achievement: " + achievementId, e);
+            throw new RuntimeException("Failed to getQuiz achievement: " + achievementId, e);
         }
         return null;
     }

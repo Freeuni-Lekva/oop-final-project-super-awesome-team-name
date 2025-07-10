@@ -39,17 +39,17 @@
                 <div class="quiz-grid">
                     <c:forEach items="${popularQuizzes}" var="quiz" varStatus="status">
                         <div class="quiz-card">
-                            <div class="quiz-title">${quiz.title}</div>
+                            <div class="quiz-title">${quiz.quizName}</div>
                             <div class="quiz-description">${quiz.description}</div>
                             <div class="quiz-meta">
-                                Created by <a href="#" class="creator-link">${quiz.creatorName}</a>
-                                | <fmt:formatDate value="${quiz.createdDate}" pattern="MMM dd, yyyy"/>
+                                Created by <a href="#" class="creator-link">${quiz.creatorUsername}</a>
+                                | ${quiz.NQuestions} questions
                             </div>
                             <div class="quiz-actions">
-                                <a href="/quiz/${quiz.quizId}" class="btn btn-primary">View Details</a>
-                                <a href="/quiz/${quiz.quizId}/take" class="btn btn-success">Start Quiz</a>
-                                <c:if test="${quiz.allowPracticeMode}">
-                                    <a href="/quiz/${quiz.quizId}/take?practiceMode=true" class="btn btn-secondary">Practice</a>
+                                <a href="/quiz/${quiz.quizID}" class="btn btn-primary">View Details</a>
+                                <a href="/quiz/${quiz.quizID}/take" class="btn btn-success">Start Quiz</a>
+                                <c:if test="${quiz.practiceMode}">
+                                    <a href="/quiz/${quiz.quizID}/take?practiceMode=true" class="btn btn-secondary">Practice</a>
                                 </c:if>
                             </div>
                         </div>
@@ -69,19 +69,19 @@
                 <div class="quiz-grid">
                     <c:forEach items="${allQuizzes}" var="quiz">
                         <div class="quiz-card">
-                            <div class="quiz-title">${quiz.title}</div>
+                            <div class="quiz-title">${quiz.quizName}</div>
                             <div class="quiz-description">${quiz.description}</div>
                             <div class="quiz-meta">
-                                Created by <a href="#" class="creator-link">${quiz.creatorName}</a>
-                                | <fmt:formatDate value="${quiz.createdDate}" pattern="MMM dd, yyyy"/>
+                                Created by <a href="#" class="creator-link">${quiz.creatorUsername}</a>
+                                | ${quiz.NQuestions} questions
                                 <c:if test="${quiz.randomOrder}"> | Random Order</c:if>
-                                <c:if test="${quiz.allowPracticeMode}"> | Practice Available</c:if>
+                                <c:if test="${quiz.practiceMode}"> | Practice Available</c:if>
                             </div>
                             <div class="quiz-actions">
-                                <a href="/quiz/${quiz.quizId}" class="btn btn-primary">View Details</a>
-                                <a href="/quiz/${quiz.quizId}/take" class="btn btn-success">Start Quiz</a>
-                                <c:if test="${quiz.allowPracticeMode}">
-                                    <a href="/quiz/${quiz.quizId}/take?practiceMode=true" class="btn btn-secondary">Practice</a>
+                                <a href="/quiz/${quiz.quizID}" class="btn btn-primary">View Details</a>
+                                <a href="/quiz/${quiz.quizID}/take" class="btn btn-success">Start Quiz</a>
+                                <c:if test="${quiz.practiceMode}">
+                                    <a href="/quiz/${quiz.quizID}/take?practiceMode=true" class="btn btn-secondary">Practice</a>
                                 </c:if>
                             </div>
                         </div>

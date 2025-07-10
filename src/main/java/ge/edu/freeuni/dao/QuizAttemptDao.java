@@ -75,7 +75,7 @@ public class QuizAttemptDao {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to get attempts for user: " + userName, e);
+            throw new RuntimeException("Failed to getQuiz attempts for user: " + userName, e);
         }
         return attempts;
     }
@@ -110,7 +110,7 @@ public class QuizAttemptDao {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to get top scores for quiz: " + quizId, e);
+            throw new RuntimeException("Failed to getQuiz top scores for quiz: " + quizId, e);
         }
         return attempts;
     }
@@ -129,7 +129,7 @@ public class QuizAttemptDao {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to get quiz count for user: " + userName, e);
+            throw new RuntimeException("Failed to getQuiz quiz count for user: " + userName, e);
         }
         return 0;
     }

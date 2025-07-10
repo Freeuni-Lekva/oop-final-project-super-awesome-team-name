@@ -6,7 +6,7 @@
 <head>
     <link rel="stylesheet" href = ${pageContext.request.contextPath}/css/TakeQuizStyle.css>
 
-    <title>Taking Quiz: ${quiz.title}</title>
+    <title>Taking Quiz: ${quiz.quizName}</title>
     <script>
         let startTime = new Date().getTime();
 
@@ -102,7 +102,7 @@
     </div>
 
     <div class="main-quiz-title">
-        <h2>${quiz.title}</h2>
+        <h2>${quiz.quizName}</h2>
         <p>${quiz.description}</p>
     </div>
 
@@ -125,11 +125,11 @@
     </div>
 
     <div class="content-area">
-        <form id="quizForm" method="post" action="/quiz/${quiz.quizId}/submit" onsubmit="return validateForm()">
+        <form id="quizForm" method="post" action="/quiz/${quiz.quizID}/submit" onsubmit="return validateForm()">
             <input type="hidden" name="practiceMode" value="${practiceMode}">
 
             <c:forEach items="${questions}" var="question" varStatus="status">
-                <div class="question-container" data-question-id="${question.questionId}" data-question-type="${question.questionType}">
+                <div class="question-container" data-question-id="${status.index}" data-question-type="${question.questionType}">
                     <div class="question-number">
                         Question ${status.index + 1} of ${questions.size()}
                     </div>
@@ -142,7 +142,7 @@
                         <img src="${question.imageUrl}" alt="Question Image" class="question-image">
                     </c:if>
 
-                    <c:if test="${question.questionType == 'multiple_choice'}">
+                    <c:if test="${question.questionType == 'Multiple Choice'}">
                         <div class="answer-options">
                             <c:set var="choices" value="${question.choices}" />
                             <c:set var="cleanChoices" value="${fn:replace(choices, '[', '')}" />
@@ -154,38 +154,38 @@
                                 <c:if test="${not empty trimmedChoice}">
                                     <div class="radio-option">
                                         <input type="radio"
-                                               name="question_${question.questionId}"
+                                               name="question_${status.index}"
                                                value="${trimmedChoice}"
-                                               id="choice_${question.questionId}_${status.index}">
-                                        <label for="choice_${question.questionId}_${status.index}">${trimmedChoice}</label>
+                                               id="choice_${status.index}_${status.index}">
+                                        <label for="choice_${status.index}_${status.index}">${trimmedChoice}</label>
                                     </div>
                                 </c:if>
                             </c:forTokens>
                         </div>
                     </c:if>
 
-                    <c:if test="${question.questionType == 'question_response'}">
+                    <c:if test="${question.questionType == 'Question-Response'}">
                         <div class="answer-options">
                             <input type="text"
-                                   name="question_${question.questionId}"
+                                   name="question_${status.index}"
                                    class="text-answer"
                                    placeholder="Enter your answer here...">
                         </div>
                     </c:if>
 
-                    <c:if test="${question.questionType == 'fill_blank'}">
+                    <c:if test="${question.questionType == 'Fill in the Blank'}">
                         <div class="answer-options">
                             <input type="text"
-                                   name="question_${question.questionId}"
+                                   name="question_${status.index}"
                                    class="text-answer"
                                    placeholder="Fill in the blank...">
                         </div>
                     </c:if>
 
-                    <c:if test="${question.questionType == 'picture_response'}">
+                    <c:if test="${question.questionType == 'Picture-Response'}">
                         <div class="answer-options">
                             <input type="text"
-                                   name="question_${question.questionId}"
+                                   name="question_${status.index}"
                                    class="text-answer"
                                    placeholder="Describe what you see in the image...">
                         </div>
@@ -202,7 +202,7 @@
                         <input type="submit" value="Submit Quiz" class="btn-primary">
                     </c:otherwise>
                 </c:choose>
-                <a href="/quiz/${quiz.quizId}" class="btn-secondary">Cancel</a>
+                <a href="/quiz/${quiz.quizID}" class="btn-secondary">Cancel</a>
             </div>
         </form>
     </div>
