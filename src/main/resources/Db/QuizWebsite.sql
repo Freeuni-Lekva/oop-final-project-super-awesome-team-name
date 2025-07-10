@@ -21,7 +21,6 @@ CREATE TABLE announcements (
 );
 
 DROP TABLE IF EXISTS questions;
-
 DROP TABLE IF EXISTS quizzes;
 
 CREATE TABLE quizzes (
@@ -49,5 +48,3 @@ CREATE TABLE questions (
                            order_matters BOOLEAN,
                            FOREIGN KEY (quiz_id) REFERENCES quizzes(id)
 );
-
-
