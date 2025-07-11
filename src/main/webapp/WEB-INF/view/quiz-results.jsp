@@ -94,14 +94,8 @@
                 <c:set var="userAnswer" value="${userAnswers[question.questionID.toString()]}" />
                 <c:set var="correctAnswers" value="${correctAnswersMap[question.questionID.toString()]}" />
 
-                <c:set var="isCorrect" value="false" />
-                <c:if test="${not empty userAnswer}">
-                    <c:forEach items="${correctAnswers}" var="correctAnswer">
-                        <c:if test="${fn:toLowerCase(fn:trim(userAnswer)) == fn:toLowerCase(fn:trim(correctAnswer))}">
-                            <c:set var="isCorrect" value="true" />
-                        </c:if>
-                    </c:forEach>
-                </c:if>
+                <!-- Use the grading results from the controller instead of doing our own comparison -->
+                <c:set var="isCorrect" value="${gradingResults[question.questionID.toString()]}" />
 
                 <div class="question-review ${isCorrect ? 'correct' : 'incorrect'}">
                     <div class="question-review-header">
@@ -125,9 +119,7 @@
                         <c:if test="${not isCorrect}">
                             <div class="correct-answer">
                                 <strong>Correct Answer(s):</strong>
-                                <c:forEach items="${correctAnswers}" var="correctAnswer" varStatus="answerStatus">
-                                    ${correctAnswer}<c:if test="${not answerStatus.last}">, </c:if>
-                                </c:forEach>
+                                    ${correctAnswers}
                             </div>
                         </c:if>
                     </div>

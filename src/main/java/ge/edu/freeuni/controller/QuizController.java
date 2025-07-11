@@ -183,6 +183,7 @@ public class QuizController {
 
             Map<String, String> userAnswers = new HashMap<>();
             Map<String, Object> correctAnswersMap = new HashMap<>(); // Changed to Object to handle different types
+            Map<String, Boolean> gradingResults = new HashMap<>(); // Store grading results
             int score = 0;
 
             System.out.println("=== DEBUG: Request Parameters ===");
@@ -210,12 +211,12 @@ public class QuizController {
                     String[] selectedValues = selectedValues1 != null ? selectedValues1 : selectedValues2;
 
                     if (selectedValues != null && selectedValues.length > 0) {
-                        // Trim each value and join with commas and spaces to match database format
+                        // Trim each value and join with commas only (no spaces) to work with Multi_Choice_Multi_Answer.isCorrect()
                         List<String> trimmedValues = new ArrayList<>();
                         for (String value : selectedValues) {
                             trimmedValues.add(value.trim());
                         }
-                        userAnswer = String.join(", ", trimmedValues); // Use comma with space to match correct answer format
+                        userAnswer = String.join(",", trimmedValues); // No spaces after commas for isCorrect() method
                     }
 
                     System.out.println("Multiple checkbox values: " + Arrays.toString(selectedValues));
@@ -243,7 +244,17 @@ public class QuizController {
 
                 // Store user answer for display
                 if (userAnswer != null && !userAnswer.trim().isEmpty()) {
-                    userAnswers.put(String.valueOf(question.getQuestionID()), userAnswer.trim());
+                    String displayAnswer = userAnswer.trim();
+                    // For Multi_Choice_Multi_Answer, format display with spaces for readability
+                    if (question instanceof Multi_Choice_Multi_Answer && displayAnswer.contains(",")) {
+                        String[] parts = displayAnswer.split(",");
+                        List<String> trimmedParts = new ArrayList<>();
+                        for (String part : parts) {
+                            trimmedParts.add(part.trim());
+                        }
+                        displayAnswer = String.join(", ", trimmedParts);
+                    }
+                    userAnswers.put(String.valueOf(question.getQuestionID()), displayAnswer);
                 } else {
                     userAnswers.put(String.valueOf(question.getQuestionID()), "");
                 }
@@ -251,7 +262,7 @@ public class QuizController {
                 // Get correct answer for display using the question's method
                 Object correctAnswer = question.getCorrectAnswer();
 
-                // For matching questions, format the display to match the expected input format (semicolons)
+                // Format correct answers for display - handle all question types
                 if (question instanceof Matching) {
                     Map<String, String> pairs = (Map<String, String>) correctAnswer;
                     List<String> formattedPairs = new ArrayList<>();
@@ -260,6 +271,11 @@ public class QuizController {
                     }
                     correctAnswer = String.join(";", formattedPairs); // Use semicolons like the input format
                 }
+                // For Multi_Choice_Multi_Answer AND Multi_Answer, format display with spaces for readability
+                else if (question instanceof Multi_Choice_Multi_Answer || question instanceof Multi_Answer) {
+                    List<String> answers = (List<String>) correctAnswer;
+                    correctAnswer = String.join(", ", answers); // Display with spaces for readability
+                }
 
                 correctAnswersMap.put(String.valueOf(question.getQuestionID()), correctAnswer);
 
@@ -267,10 +283,35 @@ public class QuizController {
                 boolean isCorrect = false;
                 if (userAnswer != null && !userAnswer.trim().isEmpty()) {
                     isCorrect = question.isCorrect(userAnswer);
+
+                    // Special debug for matching questions
+                    if (question instanceof Matching && !isCorrect) {
+                        System.out.println("DEBUG: Matching question failed. Analyzing...");
+                        System.out.println("DEBUG: User answer: '" + userAnswer + "'");
+
+                        // Try to normalize special characters as fallback
+                        String normalizedAnswer = userAnswer
+                                .replace("?", "ć")  // Common encoding issue
+                                .replace("Ã¡", "á")  // Another common encoding issue
+                                .replace("Ã©", "é")  // Another common encoding issue
+                                .replace("Ã­", "í")  // Another common encoding issue
+                                .replace("Ã³", "ó")  // Another common encoding issue
+                                .replace("Ãº", "ú");  // Another common encoding issue
+
+                        System.out.println("DEBUG: Trying normalized answer: '" + normalizedAnswer + "'");
+
+                        if (!normalizedAnswer.equals(userAnswer)) {
+                            isCorrect = question.isCorrect(normalizedAnswer);
+                            System.out.println("DEBUG: Normalized result: " + isCorrect);
+                        }
+                    }
                 }
 
                 System.out.println("Correct answer: " + correctAnswer);
                 System.out.println("Is correct: " + isCorrect);
+
+                // Store the grading result
+                gradingResults.put(String.valueOf(question.getQuestionID()), isCorrect);
 
                 if (isCorrect) {
                     score++;
@@ -304,6 +345,7 @@ public class QuizController {
             mav.addObject("questions", quizQuestions);
             mav.addObject("userAnswers", userAnswers);
             mav.addObject("correctAnswersMap", correctAnswersMap);
+            mav.addObject("gradingResults", gradingResults); // Pass grading results to JSP
 
             double percentage = quizQuestions.size() > 0 ?
                     (double) score / quizQuestions.size() * 100 : 0;
