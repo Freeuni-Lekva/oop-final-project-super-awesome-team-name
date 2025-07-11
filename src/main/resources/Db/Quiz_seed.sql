@@ -1,11 +1,10 @@
-use QuizWebsite;
+USE QuizWebsite;
 
 ## the Structure of this is as follows: Quiz followed by its questions
 
-
 ## Quiz 1 (Actors)
 INSERT INTO quizzes(id,name,description,num_questions,random_order,one_page,immediate_correction,practice_mode,creator_username)
-VALUES(1,'Actor Quiz','Can you name all the Actors?',10,1,1,0,0,'admin');
+VALUES(1,'Actor Quiz','Can you name all the Actors?',10,1,1,0,0,'Admin');
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageurl, order_matters)
 VALUES(1,1,'Name this Actor','Picture-Response',NULL,'Leonardo Dicaprio','https://th.bing.com/th/id/OIP.pwzTVSCYJB1kxwTz9-u0WgHaFj?r=0&rs=1&pid=ImgDetMain&cb=idpwebp2&o=7&rm=3',NULL);
@@ -40,7 +39,7 @@ VALUES(10,1,'Name this Actor','Picture-Response',NULL,'Jennifer Aniston','https:
 
 ## Quiz 2 (Marvel)
 INSERT INTO quizzes(id,name,description,num_questions,random_order,one_page,immediate_correction,practice_mode,creator_username)
-VALUES(2,'Marvel Quiz','If you are a TRUE marvel fan this will be easy',10,1,1,0,0,'admin');
+VALUES(2,'Marvel Quiz','If you are a TRUE marvel fan this will be easy',10,1,1,0,0,'Admin');
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(11,2,'Who played Spider-man in "The Amazing Spider-man" movies?','Multiple Choice','Tom Holland,Tobey Maguire,Dave Bautista,Andrew Garfield','Andrew Garfield',NULL,NULL);
@@ -61,13 +60,13 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(16,2,'Identify this Marvel character from the image below','Picture-Response',NULL,'Spider-Man','https://th.bing.com/th/id/OIP.8YZK3A06HkAm8DatkDSQwQHaHa?w=212&h=204&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3',NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(17,2,'Name all origianl members of the Guardians of the Galaxy','Multi-Answer',NULL,'Star-Lord,Gamora,Drax,Rocket,Groot',NULL,0);
+VALUES(17,2,'Name all original members of the Guardians of the Galaxy','Multi-Answer',NULL,'Star-Lord,Gamora,Drax,Rocket,Groot',NULL,0);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(18,2,'Which of the following characters were in Avengers: Endgame?','Multiple Choice with Multiple Answers','Deadpool,Wolverine,Ant-Man,Captain America','Ant-Man,Captain America',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(19,2,'Match each Marvel hero to their real name','Matching','Iron Man=TChalla;Spider-Man=Tony Stark;Black Panther=Peter Parker','Iron Man=Tony Stark;Spider-Man=Peter Parker;Black Panther=T’Challa',NULL,NULL);
+VALUES(19,2,'Match each Marvel hero to their real name','Matching','Iron Man=T''Challa;Spider-Man=Tony Stark;Black Panther=Peter Parker','Iron Man=Tony Stark;Spider-Man=Peter Parker;Black Panther=T''Challa',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(20,2,'The super-soldier serum was used to enhance _ _ into Captain America.','Fill in the Blank',NULL,'Steve Rogers',NULL,NULL);
@@ -88,17 +87,17 @@ INSERT INTO questions (id,quiz_id, question_text, question_type, possible_answer
 VALUES(23,3,'Which country has won the most FIFA World Cups?','Multiple Choice','Brazil,Germany,Italy,Argentina','Brazil');
 
 INSERT INTO questions (id,quiz_id, question_text, question_type, imageURL, correct_answer)
-VALUES(24,3,'Identify the player in the image.','Picture-Response','https://upload.wikimedia.org/wikipedia/commons/8/89/Cristiano_Ronaldo_2018.jpg','Cristiano Ronaldo');
+VALUES(24,3,'Identify the player in the image.','Picture-Response','https://th.bing.com/th/id/OIP.eupohIiFL08KNRcol8X6vwHaDt?w=329&h=174&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3','Cristiano Ronaldo');
 
 INSERT INTO questions (id,quiz_id, question_text, question_type, correct_answer, order_matters)
 VALUES(25,3,'Name three countries that have hosted the FIFA World Cup latest.','Multi-Answer','Qatar,Russia,Brazil',false);
 
 INSERT INTO questions (id,quiz_id, question_text, question_type, possible_answers, correct_answer)
 VALUES(26,3,'Which of the following players have played for Real Madrid? (Select all that apply)','Multiple Choice with Multiple Answers',
-       'Kylian Mbappe,Cristiano Ronaldo,Luka Modric,Ronaldinho','Cristiano Ronaldo,Luka Modrić');
+       'Kylian Mbappe,Cristiano Ronaldo,Luka Modric,Ronaldinho','Kylian Mbappe,Cristiano Ronaldo,Luka Modric');
 
 INSERT INTO questions (id,quiz_id, question_text, question_type, correct_answer)
-VALUES(27,3,'Match the footballers to their national teams.','Matching','Lionel Messi=Argentina;Harry Kane=England;Neymar=Brazil;Luka Modrić=Croatia');
+VALUES(27,3,'Match the footballers to their national teams.','Matching','Lionel Messi=Argentina;Harry Kane=England;Neymar=Brazil;Luka Modric=Croatia');
 
 INSERT INTO questions (id,quiz_id, question_text, question_type, correct_answer)
 VALUES(28,3,'The football club Manchester United plays its home games at _ _.','Fill in the Blank','Old Trafford');
@@ -200,7 +199,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(53,6,'Name this Villain','Picture-Response',NULL,'Pagan Min','https://th.bing.com/th/id/OIP.p7cdNVv52aE3xwr62oEhnQHaEK?w=331&h=187&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3',NULL);
 
 Insert Into questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(54,6,'','Question-Response',NULL,'',NULL,NULL);
+VALUES(54,6,'Who is the main protagonist in the game series “God of War”?','Question-Response',NULL,'Kratos',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
     VALUE(55,6,'Name all the playable Characters in GTA 5','Multi-Answer',NULL,'Trevor Philips,Michael De Santa,Franklin Clinton',NULL,0);
@@ -209,7 +208,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(56,6,'Would you _ ...','Fill in the Blank',NULL,'Kindly',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(57,6,'Who was the DJ that was','Question-Response',NULL,'Marshmello',NULL,NULL);
+VALUES(57,6,'Who was the DJ that first performed in fortnite','Question-Response',NULL,'Marshmello',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(58,6,'Which of these are MOBA games?','Multiple Choice with Multiple Answers','CS:GO,Dota 2,League of Legends,Overwatch','Dota 2,League of Legends',NULL,NULL);
@@ -261,7 +260,7 @@ VALUES(70,7,'Match the Gaming Console to Its Manufacturer','Matching','PlayStati
 
 ## Quiz 8 (Esports Quiz)
 INSERT INTO quizzes(id, name, description, num_questions, random_order, one_page, immediate_correction, practice_mode, creator_username)
-VALUES(8,'Esports Quiz','Like competitive gaming? give this Esport Quiz a go!', 15,1,1,0,0,'Admin');
+VALUES(8,'Esports Quiz','Like competitive gaming? give this Esports Quiz a go!', 15,1,1,0,0,'Admin');
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(71,8,'Who was the first Person in the League of Legends Hall of Fame?','Question-Response',NULL,'Faker',NULL,NULL);
@@ -276,7 +275,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(74,8,'Who won Austin major 2025 ','Question-Response',NULL,'Vitality',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES (75,8,'Match the organizations to the Regions','Matching','G2=North America;mibr=Europe;TSM=Brazil;Paper Rex=China;BLG=Pacific','G2=Europe;MIBR=Brazil;TSM=North America;Paper Rex=Pacific;BLG=China',NULL,NULL);
+VALUES (75,8,'Match the organizations to the Regions','Matching','G2=North America;MIBR=Europe;TSM=Brazil;Paper Rex=China;BLG=Pacific','G2=Europe;MIBR=Brazil;TSM=North America;Paper Rex=Pacific;BLG=China',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES (76,8,'Which Country won Overwatch World Cup 2016','Multiple Choice','Singapore,Russia,Sweden,South Korea','South Korea',NULL,NULL);

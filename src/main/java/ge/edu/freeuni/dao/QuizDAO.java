@@ -15,14 +15,14 @@ import java.util.*;
 public class QuizDAO {
 
     @Autowired
-    private BasicDataSource quizDB;
+    private BasicDataSource db;
 
 
     public QuizDAO() { }
 
     public void insertQuiz(Quiz quiz) throws SQLException {
         String sql = "INSERT INTO quizzes (name, description,num_questions,random_order, one_page, immediate_correction, practice_mode,creator_username) VALUES (?, ?, ?, ?, ?, ?,?,?)";
-        try (Connection conn = quizDB.getConnection();
+        try (Connection conn = db.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, quiz.getQuizName());
@@ -52,7 +52,7 @@ public class QuizDAO {
     private void insertQuestions(int quizId, List<Question> questions) throws SQLException {
         String sql = "INSERT INTO questions (quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = quizDB.getConnection();
+        try (Connection conn = db.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             for (Question question : questions) {
@@ -106,7 +106,7 @@ public class QuizDAO {
 
     public void deleteQuiz(int quizId) throws SQLException {
         String sql = "DELETE FROM quizzes WHERE id = ?";
-        try (Connection conn = quizDB.getConnection();
+        try (Connection conn = db.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, quizId);
             stmt.executeUpdate();
@@ -117,7 +117,7 @@ public class QuizDAO {
         List<Question> questions = new ArrayList<>();
         String sql = "SELECT * FROM questions WHERE quiz_id = ?";
 
-        try (Connection conn = quizDB.getConnection();
+        try (Connection conn = db.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, quizId);
@@ -180,7 +180,7 @@ public class QuizDAO {
 
     public Quiz getQuiz(int quizId) {
         String sql = "SELECT * FROM quizzes WHERE id = ?";
-        try (Connection con = quizDB.getConnection();
+        try (Connection con = db.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, quizId);
@@ -213,7 +213,7 @@ public class QuizDAO {
         List<Quiz> quizzes = new ArrayList<>();
         String sql = "SELECT * FROM quizzes ORDER BY id DESC";
 
-        try (Connection con = quizDB.getConnection();
+        try (Connection con = db.getConnection();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
@@ -247,7 +247,7 @@ public class QuizDAO {
                 "ORDER BY attempt_count DESC, q.id DESC " +
                 "LIMIT ?";
 
-        try (Connection con = quizDB.getConnection();
+        try (Connection con = db.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, limit);

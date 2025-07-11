@@ -182,7 +182,7 @@ public class QuizController {
             List<Question> quizQuestions = quizzes.getQuestions(quizId);
 
             Map<String, String> userAnswers = new HashMap<>();
-            Map<String, List<String>> correctAnswersMap = new HashMap<>();
+            Map<String, Object> correctAnswersMap = new HashMap<>(); // Changed to Object to handle different types
             int score = 0;
 
             System.out.println("=== DEBUG: Request Parameters ===");
@@ -210,10 +210,24 @@ public class QuizController {
                     String[] selectedValues = selectedValues1 != null ? selectedValues1 : selectedValues2;
 
                     if (selectedValues != null && selectedValues.length > 0) {
-                        userAnswer = String.join(", ", selectedValues);
+                        // Trim each value and join with commas and spaces to match database format
+                        List<String> trimmedValues = new ArrayList<>();
+                        for (String value : selectedValues) {
+                            trimmedValues.add(value.trim());
+                        }
+                        userAnswer = String.join(", ", trimmedValues); // Use comma with space to match correct answer format
                     }
 
                     System.out.println("Multiple checkbox values: " + Arrays.toString(selectedValues));
+                } else if (question instanceof Matching) {
+                    // Handle matching questions - first check standard parameter format
+                    userAnswer = request.getParameter(paramName1);
+                    if (userAnswer == null) {
+                        userAnswer = request.getParameter(paramName2);
+                    }
+
+                    System.out.println("DEBUG: Processing Matching question " + question.getQuestionID());
+                    System.out.println("DEBUG: Found matching answer: " + userAnswer);
                 } else {
                     // Handle single-value questions (radio buttons, text, etc.)
                     userAnswer = request.getParameter(paramName1);
@@ -227,170 +241,39 @@ public class QuizController {
                 System.out.println("User answer: " + userAnswer);
                 System.out.println("Question type: " + question.getClass().getSimpleName());
 
-                //keep answer for user
+                // Store user answer for display
                 if (userAnswer != null && !userAnswer.trim().isEmpty()) {
                     userAnswers.put(String.valueOf(question.getQuestionID()), userAnswer.trim());
                 } else {
                     userAnswers.put(String.valueOf(question.getQuestionID()), "");
                 }
 
-                //if 1 wrong - 0
-                if (question instanceof Multi_Answer) {
-                    Multi_Answer maQuestion = (Multi_Answer) question;
-                    List<String> allCorrectAnswers = maQuestion.getCorrectAnswer();
+                // Get correct answer for display using the question's method
+                Object correctAnswer = question.getCorrectAnswer();
 
-                    //display corr ans
-                    correctAnswersMap.put(String.valueOf(question.getQuestionID()), allCorrectAnswers);
-
-                    //parsing
-                    Set<String> userAnswerSet = new HashSet<>();
-                    if (userAnswer != null && !userAnswer.trim().isEmpty()) {
-                        String[] userAnswerArray = userAnswer.split(",");
-                        for (String ans : userAnswerArray) {
-                            userAnswerSet.add(ans.trim().toLowerCase());
-                        }
+                // For matching questions, format the display to match the expected input format (semicolons)
+                if (question instanceof Matching) {
+                    Map<String, String> pairs = (Map<String, String>) correctAnswer;
+                    List<String> formattedPairs = new ArrayList<>();
+                    for (Map.Entry<String, String> entry : pairs.entrySet()) {
+                        formattedPairs.add(entry.getKey() + "=" + entry.getValue());
                     }
+                    correctAnswer = String.join(";", formattedPairs); // Use semicolons like the input format
+                }
 
-                    // Create set of correct answers (normalized)
-                    Set<String> correctAnswerSet = new HashSet<>();
-                    for (String correct : allCorrectAnswers) {
-                        correctAnswerSet.add(correct.toLowerCase());
-                    }
+                correctAnswersMap.put(String.valueOf(question.getQuestionID()), correctAnswer);
 
-                    // ✅ STRICT: Must match EXACTLY (same size, same content)
-                    boolean isCorrect = userAnswerSet.size() == correctAnswerSet.size() &&
-                            userAnswerSet.equals(correctAnswerSet);
+                // Use the question's built-in isCorrect method
+                boolean isCorrect = false;
+                if (userAnswer != null && !userAnswer.trim().isEmpty()) {
+                    isCorrect = question.isCorrect(userAnswer);
+                }
 
-                    System.out.println("Multi-Answer Grading:");
-                    System.out.println("  Required: " + correctAnswerSet);
-                    System.out.println("  User provided: " + userAnswerSet);
-                    System.out.println("  Exact match: " + isCorrect);
+                System.out.println("Correct answer: " + correctAnswer);
+                System.out.println("Is correct: " + isCorrect);
 
-                    if (isCorrect) {
-                        score++;
-                    }
-
-                } else {
-                    // ✅ STANDARD GRADING for other question types
-                    List<String> correctAnswers = new ArrayList<>();
-
-                    if (question instanceof Question_Response) {
-                        correctAnswers.add(((Question_Response) question).getCorrectAnswer());
-                    } else if (question instanceof Fill_In_The_Blank) {
-                        correctAnswers.add(((Fill_In_The_Blank) question).getCorrectAnswer());
-                    } else if (question instanceof Multiple_Choice) {
-                        correctAnswers.add(((Multiple_Choice) question).getCorrectAnswer());
-                    } else if (question instanceof Picture_Response) {
-                        correctAnswers.add(((Picture_Response) question).getCorrectAnswer());
-                    } else if (question instanceof Multi_Choice_Multi_Answer) {
-                        List<String> allCorrectAnswers = ((Multi_Choice_Multi_Answer) question).getCorrectAnswer();
-                        correctAnswers.addAll(allCorrectAnswers);
-
-                        // Special handling for multiple choice multiple answers
-                        boolean isCorrect = false;
-                        if (userAnswer != null && !userAnswer.trim().isEmpty()) {
-                            // Split user answers and normalize
-                            String[] userAnswerArray = userAnswer.split(",");
-                            Set<String> userAnswerSet = new HashSet<>();
-                            for (String ans : userAnswerArray) {
-                                userAnswerSet.add(ans.trim().toLowerCase());
-                            }
-
-                            // Create set of correct answers (normalized)
-                            Set<String> correctAnswerSet = new HashSet<>();
-                            for (String correct : allCorrectAnswers) {
-                                correctAnswerSet.add(correct.trim().toLowerCase());
-                            }
-
-                            // Must match exactly (same size, same content)
-                            isCorrect = userAnswerSet.size() == correctAnswerSet.size() &&
-                                    userAnswerSet.equals(correctAnswerSet);
-
-                            System.out.println("Multi-Choice-Multi-Answer Grading:");
-                            System.out.println("  Required: " + correctAnswerSet);
-                            System.out.println("  User provided: " + userAnswerSet);
-                            System.out.println("  Exact match: " + isCorrect);
-                        }
-
-                        correctAnswersMap.put(String.valueOf(question.getQuestionID()), correctAnswers);
-
-                        if (isCorrect) {
-                            score++;
-                        }
-
-                        // Skip standard grading for this question type
-                        continue;
-                    } else if (question instanceof Matching) {
-                        Map<String, String> pairs = ((Matching) question).getCorrectAnswer();
-
-                        // Build expected answer for display (use same order as user for consistency)
-                        List<String> displayCorrectAnswers = new ArrayList<>();
-                        for (Map.Entry<String, String> entry : pairs.entrySet()) {
-                            displayCorrectAnswers.add(entry.getKey() + "=" + entry.getValue());
-                        }
-                        correctAnswersMap.put(String.valueOf(question.getQuestionID()), displayCorrectAnswers);
-
-                        // Grade matching question - ORDER INDEPENDENT
-                        boolean isCorrect = false;
-                        if (userAnswer != null && !userAnswer.trim().isEmpty()) {
-                            // Split user answer into pairs
-                            String[] userPairs = userAnswer.split(",");
-                            Set<String> userPairSet = new HashSet<>();
-                            for (String pair : userPairs) {
-                                String cleanPair = pair.trim().toLowerCase();
-                                userPairSet.add(cleanPair);
-                            }
-
-                            // Create set of correct pairs
-                            Set<String> correctPairSet = new HashSet<>();
-                            for (Map.Entry<String, String> entry : pairs.entrySet()) {
-                                String correctPair = (entry.getKey() + "=" + entry.getValue()).toLowerCase();
-                                correctPairSet.add(correctPair);
-                            }
-
-                            // Compare sets (order doesn't matter)
-                            isCorrect = userPairSet.equals(correctPairSet);
-
-                            System.out.println("Matching grading (order independent):");
-                            System.out.println("  User pairs: " + userPairSet);
-                            System.out.println("  Correct pairs: " + correctPairSet);
-                            System.out.println("  Sets equal: " + isCorrect);
-
-                            // Debug: Check each pair individually
-                            for (String userPair : userPairSet) {
-                                boolean found = correctPairSet.contains(userPair);
-                                System.out.println("  '" + userPair + "' found: " + found);
-                            }
-                        }
-
-                        if (isCorrect) {
-                            score++;
-                        }
-
-                        // Skip standard grading
-                        continue;
-                    }
-
-                    correctAnswersMap.put(String.valueOf(question.getQuestionID()), correctAnswers);
-
-                    System.out.println("Standard grading - Correct answers: " + correctAnswers);
-
-                    // Check if answer is correct (case insensitive)
-                    boolean isCorrect = false;
-                    if (userAnswer != null && !userAnswer.trim().isEmpty()) {
-                        for (String correct : correctAnswers) {
-                            if (correct.equalsIgnoreCase(userAnswer.trim())) {
-                                isCorrect = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    System.out.println("Is correct: " + isCorrect);
-
-                    if (isCorrect) {
-                        score++;
-                    }
+                if (isCorrect) {
+                    score++;
                 }
             }
 
