@@ -1,4 +1,3 @@
-
 <%--
   Created by IntelliJ IDEA.
   User: datos
@@ -42,5 +41,39 @@
         <p id="result"></p>
     </div>
 </div>
+
+<script>
+    document.getElementById('adminForm').addEventListener('submit', function(e) {
+        // Get the selected option
+        var selectElement = document.getElementById('adminFunc');
+        var selectedOption = selectElement.options[selectElement.selectedIndex];
+        var selectedText = selectedOption.text;
+        var selectedValue = selectedOption.value;
+
+        // Display the chosen option
+        var resultElement = document.getElementById('result');
+        resultElement.innerHTML = '<strong>Selected Action:</strong> ' + selectedText;
+        resultElement.style.color = '#2196F3';
+        resultElement.style.marginTop = '20px';
+        resultElement.style.padding = '10px';
+        resultElement.style.backgroundColor = '#f0f8ff';
+        resultElement.style.border = '1px solid #2196F3';
+        resultElement.style.borderRadius = '5px';
+
+        // Optional: You can also log both the text and value
+        console.log('Selected option text:', selectedText);
+        console.log('Selected option value:', selectedValue);
+    });
+
+    // Optional: Also show selection when dropdown changes (before submit)
+    document.getElementById('adminFunc').addEventListener('change', function() {
+        var selectedText = this.options[this.selectedIndex].text;
+        var resultElement = document.getElementById('result');
+        resultElement.innerHTML = '<em>Ready to execute:</em> ' + selectedText;
+        resultElement.style.color = '#666';
+        resultElement.style.fontStyle = 'italic';
+    });
+</script>
+
 </body>
 </html>

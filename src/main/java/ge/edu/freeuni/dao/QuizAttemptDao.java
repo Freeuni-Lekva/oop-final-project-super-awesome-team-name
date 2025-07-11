@@ -135,18 +135,22 @@ public class QuizAttemptDao {
     }
 
 
-    public boolean deleteQuizHistory(int quizId){
+    public int deleteQuizHistory(int quizId){
         String sql = "DELETE FROM quiz_attempts WHERE quiz_id = ?";
 
+        System.out.println("DEBUG: Attempting to delete attempts for quiz ID: " + quizId);
+
         try (Connection conn = db.getConnection();
-             PreparedStatement stmt =  conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, quizId);
+            int deletedCount = stmt.executeUpdate();
 
-            return stmt.executeUpdate()==1;
+            System.out.println("DEBUG: Deleted " + deletedCount + " attempts for quiz " + quizId);
+            return deletedCount;
 
-        }catch (SQLException e){
-            throw new RuntimeException("Failed to delete quiz attempt", e);
+        } catch (SQLException e){
+            System.err.println("DEBUG: Error deleting quiz attempts: " + e.getMessage());
+            throw new RuntimeException("Failed to delete quiz attempts", e);
         }
-
     }
 }

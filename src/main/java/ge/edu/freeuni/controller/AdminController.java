@@ -68,7 +68,7 @@ public class AdminController {
             }
 
             case "clearHistory": {
-                if(quizAttempts.deleteQuizHistory(Integer.parseInt(text))) {
+                if(quizAttempts.deleteQuizHistory(Integer.parseInt(text)) > 0) {
                     result.put("status", "success");
                     result.put("message", "Quiz history removed: #" + text);
                 } else {
