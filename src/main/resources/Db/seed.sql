@@ -4,7 +4,7 @@ USE QuizWebsite;
 
 ## Quiz 1 (Actors)
 INSERT INTO quizzes(id,name,description,num_questions,random_order,one_page,immediate_correction,practice_mode,creator_username)
-VALUES(1,'Actor Quiz','Can you name all the Actors?',10,1,1,0,0,'admin');
+VALUES(1,'Actor Quiz','Can you name all the Actors?',10,1,1,0,0,'Admin');
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageurl, order_matters)
 VALUES(1,1,'Name this Actor','Picture-Response',NULL,'Leonardo Dicaprio','https://th.bing.com/th/id/OIP.pwzTVSCYJB1kxwTz9-u0WgHaFj?r=0&rs=1&pid=ImgDetMain&cb=idpwebp2&o=7&rm=3',NULL);
@@ -39,7 +39,7 @@ VALUES(10,1,'Name this Actor','Picture-Response',NULL,'Jennifer Aniston','https:
 
 ## Quiz 2 (Marvel)
 INSERT INTO quizzes(id,name,description,num_questions,random_order,one_page,immediate_correction,practice_mode,creator_username)
-VALUES(2,'Marvel Quiz','If you are a TRUE marvel fan this will be easy',10,1,1,0,0,'admin');
+VALUES(2,'Marvel Quiz','If you are a TRUE marvel fan this will be easy',10,1,1,0,0,'Admin');
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(11,2,'Who played Spider-man in "The Amazing Spider-man" movies?','Multiple Choice','Tom Holland,Tobey Maguire,Dave Bautista,Andrew Garfield','Andrew Garfield',NULL,NULL);
@@ -199,7 +199,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(53,6,'Name this Villain','Picture-Response',NULL,'Pagan Min','https://th.bing.com/th/id/OIP.p7cdNVv52aE3xwr62oEhnQHaEK?w=331&h=187&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3',NULL);
 
 Insert Into questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(54,6,'','Question-Response',NULL,'',NULL,NULL);
+VALUES(54,6,'Who is the main protagonist in the game series “God of War”?','Question-Response',NULL,'Kratos',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
     VALUE(55,6,'Name all the playable Characters in GTA 5','Multi-Answer',NULL,'Trevor Philips,Michael De Santa,Franklin Clinton',NULL,0);
