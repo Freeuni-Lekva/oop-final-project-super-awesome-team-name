@@ -35,22 +35,6 @@ public class QuizController {
 
     private Gson gson = new Gson();
 
-    private String normalizeString(String input) {
-        if (input == null) return "";
-
-        return input.toLowerCase()
-                .trim()
-                // Handle common character encoding issues
-                .replace("ć", "c")
-                .replace("?", "c")  // Handle encoding corruption
-                .replace("š", "s")
-                .replace("ž", "z")
-                .replace("đ", "d")
-                .replace("č", "c")
-                // Add more character normalizations as needed
-                ;
-    }
-
     @GetMapping("/ping")
     @ResponseBody
     public String ping() {
@@ -149,6 +133,14 @@ public class QuizController {
 
             List<Question> quizQuestions = quizzes.getQuestions(quizId);
             System.out.println("DEBUG: Found " + quizQuestions.size() + " questions for quiz " + quizId);
+
+            // Randomize questions if quiz has random order enabled
+            if (quiz.isRandomOrder()) {
+                Collections.shuffle(quizQuestions);
+                System.out.println("DEBUG: Questions randomized for quiz " + quizId);
+            } else {
+                System.out.println("DEBUG: Questions kept in original order for quiz " + quizId);
+            }
 
             ModelAndView mav = new ModelAndView("take-quiz");
             mav.addObject("quiz", quiz);
