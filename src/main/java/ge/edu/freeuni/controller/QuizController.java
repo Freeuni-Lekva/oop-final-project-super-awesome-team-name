@@ -35,6 +35,22 @@ public class QuizController {
 
     private Gson gson = new Gson();
 
+    private String normalizeString(String input) {
+        if (input == null) return "";
+
+        return input.toLowerCase()
+                .trim()
+                // Handle common character encoding issues
+                .replace("ć", "c")
+                .replace("?", "c")  // Handle encoding corruption
+                .replace("š", "s")
+                .replace("ž", "z")
+                .replace("đ", "d")
+                .replace("č", "c")
+                // Add more character normalizations as needed
+                ;
+    }
+
     @GetMapping("/ping")
     @ResponseBody
     public String ping() {
@@ -72,7 +88,6 @@ public class QuizController {
     @GetMapping("/{quizId}")
     public ModelAndView showQuizDetails(@PathVariable int quizId, HttpSession session) {
         String userName = (String) session.getAttribute("name");
-
 
         ModelAndView mav = new ModelAndView("quiz-details");
 
@@ -118,7 +133,6 @@ public class QuizController {
                                  HttpSession session) {
         String userName = (String) session.getAttribute("name");
 
-
         try {
             Quiz quiz = quizzes.getQuiz(quizId);
             if (quiz == null) {
@@ -161,7 +175,6 @@ public class QuizController {
                                    HttpSession session) {
         String userName = (String) session.getAttribute("name");
 
-
         try {
             Quiz quiz = quizzes.getQuiz(quizId);
             if (quiz == null) {
@@ -195,9 +208,26 @@ public class QuizController {
                 String paramName1 = "question_" + question.getQuestionID();
                 String paramName2 = "question_" + i;
 
-                String userAnswer = request.getParameter(paramName1);
-                if (userAnswer == null) {
-                    userAnswer = request.getParameter(paramName2);
+                String userAnswer = null;
+
+                // Handle multiple choice with multiple answers (checkboxes)
+                if (question instanceof Multi_Choice_Multi_Answer) {
+                    String[] selectedValues1 = request.getParameterValues(paramName1);
+                    String[] selectedValues2 = request.getParameterValues(paramName2);
+
+                    String[] selectedValues = selectedValues1 != null ? selectedValues1 : selectedValues2;
+
+                    if (selectedValues != null && selectedValues.length > 0) {
+                        userAnswer = String.join(", ", selectedValues);
+                    }
+
+                    System.out.println("Multiple checkbox values: " + Arrays.toString(selectedValues));
+                } else {
+                    // Handle single-value questions (radio buttons, text, etc.)
+                    userAnswer = request.getParameter(paramName1);
+                    if (userAnswer == null) {
+                        userAnswer = request.getParameter(paramName2);
+                    }
                 }
 
                 System.out.println("=== DEBUG: Question " + question.getQuestionID() + " (index " + i + ") ===");
@@ -261,12 +291,92 @@ public class QuizController {
                     } else if (question instanceof Picture_Response) {
                         correctAnswers.add(((Picture_Response) question).getCorrectAnswer());
                     } else if (question instanceof Multi_Choice_Multi_Answer) {
-                        correctAnswers.addAll(((Multi_Choice_Multi_Answer) question).getCorrectAnswer());
+                        List<String> allCorrectAnswers = ((Multi_Choice_Multi_Answer) question).getCorrectAnswer();
+                        correctAnswers.addAll(allCorrectAnswers);
+
+                        // Special handling for multiple choice multiple answers
+                        boolean isCorrect = false;
+                        if (userAnswer != null && !userAnswer.trim().isEmpty()) {
+                            // Split user answers and normalize
+                            String[] userAnswerArray = userAnswer.split(",");
+                            Set<String> userAnswerSet = new HashSet<>();
+                            for (String ans : userAnswerArray) {
+                                userAnswerSet.add(ans.trim().toLowerCase());
+                            }
+
+                            // Create set of correct answers (normalized)
+                            Set<String> correctAnswerSet = new HashSet<>();
+                            for (String correct : allCorrectAnswers) {
+                                correctAnswerSet.add(correct.trim().toLowerCase());
+                            }
+
+                            // Must match exactly (same size, same content)
+                            isCorrect = userAnswerSet.size() == correctAnswerSet.size() &&
+                                    userAnswerSet.equals(correctAnswerSet);
+
+                            System.out.println("Multi-Choice-Multi-Answer Grading:");
+                            System.out.println("  Required: " + correctAnswerSet);
+                            System.out.println("  User provided: " + userAnswerSet);
+                            System.out.println("  Exact match: " + isCorrect);
+                        }
+
+                        correctAnswersMap.put(String.valueOf(question.getQuestionID()), correctAnswers);
+
+                        if (isCorrect) {
+                            score++;
+                        }
+
+                        // Skip standard grading for this question type
+                        continue;
                     } else if (question instanceof Matching) {
                         Map<String, String> pairs = ((Matching) question).getCorrectAnswer();
+
+                        // Build expected answer for display (use same order as user for consistency)
+                        List<String> displayCorrectAnswers = new ArrayList<>();
                         for (Map.Entry<String, String> entry : pairs.entrySet()) {
-                            correctAnswers.add(entry.getKey() + "=" + entry.getValue());
+                            displayCorrectAnswers.add(entry.getKey() + "=" + entry.getValue());
                         }
+                        correctAnswersMap.put(String.valueOf(question.getQuestionID()), displayCorrectAnswers);
+
+                        // Grade matching question - ORDER INDEPENDENT
+                        boolean isCorrect = false;
+                        if (userAnswer != null && !userAnswer.trim().isEmpty()) {
+                            // Split user answer into pairs
+                            String[] userPairs = userAnswer.split(",");
+                            Set<String> userPairSet = new HashSet<>();
+                            for (String pair : userPairs) {
+                                String cleanPair = pair.trim().toLowerCase();
+                                userPairSet.add(cleanPair);
+                            }
+
+                            // Create set of correct pairs
+                            Set<String> correctPairSet = new HashSet<>();
+                            for (Map.Entry<String, String> entry : pairs.entrySet()) {
+                                String correctPair = (entry.getKey() + "=" + entry.getValue()).toLowerCase();
+                                correctPairSet.add(correctPair);
+                            }
+
+                            // Compare sets (order doesn't matter)
+                            isCorrect = userPairSet.equals(correctPairSet);
+
+                            System.out.println("Matching grading (order independent):");
+                            System.out.println("  User pairs: " + userPairSet);
+                            System.out.println("  Correct pairs: " + correctPairSet);
+                            System.out.println("  Sets equal: " + isCorrect);
+
+                            // Debug: Check each pair individually
+                            for (String userPair : userPairSet) {
+                                boolean found = correctPairSet.contains(userPair);
+                                System.out.println("  '" + userPair + "' found: " + found);
+                            }
+                        }
+
+                        if (isCorrect) {
+                            score++;
+                        }
+
+                        // Skip standard grading
+                        continue;
                     }
 
                     correctAnswersMap.put(String.valueOf(question.getQuestionID()), correctAnswers);

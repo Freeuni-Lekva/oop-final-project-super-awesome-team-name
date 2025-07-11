@@ -64,10 +64,10 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(17,2,'Name all origianl members of the Guardians of the Galaxy','Multi-Answer',NULL,'Star-Lord,Gamora,Drax,Rocket,Groot',NULL,0);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(18,2,'Which of the following characters were in Avengers: Endgame?','Multiple Choice with Multiple Answers','Deadpool,Wolverine,Ant-Man,Captain America','Ant-man,Captain America',NULL,NULL);
+VALUES(18,2,'Which of the following characters were in Avengers: Endgame?','Multiple Choice with Multiple Answers','Deadpool,Wolverine,Ant-Man,Captain America','Ant-Man,Captain America',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(19,2,'Match each Marvel hero to their real name','Matching','Iron Man=T’Challa;Spider-Man=Tony Stark;Black Panther=Peter Parker','Iron Man=Tony Stark;Spider-Man=Peter Parker;Black Panther=T’Challa',NULL,NULL);
+VALUES(19,2,'Match each Marvel hero to their real name','Matching','Iron Man=TChalla;Spider-Man=Tony Stark;Black Panther=Peter Parker','Iron Man=Tony Stark;Spider-Man=Peter Parker;Black Panther=T’Challa',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(20,2,'The super-soldier serum was used to enhance _ _ into Captain America.','Fill in the Blank',NULL,'Steve Rogers',NULL,NULL);
@@ -95,7 +95,7 @@ VALUES(25,3,'Name three countries that have hosted the FIFA World Cup latest.','
 
 INSERT INTO questions (id,quiz_id, question_text, question_type, possible_answers, correct_answer)
 VALUES(26,3,'Which of the following players have played for Real Madrid? (Select all that apply)','Multiple Choice with Multiple Answers',
-       'Kylian Mbappé,Cristiano Ronaldo,Luka Modrić,Ronaldinho','Cristiano Ronaldo,Luka Modrić');
+       'Kylian Mbappe,Cristiano Ronaldo,Luka Modric,Ronaldinho','Cristiano Ronaldo,Luka Modrić');
 
 INSERT INTO questions (id,quiz_id, question_text, question_type, correct_answer)
 VALUES(27,3,'Match the footballers to their national teams.','Matching','Lionel Messi=Argentina;Harry Kane=England;Neymar=Brazil;Luka Modrić=Croatia');

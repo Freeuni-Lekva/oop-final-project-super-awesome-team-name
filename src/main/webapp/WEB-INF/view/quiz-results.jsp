@@ -4,8 +4,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href = ${pageContext.request.contextPath}/css/QuizResultsStyle.css>
-    <title>Quiz Results: ${quiz.title}</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/QuizResultsStyle.css">
+    <title>Quiz Results: ${quiz.quizName}</title>
 
 </head>
 <body>
@@ -13,7 +13,7 @@
     <div class="quiz-header">
         <div class="quiz-header-content">
             <h1>Quiz Completed!</h1>
-            <h2>${quiz.title}</h2>
+            <h2>${quiz.quizName}</h2>
         </div>
     </div>
 
@@ -76,13 +76,13 @@
 
         <div class="nav-section">
             <a href="/quiz" class="btn btn-primary">Browse More Quizzes</a>
-            <a href="/quiz/${quiz.quizId}" class="btn btn-secondary">Quiz Details</a>
+            <a href="/quiz/${quiz.quizID}" class="btn btn-secondary">Quiz Details</a>
             <a href="/history" class="btn btn-secondary">My History</a>
-            <c:if test="${quiz.allowPracticeMode}">
-                <a href="/quiz/${quiz.quizId}/take?practiceMode=true" class="btn btn-success">Practice Again</a>
+            <c:if test="${quiz.practiceMode}">
+                <a href="/quiz/${quiz.quizID}/take?practiceMode=true" class="btn btn-success">Practice Again</a>
             </c:if>
             <c:if test="${not practiceMode}">
-                <a href="/quiz/${quiz.quizId}/take" class="btn btn-success">Retake Quiz</a>
+                <a href="/quiz/${quiz.quizID}/take" class="btn btn-success">Retake Quiz</a>
             </c:if>
         </div>
 
@@ -91,8 +91,8 @@
 
             <c:forEach items="${questions}" var="question" varStatus="status">
                 <!-- Use the userAnswers map directly with string keys -->
-                <c:set var="userAnswer" value="${userAnswers[question.questionId.toString()]}" />
-                <c:set var="correctAnswers" value="${correctAnswersMap[question.questionId.toString()]}" />
+                <c:set var="userAnswer" value="${userAnswers[question.questionID.toString()]}" />
+                <c:set var="correctAnswers" value="${correctAnswersMap[question.questionID.toString()]}" />
 
                 <c:set var="isCorrect" value="false" />
                 <c:if test="${not empty userAnswer}">
@@ -105,7 +105,7 @@
 
                 <div class="question-review ${isCorrect ? 'correct' : 'incorrect'}">
                     <div class="question-review-header">
-                        Question ${status.index + 1}: ${question.questionText}
+                        Question ${status.index + 1}: ${question.question}
                         <span class="status-badge status-${isCorrect ? 'correct' : 'incorrect'}">
                                 ${isCorrect ? 'Correct' : 'Incorrect'}
                         </span>
