@@ -15,7 +15,7 @@ public class QuizDAO {
     private BasicDataSource db;
 
     //Inserts Quizzes into Quiz Table
-    public void insertQuiz(Quiz quiz,List<Question> questions) throws SQLException {
+    public void insertQuiz(Quiz quiz) throws SQLException {
         String sql = "INSERT INTO quizzes (name, description,num_questions,random_order, one_page, immediate_correction, practice_mode,creator_username) VALUES (?, ?, ?, ?, ?, ?,?,?)";
         try (Connection conn = db.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -33,7 +33,7 @@ public class QuizDAO {
             try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()){
                     int quizId = rs.getInt(1);
-                    insertQuestions(quizId, questions);
+                    insertQuestions(quizId, quiz.getQuestions());
 
 
                 }else{
@@ -230,7 +230,7 @@ public class QuizDAO {
     }
 
     // return the number of existing Quizzes
-    public int numberOfQuizzes() throws SQLException {
+    public int numberOfQuizzes(){
         int count = 0;
         String query = "SELECT COUNT(*) FROM quizzes";
 
@@ -241,7 +241,10 @@ public class QuizDAO {
             if (rs.next()) {
                 count = rs.getInt(1);
             }
+        }catch (SQLException e){
+            throw new RuntimeException("Failed to retrieve number of quizzes" + e);
         }
+
 
         return count;
     }

@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/CreateQuiz")
 public class CreateQuizController {
 
+    private final int maxQuestions = 20;
+
     @PostMapping()
     public String handleQuizForm(
             HttpServletRequest request,
@@ -24,18 +26,8 @@ public class CreateQuizController {
         String immediateCorrection = request.getParameter("immediateCorrection") != null ? request.getParameter("immediateCorrection") : "No";
         String practiceMode = request.getParameter("practiceMode") != null ? request.getParameter("practiceMode") : "No";
 
-        int numQuestions;
+        int numQuestions = Integer.parseInt(numQuestionsStr);
 
-        try {
-            numQuestions = Integer.parseInt(numQuestionsStr);
-            if (numQuestions < 1 || numQuestions > 20) {
-                redirectAttributes.addFlashAttribute("errorMessage", "Number of questions must be between 1 and 20.");
-                return "redirect:/CreateQuiz";
-            }
-        } catch (NumberFormatException e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Invalid number of questions.");
-            return "redirect:/CreateQuiz";
-        }
 
         // Redirect to quiz form page with query parameters
         return "redirect:/CreateQuizForm"
@@ -50,7 +42,9 @@ public class CreateQuizController {
     }
 
     @GetMapping()
-    public String showQuizCreation(){
+    public String showQuizCreation(HttpServletRequest request){
+
+        request.setAttribute("maxQuestions", maxQuestions);
         return "CreateQuiz";
     }
 }
