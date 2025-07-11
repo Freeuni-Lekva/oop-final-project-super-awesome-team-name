@@ -319,7 +319,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(87,9,'Who is the creator of Attack on Titan?','Question-Response',NULL,'Hajime Isayama',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(88,9,'Match the anime to its protagonist','Matching','Naruto=Ichigo Kurosaki;Death Note=Naruto Uzumaki;Bleach=Yuji Itado;One Piece=Light Yagami;Jujutsu Kaisen=Monkey D. Luffy','Naruto=Naruto Uzumaki;Death Note=Light Yagami;Bleach=Ichigo Kurosaki;One Piece=Monkey D. Luffy;Jujutsu Kaisen=Yuji Itado',NULL,NULL);
+VALUES(88,9,'Match the anime to its protagonist','Matching','Naruto=Ichigo Kurosaki;Death Note=Naruto Uzumaki;Bleach=Yuji Itadori;One Piece=Light Yagami;Jujutsu Kaisen=Monkey D. Luffy','Naruto=Naruto Uzumaki;Death Note=Light Yagami;Bleach=Ichigo Kurosaki;One Piece=Monkey D. Luffy;Jujutsu Kaisen=Yuji Itado',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(89,9,'Tokyo Ghoul is set in a world where humans coexist with flesh-eating creatures called _.','Fill in the Blank',NULL,'Ghouls',NULL,NULL);
