@@ -63,10 +63,10 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(17,2,'Name all original members of the Guardians of the Galaxy','Multi-Answer',NULL,'Star-Lord,Gamora,Drax,Rocket,Groot',NULL,0);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(18,2,'Which of the following characters were in Avengers: Endgame?','Multiple Choice with Multiple Answers','Deadpool,Wolverine,Ant-Man,Captain America','Ant-man,Captain America',NULL,NULL);
+VALUES(18,2,'Which of the following characters were in Avengers: Endgame?','Multiple Choice with Multiple Answers','Deadpool,Wolverine,Ant-Man,Captain America','Ant-Man,Captain America',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(19,2,'Match each Marvel hero to their real name','Matching','Iron Man=T’Challa;Spider-Man=Tony Stark;Black Panther=Peter Parker','Iron Man=Tony Stark;Spider-Man=Peter Parker;Black Panther=T’Challa',NULL,NULL);
+VALUES(19,2,'Match each Marvel hero to their real name','Matching','Iron Man=T''Challa;Spider-Man=Tony Stark;Black Panther=Peter Parker','Iron Man=Tony Stark;Spider-Man=Peter Parker;Black Panther=T''Challa',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(20,2,'The super-soldier serum was used to enhance _ _ into Captain America.','Fill in the Blank',NULL,'Steve Rogers',NULL,NULL);
@@ -87,17 +87,17 @@ INSERT INTO questions (id,quiz_id, question_text, question_type, possible_answer
 VALUES(23,3,'Which country has won the most FIFA World Cups?','Multiple Choice','Brazil,Germany,Italy,Argentina','Brazil');
 
 INSERT INTO questions (id,quiz_id, question_text, question_type, imageURL, correct_answer)
-VALUES(24,3,'Identify the player in the image.','Picture-Response','https://upload.wikimedia.org/wikipedia/commons/8/89/Cristiano_Ronaldo_2018.jpg','Cristiano Ronaldo');
+VALUES(24,3,'Identify the player in the image.','Picture-Response','https://th.bing.com/th/id/OIP.eupohIiFL08KNRcol8X6vwHaDt?w=329&h=174&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3','Cristiano Ronaldo');
 
 INSERT INTO questions (id,quiz_id, question_text, question_type, correct_answer, order_matters)
 VALUES(25,3,'Name three countries that have hosted the FIFA World Cup latest.','Multi-Answer','Qatar,Russia,Brazil',false);
 
 INSERT INTO questions (id,quiz_id, question_text, question_type, possible_answers, correct_answer)
 VALUES(26,3,'Which of the following players have played for Real Madrid? (Select all that apply)','Multiple Choice with Multiple Answers',
-       'Kylian Mbappé,Cristiano Ronaldo,Luka Modrić,Ronaldinho','Cristiano Ronaldo,Luka Modrić');
+       'Kylian Mbappe,Cristiano Ronaldo,Luka Modric,Ronaldinho','Cristiano Ronaldo,Luka Modric');
 
 INSERT INTO questions (id,quiz_id, question_text, question_type, correct_answer)
-VALUES(27,3,'Match the footballers to their national teams.','Matching','Lionel Messi=Argentina;Harry Kane=England;Neymar=Brazil;Luka Modrić=Croatia');
+VALUES(27,3,'Match the footballers to their national teams.','Matching','Lionel Messi=Argentina;Harry Kane=England;Neymar=Brazil;Luka Modric=Croatia');
 
 INSERT INTO questions (id,quiz_id, question_text, question_type, correct_answer)
 VALUES(28,3,'The football club Manchester United plays its home games at _ _.','Fill in the Blank','Old Trafford');
@@ -260,7 +260,7 @@ VALUES(70,7,'Match the Gaming Console to Its Manufacturer','Matching','PlayStati
 
 ## Quiz 8 (Esports Quiz)
 INSERT INTO quizzes(id, name, description, num_questions, random_order, one_page, immediate_correction, practice_mode, creator_username)
-VALUES(8,'Esports Quiz','Like competitive gaming? give this Esport Quiz a go!', 15,1,1,0,0,'Admin');
+VALUES(8,'Esports Quiz','Like competitive gaming? give this Esports Quiz a go!', 15,1,1,0,0,'Admin');
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(71,8,'Who was the first Person in the League of Legends Hall of Fame?','Question-Response',NULL,'Faker',NULL,NULL);
@@ -275,7 +275,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(74,8,'Who won Austin major 2025 ','Question-Response',NULL,'Vitality',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES (75,8,'Match the organizations to the Regions','Matching','G2=North America;mibr=Europe;TSM=Brazil;Paper Rex=China;BLG=Pacific','G2=Europe;MIBR=Brazil;TSM=North America;Paper Rex=Pacific;BLG=China',NULL,NULL);
+VALUES (75,8,'Match the organizations to the Regions','Matching','G2=North America;MIBR=Europe;TSM=Brazil;Paper Rex=China;BLG=Pacific','G2=Europe;MIBR=Brazil;TSM=North America;Paper Rex=Pacific;BLG=China',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES (76,8,'Which Country won Overwatch World Cup 2016','Multiple Choice','Singapore,Russia,Sweden,South Korea','South Korea',NULL,NULL);
