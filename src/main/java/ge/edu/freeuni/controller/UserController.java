@@ -47,7 +47,7 @@ public class UserController {
             } else {
                 session.setAttribute("name", name);
                 result.put("status", "success");
-                result.put("redirectUrl", "/admin"); //homepageURl
+                result.put("redirectUrl", "/home"); //homepageURl
                 if (users.isAdmin(name)) {
                     session.setAttribute("isAdmin", true);
                 }
@@ -59,16 +59,16 @@ public class UserController {
             } else {
                 session.setAttribute("name", name);
                 result.put("status", "success");
-                result.put("redirectUrl", "/admin"); //homepageURl
+                result.put("redirectUrl", "/home"); //homepageURl
             }
         }
         return result;
     }
 
-    @GetMapping("/logout")
+    @GetMapping("/home/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "welcome";
+        return "redirect:/welcome";
     }
 
 }
