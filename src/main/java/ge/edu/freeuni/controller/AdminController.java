@@ -1,6 +1,7 @@
 package ge.edu.freeuni.controller;
 
 import ge.edu.freeuni.dao.AnnouncementDao;
+import ge.edu.freeuni.dao.QuizAttemptDao;
 import ge.edu.freeuni.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,9 @@ public class AdminController {
 
     @Autowired
     private AnnouncementDao announcements;
+
+    @Autowired
+    private QuizAttemptDao quizAttempts;
 
     @GetMapping
     public String adminPanel(HttpSession session) {
@@ -65,6 +69,15 @@ public class AdminController {
             }
 
             case "clearHistory": {
+                if(quizAttempts.deleteQuizHistory(Integer.parseInt(text))) {
+                    result.put("status", "success");
+                    result.put("message", "Quiz history removed: #" + text);
+                } else {
+                    result.put("status", "error");
+                    result.put("message", "Quiz history removal failed: #" + text);
+
+
+                }
                 break;
             }
 
