@@ -143,7 +143,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(39,4,'Which of these artists performed at Coachella 2024?','Multiple Choice with Multiple Answers','Lana Del Rey,Ice Spice,Travis Scott,Dua Lipa','Lana Del Rey,Ice Spice,Travis Scott',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(40,4,'Match each artist to their 2023–2025 hit','Matching','Olivia Rodrigo=Lunch;Ice Spice=Deli;SZA=Vampire;Billie Eilish=Kill Bill','Olivia Rodrigo=Vampire;Ice Spice=Deli;SZA=Kill Bill;Billie Eilish=Lunch',NULL,NULL);
+VALUES(40,4,'Match each artist to their 2023-2025 hit','Matching','Olivia Rodrigo=Lunch;Ice Spice=Deli;SZA=Vampire;Billie Eilish=Kill Bill','Olivia Rodrigo=Vampire;Ice Spice=Deli;SZA=Kill Bill;Billie Eilish=Lunch',NULL,NULL);
 
 
 
@@ -199,7 +199,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(53,6,'Name this Villain','Picture-Response',NULL,'Pagan Min','https://th.bing.com/th/id/OIP.p7cdNVv52aE3xwr62oEhnQHaEK?w=331&h=187&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3',NULL);
 
 Insert Into questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(54,6,'Who is the main protagonist in the game series “God of War”?','Question-Response',NULL,'Kratos',NULL,NULL);
+VALUES(54,6,'Who is the main protagonist in the game series "God of War"?','Question-Response',NULL,'Kratos',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
     VALUE(55,6,'Name all the playable Characters in GTA 5','Multi-Answer',NULL,'Trevor Philips,Michael De Santa,Franklin Clinton',NULL,0);
