@@ -94,7 +94,7 @@ VALUES(25,3,'Name three countries that have hosted the FIFA World Cup latest.','
 
 INSERT INTO questions (id,quiz_id, question_text, question_type, possible_answers, correct_answer)
 VALUES(26,3,'Which of the following players have played for Real Madrid? (Select all that apply)','Multiple Choice with Multiple Answers',
-       'Kylian Mbappe,Cristiano Ronaldo,Luka Modric,Ronaldinho','Cristiano Ronaldo,Luka Modric');
+       'Kylian Mbappe,Cristiano Ronaldo,Luka Modric,Ronaldinho','Kylian Mbappe,Cristiano Ronaldo,Luka Modric');
 
 INSERT INTO questions (id,quiz_id, question_text, question_type, correct_answer)
 VALUES(27,3,'Match the footballers to their national teams.','Matching','Lionel Messi=Argentina;Harry Kane=England;Neymar=Brazil;Luka Modric=Croatia');
