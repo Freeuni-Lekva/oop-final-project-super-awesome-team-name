@@ -5,6 +5,7 @@ import ge.edu.freeuni.model.QuizEngine.Quiz;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import java.sql.*;
 import java.util.*;
 
@@ -22,7 +23,7 @@ public class QuizDAO {
 
             stmt.setString(1, quiz.getQuizName());
             stmt.setString(2, quiz.getDescription());
-            stmt.setInt(3,quiz.getNQuestions());
+            stmt.setInt(3, quiz.getNQuestions());
             stmt.setBoolean(4, quiz.isRandomOrder());
             stmt.setBoolean(5, quiz.isOnePage());
             stmt.setBoolean(6, quiz.isImmediateCorrection());
@@ -31,17 +32,14 @@ public class QuizDAO {
             stmt.executeUpdate();
 
             try (ResultSet rs = stmt.getGeneratedKeys()) {
-                if (rs.next()){
+                if (rs.next()) {
                     int quizId = rs.getInt(1);
                     insertQuestions(quizId, quiz.getQuestions());
-
-
-                }else{
+                } else {
                     throw new SQLException("Failed to insert quiz.");
                 }
             }
         }
-
     }
 
     //Inserts Questions into the Questions Table
@@ -101,12 +99,14 @@ public class QuizDAO {
     }
 
     //Deletes a Quiz(Admin Functionality)
-    public void deleteQuiz(int quizId) throws SQLException {
+    public boolean removeQuiz(int quizId) {
         String sql = "DELETE FROM quizzes WHERE id = ?";
         try (Connection conn = db.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, quizId);
-            stmt.executeUpdate();
+            return stmt.executeUpdate() == 1;
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to remove quiz: #" + quizId, e);
         }
     }
 
@@ -180,8 +180,8 @@ public class QuizDAO {
                             q = new Multi_Choice_Multi_Answer(prompt, type, multiChoices, multiCorrect);
                             break;
                         case "Matching":
-                            HashMap<String,String> pairs = new HashMap<>();
-                            String [] paired = correct.split(";");
+                            HashMap<String, String> pairs = new HashMap<>();
+                            String[] paired = correct.split(";");
                             for (String pair : paired) {
                                 String[] keyValue = pair.split("=");
                                 pairs.put(keyValue[0], keyValue[1]);
@@ -230,7 +230,7 @@ public class QuizDAO {
     }
 
     // return the number of existing Quizzes
-    public int numberOfQuizzes(){
+    public int numberOfQuizzes() {
         int count = 0;
         String query = "SELECT COUNT(*) FROM quizzes";
 
@@ -241,7 +241,7 @@ public class QuizDAO {
             if (rs.next()) {
                 count = rs.getInt(1);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException("Failed to retrieve number of quizzes" + e);
         }
 
@@ -277,7 +277,6 @@ public class QuizDAO {
                 }
             }
         }
-
         return quizzes;
     }
 
