@@ -12,11 +12,11 @@ public class HomeController {
         return "home";        // home.jsp
     }
 
-    @GetMapping("/home/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/welcome";
-    }
+    //@GetMapping("/home/logout")
+    //public String logout(HttpSession session) {
+    //    session.invalidate();
+    //    return "redirect:/welcome";
+    //}
 
     @GetMapping("/profile")
     public String profile() {

@@ -60,10 +60,10 @@ public class UserController {
         return result;
     }
 
-    @GetMapping("/logout")
+    @GetMapping("/home/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "welcome";
+        return "redirect:/welcome";
     }
 
 }
