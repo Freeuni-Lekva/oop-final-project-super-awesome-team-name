@@ -15,12 +15,12 @@
 
   <div class="box achievements-box">
     <div class="box-title">Achievements:</div>
-    <!-- empty content for now -->
+    <!-- empty for now -->
   </div>
 
   <div class="box friends-box">
     <div class="box-title">Friends:</div>
-    <!-- empty content for now -->
+
   </div>
 </div>
 </body>
