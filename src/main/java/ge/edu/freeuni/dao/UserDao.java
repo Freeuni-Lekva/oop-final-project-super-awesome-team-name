@@ -34,7 +34,7 @@ public class UserDao {
                 if (rs.next()) {
                     User user = new User(rs.getString("name"),
                             rs.getString("hashedpassword"));
-                    if(rs.getBoolean("isAdmin")){
+                    if (rs.getBoolean("isAdmin")) {
                         user.setAdmin();
                     }
                     return user;
@@ -114,15 +114,11 @@ public class UserDao {
 
     public int numberOfUsers() {
         String sql = "SELECT COUNT(*) FROM users;";
-
         try (Connection con = db.getConnection();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
-
             rs.next();
-
             return rs.getInt(1);
-
         } catch (SQLException e) {
             throw new RuntimeException("Failed to count users." + e);
         }
