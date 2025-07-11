@@ -149,7 +149,7 @@ VALUES(40,4,'Match each artist to their 2023-2025 hit','Matching','Olivia Rodrig
 
 ## Quiz 5 (Films)
 INSERT INTO quizzes(id, name, description, num_questions, random_order, one_page, immediate_correction, practice_mode, creator_username)
-VALUES(5,'Films Quiz','Like watching Films? see if you can get them all correct',10,1,1,0,0,'Admin');
+VALUES(5,'Films Quiz','Like watching Films? see if you can get them all correct',10,1,0,1,1,'Admin');
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(41,5,'In The Film "Hangover" Tiger belongs to the Actor _','Fill in the Blank',NULL,'Mike Tyson',NULL,NULL);
@@ -260,7 +260,7 @@ VALUES(70,7,'Match the Gaming Console to Its Manufacturer','Matching','PlayStati
 
 ## Quiz 8 (Esports Quiz)
 INSERT INTO quizzes(id, name, description, num_questions, random_order, one_page, immediate_correction, practice_mode, creator_username)
-VALUES(8,'Esports Quiz','Like competitive gaming? give this Esports Quiz a go!', 15,1,1,0,0,'Admin');
+VALUES(8,'Esports Quiz','Like competitive gaming? give this Esports Quiz a go!', 15,1,0,1,1,'Admin');
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(71,8,'Who was the first Person in the League of Legends Hall of Fame?','Question-Response',NULL,'Faker',NULL,NULL);
@@ -310,7 +310,7 @@ VALUES(85,8,'Which of these Football Clubs have Valorant Teams?','Multiple Choic
 
 ## Quiz 9 (Anime Quiz)
 INSERT INTO quizzes(id, name, description, num_questions, random_order, one_page, immediate_correction, practice_mode, creator_username)
-VALUES(9,'Anime Quiz','Immerse yourself in the World of Anime, try this Quiz out!',15,1,1,0,0,'Admin');
+VALUES(9,'Anime Quiz','Immerse yourself in the World of Anime, try this Quiz out!',15,1,0,1,1,'Admin');
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(86,9,'Name the Original "Big 3" Anime','Multi-Answer',NULL,'One Piece,Naruto,Bleach',NULL,NULL);
