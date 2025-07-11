@@ -133,4 +133,20 @@ public class QuizAttemptDao {
         }
         return 0;
     }
+
+
+    public boolean deleteQuizHistory(int quizId){
+        String sql = "DELETE FROM quiz_attempts WHERE quiz_id = ?";
+
+        try (Connection conn = db.getConnection();
+             PreparedStatement stmt =  conn.prepareStatement(sql)) {
+            stmt.setInt(1, quizId);
+
+            return stmt.executeUpdate()==1;
+
+        }catch (SQLException e){
+            throw new RuntimeException("Failed to delete quiz attempt", e);
+        }
+
+    }
 }

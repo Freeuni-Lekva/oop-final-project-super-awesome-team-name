@@ -217,7 +217,7 @@ public class AchievementDao {
 
 
     private int getQuizCreatedCount(String userName) {
-        String sql = "SELECT COUNT(*) FROM quizzes WHERE creator_name = ?";
+        String sql = "SELECT COUNT(*) FROM quizzes WHERE creator_username = ?";
 
         try (Connection con = db.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
