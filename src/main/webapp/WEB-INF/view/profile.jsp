@@ -19,7 +19,9 @@
                 <a href="/" class="nav-link">Home</a>
                 <a href="/quiz" class="nav-link">Browse Quizzes</a>
                 <a href="/CreateQuiz" class="nav-link">Create Quiz</a>
-                <a href="/history" class="nav-link">My History</a>
+                <a href="/history" class="nav-link">Quiz History</a>
+                <a href="/friends/list" class="nav-link">My Friends</a>
+                <a href="/friends/search" class="nav-link">Find Friends</a>
                 <a href="/messages/inbox" class="nav-link">Messages
                     <c:if test="${unreadMessageCount > 0}">
                         <span class="notification-badge">${unreadMessageCount}</span>
