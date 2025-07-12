@@ -24,7 +24,6 @@
         <div class="nav">
             <a href="/">Home</a>
             <a href="/quiz">Browse Quizzes</a>
-            <a href="/history/test">Add Test Attempt</a>
         </div>
 
         <c:if test="${not empty message}">

@@ -7,6 +7,47 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/QuizResultsStyle.css">
     <title>Quiz Results: ${quiz.quizName}</title>
 
+    <style>
+
+        .question-review {
+            min-height: 200px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+
+        .answer-comparison {
+            min-height: 120px;
+            line-height: 1.6;
+            padding: 15px 0;
+        }
+
+        .user-answer, .correct-answer {
+            min-height: 60px;
+            margin-bottom: 20px;
+            padding: 8px 0;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .question-review-header {
+            margin-bottom: 20px;
+            min-height: 30px;
+        }
+
+        .user-answer strong, .correct-answer strong {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .user-answer div, .correct-answer div {
+            display: block;
+            margin-top: 8px;
+            max-width: 100%;
+            word-break: break-word;
+            padding-left: 0;
+        }
+    </style>
 </head>
 <body>
 <div class="panel">
@@ -90,11 +131,8 @@
             <h2>Question Review</h2>
 
             <c:forEach items="${questions}" var="question" varStatus="status">
-                <!-- Use the userAnswers map directly with string keys -->
                 <c:set var="userAnswer" value="${userAnswers[question.questionID.toString()]}" />
                 <c:set var="correctAnswers" value="${correctAnswersMap[question.questionID.toString()]}" />
-
-                <!-- Use the grading results from the controller instead of doing our own comparison -->
                 <c:set var="isCorrect" value="${gradingResults[question.questionID.toString()]}" />
 
                 <div class="question-review ${isCorrect ? 'correct' : 'incorrect'}">
@@ -108,18 +146,18 @@
                     <div class="answer-comparison">
                         <div class="user-answer">
                             <strong>Your Answer:</strong>
-                            <span class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                            <div class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
                                 <c:choose>
                                     <c:when test="${not empty userAnswer}">${userAnswer}</c:when>
                                     <c:otherwise><em>No answer provided</em></c:otherwise>
                                 </c:choose>
-                            </span>
+                            </div>
                         </div>
 
                         <c:if test="${not isCorrect}">
                             <div class="correct-answer">
                                 <strong>Correct Answer(s):</strong>
-                                    ${correctAnswers}
+                                <div>${correctAnswers}</div>
                             </div>
                         </c:if>
                     </div>

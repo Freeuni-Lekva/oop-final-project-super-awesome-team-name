@@ -22,10 +22,8 @@
         <p>${quiz.description}</p>
     </div>
 
-    <!-- Check if this is a single page quiz -->
     <c:choose>
         <c:when test="${quiz.onePage}">
-            <!-- SINGLE PAGE MODE: Show all questions at once -->
             <div class="quiz-info">
                 <div class="quiz-info-left">
                     <div>
@@ -34,9 +32,6 @@
                     <c:if test="${practiceMode}">
                         <span class="practice-mode">Practice Mode</span>
                     </c:if>
-                    <div class="quiz-mode-indicator">
-                        <span class="single-page-mode">Single Page Mode</span>
-                    </div>
                 </div>
                 <div class="timer">
                     Time: <span id="timer">00:00</span>
@@ -159,8 +154,6 @@
                                             <c:if test="${fn:contains(cleanPair, '=')}">
                                                 <c:set var="leftItem" value="${fn:trim(fn:substringBefore(cleanPair, '='))}" />
                                                 <c:set var="rightItem" value="${fn:trim(fn:substringAfter(cleanPair, '='))}" />
-
-                                                <!-- Clean up { and } characters -->
                                                 <c:set var="leftItem" value="${fn:replace(leftItem, '{', '')}" />
                                                 <c:set var="leftItem" value="${fn:replace(leftItem, '}', '')}" />
                                                 <c:set var="rightItem" value="${fn:replace(rightItem, '{', '')}" />
@@ -248,7 +241,6 @@
             </div>
         </c:when>
         <c:otherwise>
-            <!-- MULTI-PAGE MODE: This shouldn't normally be reached, but just in case -->
             <div class="content-area">
                 <div class="quiz-mode-notice">
                     <h3>Multi-Page Quiz Mode</h3>
@@ -268,7 +260,6 @@
 </div>
 
 <script type="text/javascript">
-    // Only run scroll progress for single page mode
     <c:if test="${quiz.onePage}">
     window.addEventListener('scroll', function() {
         var scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;

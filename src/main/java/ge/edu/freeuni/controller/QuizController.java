@@ -46,22 +46,15 @@ public class QuizController {
         ModelAndView mav = new ModelAndView("quiz-list");
 
         try {
-            System.out.println("DEBUG: Getting all quizzes...");
+
             List<Quiz> allQuizzes = quizzes.getAllQuizzes();
-            System.out.println("DEBUG: Found " + allQuizzes.size() + " total quizzes");
-
-            System.out.println("DEBUG: Getting popular quizzes...");
             List<Quiz> popularQuizzes = quizzes.getPopularQuizzes(5);
-            System.out.println("DEBUG: Found " + popularQuizzes.size() + " popular quizzes");
-
             mav.addObject("allQuizzes", allQuizzes);
             mav.addObject("popularQuizzes", popularQuizzes);
 
             return mav;
         } catch (Exception e) {
-            System.err.println("ERROR in listQuizzes: " + e.getMessage());
             e.printStackTrace();
-
             mav.addObject("error", "Failed to load quizzes: " + e.getMessage());
             mav.addObject("allQuizzes", new ArrayList<Quiz>());
             mav.addObject("popularQuizzes", new ArrayList<Quiz>());
@@ -102,7 +95,6 @@ public class QuizController {
 
             return mav;
         } catch (Exception e) {
-            System.err.println("ERROR in showQuizDetails: " + e.getMessage());
             e.printStackTrace();
 
             mav.setViewName("redirect:/quiz");
@@ -133,49 +125,34 @@ public class QuizController {
             }
 
             List<Question> quizQuestions = quizzes.getQuestions(quizId);
-            System.out.println("DEBUG: Found " + quizQuestions.size() + " questions for quiz " + quizId);
 
-            // For multi-page mode, only shuffle and store questions ONCE at the beginning
+            //  multi-page mode
             if (!quiz.isOnePage()) {
                 List<Question> storedQuestions = (List<Question>) session.getAttribute("quizQuestions_" + quizId);
 
                 if (storedQuestions == null || questionIndex == 0) {
-                    // First time or explicitly starting over - shuffle and store
                     if (quiz.isRandomOrder()) {
                         Collections.shuffle(quizQuestions);
-                        System.out.println("DEBUG: Questions randomized for quiz " + quizId);
-                    } else {
-                        System.out.println("DEBUG: Questions kept in original order for quiz " + quizId);
                     }
                     session.setAttribute("quizQuestions_" + quizId, quizQuestions);
-
-                    // Clear any existing session data when starting over
+                    //refreshingggggggg
                     if (questionIndex == 0) {
                         session.removeAttribute("quizAnswers_" + quizId);
                         session.removeAttribute("quizCorrectAnswers_" + quizId);
                         session.removeAttribute("quizGradingResults_" + quizId);
-                        System.out.println("DEBUG: Cleared existing session data for fresh start");
                     }
                 } else {
-                    // Use stored questions to maintain consistent order
                     quizQuestions = storedQuestions;
-                    System.out.println("DEBUG: Using stored questions for quiz " + quizId + " (maintaining order)");
                 }
             } else {
-                // Single page mode - shuffle normally
+                // Single page mode
                 if (quiz.isRandomOrder()) {
                     Collections.shuffle(quizQuestions);
-                    System.out.println("DEBUG: Questions randomized for quiz " + quizId);
-                } else {
-                    System.out.println("DEBUG: Questions kept in original order for quiz " + quizId);
                 }
-                // Store questions in session for single page mode too
                 session.setAttribute("quizQuestions_" + quizId, quizQuestions);
             }
 
             if (quiz.isOnePage()) {
-                // SINGLE PAGE MODE: Show all questions at once
-                System.out.println("DEBUG: Using single page mode for quiz " + quizId);
                 ModelAndView mav = new ModelAndView("take-quiz");
                 mav.addObject("quiz", quiz);
                 mav.addObject("questions", quizQuestions);
@@ -185,21 +162,15 @@ public class QuizController {
                 session.setAttribute("quizStartTime", System.currentTimeMillis());
                 return mav;
             } else {
-                // MULTIPLE PAGE MODE: Show one question at a time
-                System.out.println("DEBUG: Using multiple page mode for quiz " + quizId + ", question index: " + questionIndex);
-
                 if (questionIndex >= quizQuestions.size()) {
-                    // Quiz completed, show results
                     return processMultiPageQuizCompletion(quizId, practiceMode, session);
                 }
 
-                // Initialize session data for multi-page quiz
                 if (questionIndex == 0) {
                     session.setAttribute("quizStartTime", System.currentTimeMillis());
                     session.setAttribute("quizAnswers_" + quizId, new HashMap<String, String>());
                     session.setAttribute("quizCorrectAnswers_" + quizId, new HashMap<String, Object>());
                     session.setAttribute("quizGradingResults_" + quizId, new HashMap<String, Boolean>());
-                    System.out.println("DEBUG: Initialized fresh session data for quiz " + quizId);
                 }
 
                 Question currentQuestion = quizQuestions.get(questionIndex);
@@ -210,11 +181,9 @@ public class QuizController {
                 mav.addObject("totalQuestions", quizQuestions.size());
                 mav.addObject("practiceMode", practiceMode);
                 mav.addObject("userName", userName);
-
                 return mav;
             }
         } catch (Exception e) {
-            System.err.println("ERROR in takeQuiz: " + e.getMessage());
             e.printStackTrace();
 
             ModelAndView mav = new ModelAndView("redirect:/quiz");
@@ -239,15 +208,14 @@ public class QuizController {
                 return mav;
             }
 
+            if (quiz.isImmediateCorrection()) {
+                ModelAndView mav = new ModelAndView("redirect:/quiz/" + quizId + "/take?questionIndex=" + questionIndex + "&practiceMode=" + practiceMode);
+                mav.addObject("error", "This quiz uses immediate correction mode");
+                return mav;
+            }
+
             Question currentQuestion = quizQuestions.get(questionIndex);
-            System.out.println("DEBUG: Processing single question " + currentQuestion.getQuestionID() + " (index " + questionIndex + ")");
-
-            // Get user answer using the same logic as full quiz submission
             String userAnswer = extractUserAnswer(currentQuestion, request);
-
-            System.out.println("DEBUG: User answer for question " + currentQuestion.getQuestionID() + ": '" + userAnswer + "'");
-
-            // Get session maps - ensure they exist
             Map<String, String> allAnswers = (Map<String, String>) session.getAttribute("quizAnswers_" + quizId);
             Map<String, Object> allCorrectAnswers = (Map<String, Object>) session.getAttribute("quizCorrectAnswers_" + quizId);
             Map<String, Boolean> allGradingResults = (Map<String, Boolean>) session.getAttribute("quizGradingResults_" + quizId);
@@ -265,26 +233,20 @@ public class QuizController {
                 session.setAttribute("quizGradingResults_" + quizId, allGradingResults);
             }
 
-            // Format user answer for display (but keep original for grading)
             String displayAnswer = formatUserAnswerForDisplay(currentQuestion, userAnswer);
             if (displayAnswer == null || displayAnswer.trim().isEmpty()) {
-                displayAnswer = ""; // Store empty string instead of null
+                displayAnswer = "";
             }
             allAnswers.put(String.valueOf(currentQuestion.getQuestionID()), displayAnswer);
 
-            System.out.println("DEBUG: Stored display answer: '" + displayAnswer + "'");
-
-            // Get and format correct answer
             Object correctAnswer = currentQuestion.getCorrectAnswer();
             String formattedCorrectAnswer = formatCorrectAnswerForDisplay(currentQuestion, correctAnswer);
             allCorrectAnswers.put(String.valueOf(currentQuestion.getQuestionID()), formattedCorrectAnswer);
 
-            // Grade the answer using the original userAnswer (not displayAnswer)
             boolean isCorrect = false;
             if (userAnswer != null && !userAnswer.trim().isEmpty()) {
                 isCorrect = currentQuestion.isCorrect(userAnswer);
 
-                // Character encoding fix for matching questions
                 if (currentQuestion instanceof Matching && !isCorrect) {
                     String normalizedAnswer = userAnswer
                             .replace("?", "ć")
@@ -302,24 +264,168 @@ public class QuizController {
 
             allGradingResults.put(String.valueOf(currentQuestion.getQuestionID()), isCorrect);
 
-            System.out.println("DEBUG: Question " + currentQuestion.getQuestionID() + " is correct: " + isCorrect);
-
-            // ALWAYS go directly to next question - NO immediate feedback page
             int nextIndex = questionIndex + 1;
             if (nextIndex >= quizQuestions.size()) {
-                // Quiz completed
+                //completed
                 return processMultiPageQuizCompletion(quizId, practiceMode, session);
             } else {
-                // Go to next question
+                //to next question
                 return new ModelAndView("redirect:/quiz/" + quizId + "/take?questionIndex=" + nextIndex + "&practiceMode=" + practiceMode);
             }
 
         } catch (Exception e) {
-            System.err.println("ERROR in submitSingleQuestion: " + e.getMessage());
             e.printStackTrace();
-
             ModelAndView mav = new ModelAndView("redirect:/quiz");
             mav.addObject("error", "Failed to submit answer");
+            return mav;
+        }
+    }
+
+    @PostMapping("/{quizId}/submit-answer")
+    @ResponseBody
+    public Map<String, Object> submitAnswerWithFeedback(@PathVariable int quizId,
+                                                        HttpServletRequest request,
+                                                        HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            String questionIndexStr = request.getParameter("questionIndex");
+            String practiceModeStr = request.getParameter("practiceMode");
+
+            if (questionIndexStr == null) {
+                response.put("success", false);
+                response.put("message", "Missing questionIndex parameter");
+                return response;
+            }
+
+            int questionIndex;
+            boolean practiceMode = "true".equals(practiceModeStr);
+
+            try {
+                questionIndex = Integer.parseInt(questionIndexStr);
+            } catch (NumberFormatException e) {
+                response.put("success", false);
+                response.put("message", "Invalid questionIndex: " + questionIndexStr);
+                return response;
+            }
+
+            Quiz quiz = quizzes.getQuiz(quizId);
+            List<Question> quizQuestions = (List<Question>) session.getAttribute("quizQuestions_" + quizId);
+
+            if (quiz == null) {
+                response.put("success", false);
+                response.put("message", "Quiz not found: " + quizId);
+                return response;
+            }
+
+            if (quizQuestions == null) {
+                response.put("success", false);
+                response.put("message", "Quiz session expired");
+                return response;
+            }
+
+            if (questionIndex >= quizQuestions.size()) {
+                response.put("success", false);
+                response.put("message", "Invalid question index: " + questionIndex);
+                return response;
+            }
+
+            Question currentQuestion = quizQuestions.get(questionIndex);
+            String userAnswer = extractUserAnswer(currentQuestion, request);
+            Map<String, String> allAnswers = (Map<String, String>) session.getAttribute("quizAnswers_" + quizId);
+            Map<String, Object> allCorrectAnswers = (Map<String, Object>) session.getAttribute("quizCorrectAnswers_" + quizId);
+            Map<String, Boolean> allGradingResults = (Map<String, Boolean>) session.getAttribute("quizGradingResults_" + quizId);
+
+            if (allAnswers == null) {
+                allAnswers = new HashMap<>();
+                session.setAttribute("quizAnswers_" + quizId, allAnswers);
+            }
+            if (allCorrectAnswers == null) {
+                allCorrectAnswers = new HashMap<>();
+                session.setAttribute("quizCorrectAnswers_" + quizId, allCorrectAnswers);
+            }
+            if (allGradingResults == null) {
+                allGradingResults = new HashMap<>();
+                session.setAttribute("quizGradingResults_" + quizId, allGradingResults);
+            }
+
+
+            String displayAnswer = formatUserAnswerForDisplay(currentQuestion, userAnswer);
+            if (displayAnswer == null || displayAnswer.trim().isEmpty()) {
+                displayAnswer = "";
+            }
+            allAnswers.put(String.valueOf(currentQuestion.getQuestionID()), displayAnswer);
+
+
+            Object correctAnswer = currentQuestion.getCorrectAnswer();
+            String formattedCorrectAnswer = formatCorrectAnswerForDisplay(currentQuestion, correctAnswer);
+            allCorrectAnswers.put(String.valueOf(currentQuestion.getQuestionID()), formattedCorrectAnswer);
+
+
+            boolean isCorrect = false;
+            if (userAnswer != null && !userAnswer.trim().isEmpty()) {
+                isCorrect = currentQuestion.isCorrect(userAnswer);
+                if (currentQuestion instanceof Matching && !isCorrect) {
+                    String normalizedAnswer = userAnswer
+                            .replace("?", "ć")
+                            .replace("Ã¡", "á")
+                            .replace("Ã©", "é")
+                            .replace("Ã­", "í")
+                            .replace("Ã³", "ó")
+                            .replace("Ãº", "ú");
+
+                    if (!normalizedAnswer.equals(userAnswer)) {
+                        isCorrect = currentQuestion.isCorrect(normalizedAnswer);
+                    }
+                }
+            }
+
+            allGradingResults.put(String.valueOf(currentQuestion.getQuestionID()), isCorrect);
+
+            response.put("success", true);
+            response.put("isCorrect", isCorrect);
+            response.put("userAnswer", displayAnswer);
+            response.put("correctAnswer", formattedCorrectAnswer);
+            response.put("questionIndex", questionIndex);
+            response.put("totalQuestions", quizQuestions.size());
+            response.put("isLastQuestion", (questionIndex + 1) >= quizQuestions.size());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("success", false);
+            response.put("message", "Failed to process answer: " + e.getMessage());
+        }
+
+        return response;
+    }
+
+    @PostMapping("/{quizId}/continue")
+    public ModelAndView continueToNextQuestion(@PathVariable int quizId,
+                                               @RequestParam int questionIndex,
+                                               @RequestParam(defaultValue = "false") boolean practiceMode,
+                                               HttpSession session) {
+        try {
+            List<Question> quizQuestions = (List<Question>) session.getAttribute("quizQuestions_" + quizId);
+
+            if (quizQuestions == null) {
+                ModelAndView mav = new ModelAndView("redirect:/quiz");
+                mav.addObject("error", "Quiz session expired");
+                return mav;
+            }
+
+            int nextIndex = questionIndex + 1;
+            if (nextIndex >= quizQuestions.size()) {
+                //completed
+                return processMultiPageQuizCompletion(quizId, practiceMode, session);
+            } else {
+                //to next question
+                return new ModelAndView("redirect:/quiz/" + quizId + "/take?questionIndex=" + nextIndex + "&practiceMode=" + practiceMode);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            ModelAndView mav = new ModelAndView("redirect:/quiz");
+            mav.addObject("error", "Failed to continue quiz");
             return mav;
         }
     }
@@ -347,24 +453,17 @@ public class QuizController {
                 return mav;
             }
 
-            // Ensure session maps exist (fallback)
             if (userAnswers == null) {
                 userAnswers = new HashMap<>();
-                System.out.println("DEBUG: userAnswers was null, created new HashMap");
             }
             if (correctAnswersMap == null) {
                 correctAnswersMap = new HashMap<>();
-                System.out.println("DEBUG: correctAnswersMap was null, created new HashMap");
             }
             if (gradingResults == null) {
                 gradingResults = new HashMap<>();
-                System.out.println("DEBUG: gradingResults was null, created new HashMap");
             }
 
-            System.out.println("DEBUG: Final userAnswers content: " + userAnswers);
-            System.out.println("DEBUG: Final gradingResults content: " + gradingResults);
-
-            // Calculate score
+            //score
             int score = 0;
             for (Boolean result : gradingResults.values()) {
                 if (result != null && result) {
@@ -375,7 +474,6 @@ public class QuizController {
             Long startTime = (Long) session.getAttribute("quizStartTime");
             int timeTaken = startTime != null ? (int) ((System.currentTimeMillis() - startTime) / 1000) : 0;
 
-            // Save attempt if not practice mode
             if (!practiceMode) {
                 String userAnswersJson = gson.toJson(userAnswers);
                 String correctAnswersJson = gson.toJson(correctAnswersMap);
@@ -385,14 +483,14 @@ public class QuizController {
                 List<Achievement> newAchievements = achievements.checkAndAwardAchievements(userName);
             }
 
-            // Clean up session
+            //clean up
             session.removeAttribute("quizQuestions_" + quizId);
             session.removeAttribute("quizAnswers_" + quizId);
             session.removeAttribute("quizCorrectAnswers_" + quizId);
             session.removeAttribute("quizGradingResults_" + quizId);
             session.removeAttribute("quizStartTime");
 
-            // Prepare results view
+            //results view
             ModelAndView mav = new ModelAndView("quiz-results");
             mav.addObject("quiz", quiz);
             mav.addObject("score", score);
@@ -407,13 +505,9 @@ public class QuizController {
 
             double percentage = quizQuestions.size() > 0 ? (double) score / quizQuestions.size() * 100 : 0;
             mav.addObject("percentage", percentage);
-
-            System.out.println("DEBUG: Multi-page quiz completed. Score: " + score + "/" + quizQuestions.size());
             return mav;
         } catch (Exception e) {
-            System.err.println("ERROR in processMultiPageQuizCompletion: " + e.getMessage());
             e.printStackTrace();
-
             ModelAndView mav = new ModelAndView("redirect:/quiz");
             mav.addObject("error", "Failed to complete quiz");
             return mav;
@@ -435,7 +529,6 @@ public class QuizController {
                 return mav;
             }
 
-            // This should only be called for single-page quizzes
             if (!quiz.isOnePage()) {
                 ModelAndView mav = new ModelAndView("redirect:/quiz/" + quizId + "/take");
                 mav.addObject("error", "This quiz should be taken in multi-page mode");
@@ -453,41 +546,27 @@ public class QuizController {
             Map<String, Boolean> gradingResults = new HashMap<>();
             int score = 0;
 
-            System.out.println("=== DEBUG: Request Parameters ===");
             Enumeration<String> paramNames = request.getParameterNames();
             while (paramNames.hasMoreElements()) {
                 String paramName = paramNames.nextElement();
                 String paramValue = request.getParameter(paramName);
-                System.out.println("Parameter: " + paramName + " = " + paramValue);
             }
 
             for (int i = 0; i < quizQuestions.size(); i++) {
                 Question question = quizQuestions.get(i);
-
-                // Extract user answer
                 String userAnswer = extractUserAnswer(question, request);
-
-                System.out.println("=== DEBUG: Question " + question.getQuestionID() + " (index " + i + ") ===");
-                System.out.println("User answer: " + userAnswer);
-                System.out.println("Question type: " + question.getClass().getSimpleName());
-
-                // Format user answer for display
                 String displayAnswer = formatUserAnswerForDisplay(question, userAnswer);
                 userAnswers.put(String.valueOf(question.getQuestionID()), displayAnswer);
-
-                // Get and format correct answer for display
                 Object correctAnswer = question.getCorrectAnswer();
                 String formattedCorrectAnswer = formatCorrectAnswerForDisplay(question, correctAnswer);
                 correctAnswersMap.put(String.valueOf(question.getQuestionID()), formattedCorrectAnswer);
 
-                // Grade the answer
+
                 boolean isCorrect = false;
                 if (userAnswer != null && !userAnswer.trim().isEmpty()) {
                     isCorrect = question.isCorrect(userAnswer);
 
-                    // Character encoding fix for matching questions
                     if (question instanceof Matching && !isCorrect) {
-                        System.out.println("DEBUG: Matching question failed. Analyzing...");
                         String normalizedAnswer = userAnswer
                                 .replace("?", "ć")
                                 .replace("Ã¡", "á")
@@ -498,13 +577,9 @@ public class QuizController {
 
                         if (!normalizedAnswer.equals(userAnswer)) {
                             isCorrect = question.isCorrect(normalizedAnswer);
-                            System.out.println("DEBUG: Normalized result: " + isCorrect);
                         }
                     }
                 }
-
-                System.out.println("Correct answer: " + formattedCorrectAnswer);
-                System.out.println("Is correct: " + isCorrect);
 
                 gradingResults.put(String.valueOf(question.getQuestionID()), isCorrect);
 
@@ -516,17 +591,15 @@ public class QuizController {
             String userAnswersJson = gson.toJson(userAnswers);
             String correctAnswersJson = gson.toJson(correctAnswersMap);
 
-            System.out.println("=== DEBUG: Final Results ===");
-            System.out.println("Total score: " + score + "/" + quizQuestions.size());
 
-            // Save attempt if not practice mode
+            //if not practice mode
             if (!practiceMode) {
                 int attemptId = quizAttempts.add(userName, quizId, score, quizQuestions.size(),
                         timeTaken, userAnswersJson, correctAnswersJson, false);
                 List<Achievement> newAchievements = achievements.checkAndAwardAchievements(userName);
             }
 
-            // Prepare results view
+            //results view
             ModelAndView mav = new ModelAndView("quiz-results");
             mav.addObject("quiz", quiz);
             mav.addObject("score", score);
@@ -545,9 +618,7 @@ public class QuizController {
 
             return mav;
         } catch (Exception e) {
-            System.err.println("ERROR in submitQuiz: " + e.getMessage());
             e.printStackTrace();
-
             ModelAndView mav = new ModelAndView("redirect:/quiz");
             mav.addObject("error", "Failed to submit quiz");
             return mav;
@@ -568,44 +639,31 @@ public class QuizController {
                 }
                 userAnswer = String.join(",", trimmedValues);
             }
-            System.out.println("DEBUG: Multiple checkbox values: " + Arrays.toString(selectedValues));
         } else if (question instanceof Matching) {
             userAnswer = request.getParameter(paramName1);
-            System.out.println("DEBUG: Processing Matching question " + question.getQuestionID());
         } else {
-            // All other question types (text input, radio buttons)
+            //text input,buttons
             userAnswer = request.getParameter(paramName1);
         }
 
-        // Debug: show what we extracted
-        System.out.println("DEBUG: Extracted answer for question " + question.getQuestionID() + ": '" + userAnswer + "'");
 
-        // Debug: show all parameters for this question
         Enumeration<String> paramNames = request.getParameterNames();
-        while (paramNames.hasMoreElements()) {
-            String paramName = paramNames.nextElement();
-            if (paramName.contains(String.valueOf(question.getQuestionID()))) {
-                System.out.println("DEBUG: Found parameter: " + paramName + " = " + request.getParameter(paramName));
-            }
-        }
 
         return userAnswer;
     }
 
     private String formatUserAnswerForDisplay(Question question, String userAnswer) {
         if (userAnswer == null) {
-            System.out.println("DEBUG: userAnswer is null, returning empty string");
             return "";
         }
 
         if (userAnswer.trim().isEmpty()) {
-            System.out.println("DEBUG: userAnswer is empty, returning empty string");
             return "";
         }
 
         String displayAnswer = userAnswer.trim();
 
-        // For Multi_Choice_Multi_Answer, format display with spaces for readability
+        //  Multi_Choice_Multi_Answer
         if (question instanceof Multi_Choice_Multi_Answer && displayAnswer.contains(",")) {
             String[] parts = displayAnswer.split(",");
             List<String> trimmedParts = new ArrayList<>();
@@ -614,8 +672,6 @@ public class QuizController {
             }
             displayAnswer = String.join(", ", trimmedParts);
         }
-
-        System.out.println("DEBUG: Formatted display answer: '" + displayAnswer + "'");
         return displayAnswer;
     }
 

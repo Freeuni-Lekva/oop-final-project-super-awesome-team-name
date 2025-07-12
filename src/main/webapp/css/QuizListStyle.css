@@ -101,12 +101,14 @@ body {
     border-color: rgba(255, 255, 255, 0.5);
 }
 
+
 .quiz-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 25px;
     margin: 30px 0;
 }
+
 
 .quiz-card {
     background: rgba(255, 255, 255, 0.95);
@@ -115,6 +117,11 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.2);
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
+
+
+    display: flex;
+    flex-direction: column;
+    min-height: 300px;
 }
 
 .quiz-card:hover {
@@ -123,19 +130,40 @@ body {
     border-color: rgba(255, 255, 255, 0.4);
 }
 
+
 .quiz-title {
-    font-size: medium;
+    font-size: large;
     font-weight: bold;
     color: #0D0D0D;
     margin-bottom: 12px;
+    text-align: center;
+
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.3;
+    min-height: 2.6em;
 }
+
 
 .quiz-description {
     color: #666;
     margin-bottom: 18px;
     line-height: 1.6;
-    font-size: small;
+    font-size: medium;
+    text-align: center;
+
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 4.8em;
+    flex-grow: 1;
 }
+
 
 .quiz-meta {
     font-size: x-small;
@@ -143,12 +171,22 @@ body {
     margin-bottom: 25px;
     padding-bottom: 15px;
     border-bottom: 1px solid #ddd;
+
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.4;
+    min-height: 2.8em;
 }
+
 
 .quiz-actions {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+    margin-top: auto; /* Push to bottom of card */
 }
 
 .btn {
@@ -159,10 +197,14 @@ body {
     font-weight: bold;
     cursor: pointer;
     text-align: center;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: small;
     color: white;
     transition: all 0.3s ease;
+    flex: 1;
+    min-width: 80px;
 }
 
 .btn-primary {
@@ -251,5 +293,18 @@ body {
 
     .quiz-grid {
         grid-template-columns: 1fr;
+    }
+
+    .quiz-card {
+        min-height: 280px;
+    }
+
+    .quiz-actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        flex: none;
+        width: 100%;
     }
 }

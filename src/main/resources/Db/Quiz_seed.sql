@@ -143,13 +143,13 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(39,4,'Which of these artists performed at Coachella 2024?','Multiple Choice with Multiple Answers','Lana Del Rey,Ice Spice,Travis Scott,Dua Lipa','Lana Del Rey,Ice Spice,Travis Scott',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(40,4,'Match each artist to their 2023–2025 hit','Matching','Olivia Rodrigo=Lunch;Ice Spice=Deli;SZA=Vampire;Billie Eilish=Kill Bill','Olivia Rodrigo=Vampire;Ice Spice=Deli;SZA=Kill Bill;Billie Eilish=Lunch',NULL,NULL);
+VALUES(40,4,'Match each artist to their 2023-2025 hit','Matching','Olivia Rodrigo=Lunch;Ice Spice=Deli;SZA=Vampire;Billie Eilish=Kill Bill','Olivia Rodrigo=Vampire;Ice Spice=Deli;SZA=Kill Bill;Billie Eilish=Lunch',NULL,NULL);
 
 
 
 ## Quiz 5 (Films)
 INSERT INTO quizzes(id, name, description, num_questions, random_order, one_page, immediate_correction, practice_mode, creator_username)
-VALUES(5,'Films Quiz','Like watching Films? see if you can get them all correct',10,1,1,0,0,'Admin');
+VALUES(5,'Films Quiz','Like watching Films? see if you can get them all correct',10,1,0,1,1,'Admin');
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(41,5,'In The Film "Hangover" Tiger belongs to the Actor _','Fill in the Blank',NULL,'Mike Tyson',NULL,NULL);
@@ -199,7 +199,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(53,6,'Name this Villain','Picture-Response',NULL,'Pagan Min','https://th.bing.com/th/id/OIP.p7cdNVv52aE3xwr62oEhnQHaEK?w=331&h=187&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3',NULL);
 
 Insert Into questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(54,6,'Who is the main protagonist in the game series “God of War”?','Question-Response',NULL,'Kratos',NULL,NULL);
+VALUES(54,6,'Who is the main protagonist in the game series "God of War"?','Question-Response',NULL,'Kratos',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
     VALUE(55,6,'Name all the playable Characters in GTA 5','Multi-Answer',NULL,'Trevor Philips,Michael De Santa,Franklin Clinton',NULL,0);
@@ -260,7 +260,7 @@ VALUES(70,7,'Match the Gaming Console to Its Manufacturer','Matching','PlayStati
 
 ## Quiz 8 (Esports Quiz)
 INSERT INTO quizzes(id, name, description, num_questions, random_order, one_page, immediate_correction, practice_mode, creator_username)
-VALUES(8,'Esports Quiz','Like competitive gaming? give this Esports Quiz a go!', 15,1,1,0,0,'Admin');
+VALUES(8,'Esports Quiz','Like competitive gaming? give this Esports Quiz a go!', 15,1,0,1,1,'Admin');
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(71,8,'Who was the first Person in the League of Legends Hall of Fame?','Question-Response',NULL,'Faker',NULL,NULL);
@@ -310,7 +310,7 @@ VALUES(85,8,'Which of these Football Clubs have Valorant Teams?','Multiple Choic
 
 ## Quiz 9 (Anime Quiz)
 INSERT INTO quizzes(id, name, description, num_questions, random_order, one_page, immediate_correction, practice_mode, creator_username)
-VALUES(9,'Anime Quiz','Immerse yourself in the World of Anime, try this Quiz out!',15,1,1,0,0,'Admin');
+VALUES(9,'Anime Quiz','Immerse yourself in the World of Anime, try this Quiz out!',15,1,0,1,1,'Admin');
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(86,9,'Name the Original "Big 3" Anime','Multi-Answer',NULL,'One Piece,Naruto,Bleach',NULL,NULL);
@@ -319,7 +319,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(87,9,'Who is the creator of Attack on Titan?','Question-Response',NULL,'Hajime Isayama',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(88,9,'Match the anime to its protagonist','Matching','Naruto=Ichigo Kurosaki;Death Note=Naruto Uzumaki;Bleach=Yuji Itado;One Piece=Light Yagami;Jujutsu Kaisen=Monkey D. Luffy','Naruto=Naruto Uzumaki;Death Note=Light Yagami;Bleach=Ichigo Kurosaki;One Piece=Monkey D. Luffy;Jujutsu Kaisen=Yuji Itado',NULL,NULL);
+VALUES(88,9,'Match the anime to its protagonist','Matching','Naruto=Ichigo Kurosaki;Death Note=Naruto Uzumaki;Bleach=Yuji Itadori;One Piece=Light Yagami;Jujutsu Kaisen=Monkey D. Luffy','Naruto=Naruto Uzumaki;Death Note=Light Yagami;Bleach=Ichigo Kurosaki;One Piece=Monkey D. Luffy;Jujutsu Kaisen=Yuji Itado',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(89,9,'Tokyo Ghoul is set in a world where humans coexist with flesh-eating creatures called _.','Fill in the Blank',NULL,'Ghouls',NULL,NULL);
@@ -337,7 +337,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(93,9,'Which of these are anime movies?','Multiple Choice with Multiple Answers','Your Name,Chainsaw Man,I want to eat you pancreas,Violet Evergarden','Your Name,I want to eat you pancreas',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(94,9,'Which of the following are Studio Ghibli films?','Multiple Choice with Multiple Answers','Spirited Away,My Neighbor Totoro,Akira,Howl''s Moving Castle','Spirited Away,My Neighbor Totoro,Howl’s Moving Castle',NULL,NULL);
+VALUES(94,9,'Which of the following are Studio Ghibli films?','Multiple Choice with Multiple Answers','Spirited Away,My Neighbor Totoro,Akira,Howl''s Moving Castle','Spirited Away,My Neighbor Totoro,Howl''s Moving Castle',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(95,9,'Name the Anime','Picture-Response',NULL,'Assassination Classroom','https://th.bing.com/th/id/OIP.Jq_nTOGhZqOVpiaH8zmL1QHaEK?w=333&h=187&c=7&r=0&o=5&dpr=1.3&pid=1.7',NULL);
@@ -362,7 +362,7 @@ VALUES(100,9,'Which anime centers on volleyball?','Multiple Choice','Kuroko no B
 
 ## Quiz 10 (World History Quiz)
 INSERT INTO quizzes(id, name, description, num_questions, random_order, one_page, immediate_correction, practice_mode, creator_username)
-VALUES(10,'World History Quiz','Like World History? Try to Complete this Quiz with all points',10,1,1,0,0,'Admin');
+VALUES(10,'World History Quiz','Like World History? Try to Complete this Quiz with all points',10,0,1,0,0,'Admin');
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(101,10,'The Berlin Wall fell in the year _','Fill in the Blank',NULL,'1989',NULL,NULL);
@@ -399,7 +399,7 @@ VALUES(110,10,'What event is considered the start of the French Revolution?','Mu
 
 ## Quiz 11 (Geography Quiz)
 INSERT INTO quizzes(id, name, description, num_questions, random_order, one_page, immediate_correction, practice_mode, creator_username)
-VALUES(11,'World Geography Quiz','Like Geography',10,1,1,0,0,'Admin');
+VALUES(11,'World Geography Quiz','Like Geography? Take a look around!',10,1,1,0,0,'Admin');
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(111,11,'What is the capital city of Australia?','Question-Response',NULL,'Canberra',NULL,NULL);
@@ -430,6 +430,9 @@ VALUES(119,11,'Guess the Country','Picture-Response',NULL,'Japan','https://img.f
 
 INSERT INTO  questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(120,11,'Guess the Country','Picture-Response',NULL,'Netherlands','https://th.bing.com/th/id/OIP.qYjv67oxdJvLHLXadhenJAHaFu?w=219&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7',NULL);
+
+
+
 
 INSERT INTO quiz_attempts (user_name, quiz_id, score, total_questions, time_taken, is_practice_mode) VALUES
                                                                                                          ('user1', 1, 8, 10, 300, FALSE),

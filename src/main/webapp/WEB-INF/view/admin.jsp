@@ -36,43 +36,36 @@
                 <textarea id="announceText" name="bigText" class="wide" required
                           oninput="validateFillInTheBlank"></textarea>
             </div>
-            <input type="submit" id="submitButton" class="btn-admin" value="Submit">
+            <input type="submit" id="submitButton" class="btn-admin" value="Submit" onclick="showChoice()">
         </form>
+
+        <!-- This is where the message will appear -->
+        <div id="choiceMessage" style="margin-top: 20px; padding: 15px; display: none; background-color: #e8f5e8; border: 1px solid #4CAF50; border-radius: 5px; color: #2e7d32;">
+        </div>
+
         <p id="result"></p>
     </div>
 </div>
 
 <script>
-    document.getElementById('adminForm').addEventListener('submit', function(e) {
+    function showChoice() {
         // Get the selected option
         var selectElement = document.getElementById('adminFunc');
-        var selectedOption = selectElement.options[selectElement.selectedIndex];
-        var selectedText = selectedOption.text;
-        var selectedValue = selectedOption.value;
+        var selectedText = selectElement.options[selectElement.selectedIndex].text;
 
-        // Display the chosen option
-        var resultElement = document.getElementById('result');
-        resultElement.innerHTML = '<strong>Selected Action:</strong> ' + selectedText;
-        resultElement.style.color = '#2196F3';
-        resultElement.style.marginTop = '20px';
-        resultElement.style.padding = '10px';
-        resultElement.style.backgroundColor = '#f0f8ff';
-        resultElement.style.border = '1px solid #2196F3';
-        resultElement.style.borderRadius = '5px';
+        // Create the message
+        var message = "You chose to: " + selectedText;
 
-        // Optional: You can also log both the text and value
-        console.log('Selected option text:', selectedText);
-        console.log('Selected option value:', selectedValue);
-    });
+        // Display the message
+        var messageDiv = document.getElementById('choiceMessage');
+        messageDiv.innerHTML = message;
+        messageDiv.style.display = 'block';
 
-    // Optional: Also show selection when dropdown changes (before submit)
-    document.getElementById('adminFunc').addEventListener('change', function() {
-        var selectedText = this.options[this.selectedIndex].text;
-        var resultElement = document.getElementById('result');
-        resultElement.innerHTML = '<em>Ready to execute:</em> ' + selectedText;
-        resultElement.style.color = '#666';
-        resultElement.style.fontStyle = 'italic';
-    });
+        // Optional: hide the message after 5 seconds
+        setTimeout(function() {
+            messageDiv.style.display = 'none';
+        }, 5000);
+    }
 </script>
 
 </body>
