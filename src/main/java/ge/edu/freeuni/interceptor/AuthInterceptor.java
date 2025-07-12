@@ -26,12 +26,12 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         if (name != null && uri.equals("/welcome")) {
-            response.sendRedirect("/"); // homepage
+            response.sendRedirect("/home");
             return false;
         }
 
         if (!Boolean.TRUE.equals(isAdmin) && uri.startsWith("/admin")) {
-            response.sendRedirect("/"); // homepage
+            response.sendRedirect("/home");
             return false;
         }
 
