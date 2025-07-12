@@ -126,4 +126,32 @@ CREATE INDEX idx_achievements_condition ON achievements(condition_type, conditio
 CREATE INDEX idx_questions_quiz ON questions(quiz_id);
 
 
+
+
+DROP TABLE IF EXISTS FriendRequests;
+
+CREATE TABLE FriendRequests (
+                                id             INT AUTO_INCREMENT PRIMARY KEY,
+                                requester_name VARCHAR(100) NOT NULL,
+                                requestee_name VARCHAR(100) NOT NULL,
+                                status         ENUM('PENDING','ACCEPTED','DECLINED') NOT NULL DEFAULT 'PENDING',
+                                created_at     TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+                                updated_at     TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3)
+                                    ON UPDATE CURRENT_TIMESTAMP(3),
+                                UNIQUE(requester_name, requestee_name),
+                                FOREIGN KEY (requester_name) REFERENCES users(name),
+                                FOREIGN KEY (requestee_name) REFERENCES users(name)
+);
+
+DROP TABLE IF EXISTS Friendships;
+
+CREATE TABLE Friendships (
+                             user_name   VARCHAR(100) NOT NULL,
+                             friend_name VARCHAR(100) NOT NULL,
+                             since       TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+                             PRIMARY KEY (user_name, friend_name),
+                             FOREIGN KEY (user_name)   REFERENCES users(name),
+                             FOREIGN KEY (friend_name) REFERENCES users(name)
+);
+
 SELECT 'QuizWebsite database setup completed successfully!' as message;
