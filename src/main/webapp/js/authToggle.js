@@ -46,6 +46,8 @@ function toggleForm() {
     document.getElementById("toggleText").innerHTML = isLogin
         ? `Don't have an account? <a href="#" onclick="toggleForm()">Sign up</a>`
         : `Already have an account? <a href="#" onclick="toggleForm()">Log in</a>`;
+
+    document.body.classList.toggle("signup-background", !isLogin);
 }
 
 window.addEventListener("DOMContentLoaded", function () {
@@ -84,4 +86,3 @@ window.addEventListener("DOMContentLoaded", function () {
             });
     });
 });
-

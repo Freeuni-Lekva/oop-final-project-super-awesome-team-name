@@ -5,7 +5,32 @@
 }
 
 body {
-    background-color: #0D0D0D;
+    background: linear-gradient(
+            45deg,
+            #6a6a6a 0%,
+            #8e6b64 15%,
+            #5d9589 30%,
+            #9575CD 50%,
+            #6574c3 70%,
+            #44519e 85%,
+            #4651c5 100%
+    ) fixed;
+    min-height: 100vh;
+    color: white;
+    margin: 0;
+    padding: 20px;
+}
+
+body.signup-background {
+    background: linear-gradient(
+            120deg,
+            #2b0000 0%,
+            #660000 20%,
+            #ac360e 40%,
+            #a54627 60%,
+            #9a5029 80%,
+            #4e0707 100%
+    );
 }
 
 .panel {
