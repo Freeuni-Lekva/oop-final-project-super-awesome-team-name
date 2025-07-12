@@ -154,4 +154,33 @@ CREATE TABLE Friendships (
                              FOREIGN KEY (friend_name) REFERENCES users(name)
 );
 
+
+-- Add this to your QuizWebsite.sql file
+
+CREATE TABLE messages (
+                          message_id INT AUTO_INCREMENT PRIMARY KEY,
+                          sender_name VARCHAR(100) NOT NULL,
+                          recipient_name VARCHAR(100) NOT NULL,
+                          message_type ENUM('FRIEND_REQUEST', 'CHALLENGE', 'NOTE') NOT NULL,
+                          subject VARCHAR(255) NOT NULL,
+                          message_text TEXT NOT NULL,
+                          is_read BOOLEAN DEFAULT FALSE,
+                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    -- For friend requests
+                          friend_request_id INT NULL,
+
+    -- For challenges
+                          quiz_id INT NULL,
+                          challenger_score INT NULL,
+                          challenger_total_questions INT NULL,
+
+                          FOREIGN KEY (sender_name) REFERENCES users(name) ON DELETE CASCADE,
+                          FOREIGN KEY (recipient_name) REFERENCES users(name) ON DELETE CASCADE,
+                          FOREIGN KEY (friend_request_id) REFERENCES FriendRequests(id) ON DELETE CASCADE,
+                          FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE CASCADE,
+
+                          INDEX idx_recipient_date (recipient_name, created_at DESC),
+                          INDEX idx_sender_date (sender_name, created_at DESC)
+);
 SELECT 'QuizWebsite database setup completed successfully!' as message;
