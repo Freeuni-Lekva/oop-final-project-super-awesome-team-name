@@ -16,7 +16,7 @@
                 <span>${sessionScope.name}'s Profile</span>
             </div>
             <nav class="main-nav">
-                <a href="/" class="nav-link">Home</a>
+                <a href="/Home" class="nav-link">Home</a>
                 <a href="/quiz" class="nav-link">Browse Quizzes</a>
                 <a href="/CreateQuiz" class="nav-link">Create Quiz</a>
                 <a href="/history" class="nav-link">Quiz History</a>

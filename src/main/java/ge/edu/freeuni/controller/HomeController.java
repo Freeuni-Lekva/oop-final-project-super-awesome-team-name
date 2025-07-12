@@ -28,7 +28,7 @@ public class HomeController {
     @Autowired
     private AnnouncementDao announcements;
 
-    @GetMapping({"/", "/home"})
+    @GetMapping({"/home"})
     public ModelAndView home(HttpSession session) {
         String userName = (String) session.getAttribute("name");
         if (userName == null) {
