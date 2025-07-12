@@ -399,7 +399,7 @@ VALUES(110,10,'What event is considered the start of the French Revolution?','Mu
 
 ## Quiz 11 (Geography Quiz)
 INSERT INTO quizzes(id, name, description, num_questions, random_order, one_page, immediate_correction, practice_mode, creator_username)
-VALUES(11,'World Geography Quiz','Like Geography',10,1,1,0,0,'Admin');
+VALUES(11,'World Geography Quiz','Like Geography? Take a look around!',10,1,1,0,0,'Admin');
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(111,11,'What is the capital city of Australia?','Question-Response',NULL,'Canberra',NULL,NULL);
