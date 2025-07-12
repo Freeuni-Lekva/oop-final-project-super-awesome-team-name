@@ -58,6 +58,7 @@ public class UserController {
                 result.put("message", "User already exists: " + name);
             } else {
                 session.setAttribute("name", name);
+                session.setAttribute("isAdmin", users.isAdmin(name));
                 result.put("status", "success");
                 result.put("redirectUrl", "/home"); // Redirect to homepage
             }
