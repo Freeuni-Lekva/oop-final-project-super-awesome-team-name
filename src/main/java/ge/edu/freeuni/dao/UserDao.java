@@ -43,7 +43,7 @@ public class UserDao {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to getQuiz user: " + name, e);
+            throw new RuntimeException("Failed to get user: " + name, e);
         }
     }
 
