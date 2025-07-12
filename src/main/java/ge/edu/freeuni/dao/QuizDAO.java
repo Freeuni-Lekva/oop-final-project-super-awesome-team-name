@@ -106,11 +106,14 @@ public class QuizDAO {
 
     //Deletes a Quiz(Admin Functionality)
     public boolean removeQuiz(int quizId) {
-        String sql = "DELETE FROM quizzes WHERE id = ?";
+        String sql1 = "DELETE FROM questions WHERE quiz_id = ?";
+        String sql2 = "DELETE FROM quizzes WHERE id = ?";
         try (Connection conn = db.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, quizId);
-            return stmt.executeUpdate() == 1;
+             PreparedStatement stmt1 = conn.prepareStatement(sql1);
+             PreparedStatement stmt2 = conn.prepareStatement(sql2)) {
+            stmt1.setInt(1, quizId);
+            stmt2.setInt(1, quizId);
+            return stmt1.executeUpdate() == 1 && stmt2.executeUpdate() == 1;
         } catch (SQLException e) {
             throw new RuntimeException("Failed to remove quiz: #" + quizId, e);
         }
