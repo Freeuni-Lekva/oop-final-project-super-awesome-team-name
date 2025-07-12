@@ -453,4 +453,11 @@ INSERT INTO achievements (achievement_id, name, description, icon_url, condition
                                                                                                             (10, 'Quiz Master', 'Take 50 quizzes', '/images/Achievements/Quiz_Master.png', 'quiz_count', 50),
                                                                                                             (11, 'Consistent Performer', 'Score 80%+ on 5 consecutive quizzes', '/images/Achievements/Consistent_Performer.png', 'high_score', 80);
 
+INSERT INTO announcements (title, name, text) VALUES
+                                                  ('Welcome to Quiz Website!', 'Admin', 'Welcome to our interactive quiz platform! Test your knowledge and challenge your friends with our wide variety of quizzes.'),
+                                                  ('New Quiz Categories Added', 'Admin', 'We have added new quiz categories including Science, History, and Sports. Check them out in the Browse Quizzes section!'),
+                                                  ('Website Maintenance Schedule', 'Admin', 'Please note that we will be performing scheduled maintenance this weekend from 2:00 AM to 4:00 AM EST. The website may be temporarily unavailable during this time.'),
+                                                  ('Quiz Competition Announcement', 'Admin', 'Join our monthly quiz competition! The top 3 performers will receive special badges and recognition. Competition starts next Monday!'),
+                                                  ('New Practice Mode Features', 'Admin', 'We have enhanced the practice mode with detailed explanations and hints. Try it out on any quiz that supports practice mode!');
+
 INSERT INTO users(name,hashedpassword,isadmin) values ('Admin','40bd001563085fc35165329ea1ff5c5ecbdbbeef',1);

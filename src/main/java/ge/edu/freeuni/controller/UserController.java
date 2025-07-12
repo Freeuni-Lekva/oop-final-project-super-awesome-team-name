@@ -47,8 +47,10 @@ public class UserController {
             } else {
                 session.setAttribute("name", name);
                 result.put("status", "success");
-                result.put("redirectUrl", "/admin"); //homepageURl
-                session.setAttribute("isAdmin", users.isAdmin(name));
+                result.put("redirectUrl", "/home"); // Redirect to homepage
+                if (users.isAdmin(name)) {
+                    session.setAttribute("isAdmin", true);
+                }
             }
         } else if ("signup".equals(mode)) {
             if (!users.add(name, password)) {
@@ -58,7 +60,7 @@ public class UserController {
                 session.setAttribute("name", name);
                 session.setAttribute("isAdmin", users.isAdmin(name));
                 result.put("status", "success");
-                result.put("redirectUrl", "/admin"); //homepageURl
+                result.put("redirectUrl", "/home"); // Redirect to homepage
             }
         }
         return result;

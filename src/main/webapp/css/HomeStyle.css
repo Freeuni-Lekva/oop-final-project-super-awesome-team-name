@@ -1,0 +1,344 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Century Gothic', 'Segoe UI', 'Arial', 'Helvetica', sans-serif;
+    background: radial-gradient(ellipse at top left, #000000 0%, #1a0a1a 8%, #E91E63 25%, #AD1457 35%, #9C27B0 50%, #673AB7 65%, #3F51B5 80%, #2196F3 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    color: white;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: transparent;
+    min-height: 100vh;
+}
+
+/* Header - Centered Layout */
+.main-header {
+    background: transparent;
+    color: white;
+    padding: 50px 40px 60px 40px;
+    text-align: center;
+}
+
+.header-content-centered {
+    text-align: center;
+}
+
+.main-header h1 {
+    font-size: 2.8em;
+    font-weight: normal;
+    margin: 0 0 40px 0;
+}
+
+.user-welcome {
+    margin: 0 0 40px 0;
+}
+
+.user-welcome span {
+    font-size: 1.2em;
+}
+
+.main-nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 0;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    font-size: 0.9em;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.nav-link:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.admin-link {
+    background-color: rgba(255,165,0,0.3);
+    border-color: rgba(255,165,0,0.5);
+}
+
+.logout-link {
+    background-color: rgba(220,20,60,0.3);
+    border-color: rgba(220,20,60,0.5);
+}
+
+/* Main Content */
+.main-content {
+    padding: 30px 40px;
+}
+
+/* Horizontal Scroll Announcements */
+.announcements-section {
+    margin-bottom: 40px;
+    padding: 25px;
+}
+
+.announcements-section h2 {
+    margin-bottom: 20px;
+    color: white;
+    font-size: 1.6em;
+    text-align: center;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 10px;
+}
+
+.announcements-scroll {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 10px 0 20px 0;
+    scroll-behavior: smooth;
+}
+
+.announcements-scroll::-webkit-scrollbar {
+    height: 8px;
+}
+
+.announcements-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.announcements-scroll::-webkit-scrollbar-thumb {
+    background: #AD1457;
+    border-radius: 10px;
+}
+
+.announcements-scroll::-webkit-scrollbar-thumb:hover {
+    background: #880E4F;
+}
+
+.announcement-card {
+    min-width: 300px;
+    max-width: 350px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    flex-shrink: 0;
+}
+
+.announcement-card h3 {
+    margin: 0 0 10px 0;
+    color: white;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.announcement-meta {
+    font-size: 0.85em;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 10px;
+}
+
+.announcement-text {
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.4;
+    font-size: 0.9em;
+}
+
+/* Two Column Quiz Layout */
+.quiz-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.quiz-column {
+    padding: 25px;
+}
+
+.quiz-column h2 {
+    margin-bottom: 20px;
+    color: white;
+    font-size: 1.4em;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Quiz Items */
+.quiz-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.quiz-item {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 18px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.quiz-item:hover {
+    transform: translateX(3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.quiz-item:hover {
+    transform: translateX(3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.quiz-item h3 {
+    margin: 0 0 8px 0;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.quiz-item h3 a {
+    color: white;
+    text-decoration: none;
+}
+
+.quiz-item h3 a:hover {
+    text-decoration: underline;
+}
+
+.quiz-description {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 8px;
+    line-height: 1.4;
+    font-size: 0.9em;
+}
+
+.quiz-meta {
+    font-size: 0.8em;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 12px;
+}
+
+.quiz-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Buttons */
+.btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.8em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #FF3690, #E91E63);
+    color: white;
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #E91E63, #C2185B);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    font-weight: bold;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Empty States */
+.empty-state {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    padding: 30px;
+    font-style: italic;
+}
+
+.empty-state a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.empty-state a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-content {
+        padding: 20px;
+    }
+
+    .main-header {
+        padding: 20px;
+    }
+
+    .main-header h1 {
+        font-size: 2.2em;
+    }
+
+    .main-nav {
+        gap: 10px;
+    }
+
+    .nav-link {
+        padding: 8px 15px;
+        font-size: 0.85em;
+    }
+
+    .quiz-columns {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .announcement-card {
+        min-width: 250px;
+        max-width: 280px;
+    }
+
+    .announcements-scroll {
+        gap: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-header h1 {
+        font-size: 1.8em;
+    }
+
+    .announcement-card {
+        min-width: 200px;
+        max-width: 220px;
+        padding: 15px;
+    }
+
+    .quiz-item {
+        padding: 15px;
+    }
+}

@@ -126,4 +126,61 @@ CREATE INDEX idx_achievements_condition ON achievements(condition_type, conditio
 CREATE INDEX idx_questions_quiz ON questions(quiz_id);
 
 
+
+
+DROP TABLE IF EXISTS FriendRequests;
+
+CREATE TABLE FriendRequests (
+                                id             INT AUTO_INCREMENT PRIMARY KEY,
+                                requester_name VARCHAR(100) NOT NULL,
+                                requestee_name VARCHAR(100) NOT NULL,
+                                status         ENUM('PENDING','ACCEPTED','DECLINED') NOT NULL DEFAULT 'PENDING',
+                                created_at     TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+                                updated_at     TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3)
+                                    ON UPDATE CURRENT_TIMESTAMP(3),
+                                UNIQUE(requester_name, requestee_name),
+                                FOREIGN KEY (requester_name) REFERENCES users(name),
+                                FOREIGN KEY (requestee_name) REFERENCES users(name)
+);
+
+DROP TABLE IF EXISTS Friendships;
+
+CREATE TABLE Friendships (
+                             user_name   VARCHAR(100) NOT NULL,
+                             friend_name VARCHAR(100) NOT NULL,
+                             since       TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+                             PRIMARY KEY (user_name, friend_name),
+                             FOREIGN KEY (user_name)   REFERENCES users(name),
+                             FOREIGN KEY (friend_name) REFERENCES users(name)
+);
+
+
+-- Add this to your QuizWebsite.sql file
+
+CREATE TABLE messages (
+                          message_id INT AUTO_INCREMENT PRIMARY KEY,
+                          sender_name VARCHAR(100) NOT NULL,
+                          recipient_name VARCHAR(100) NOT NULL,
+                          message_type ENUM('FRIEND_REQUEST', 'CHALLENGE', 'NOTE') NOT NULL,
+                          subject VARCHAR(255) NOT NULL,
+                          message_text TEXT NOT NULL,
+                          is_read BOOLEAN DEFAULT FALSE,
+                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    -- For friend requests
+                          friend_request_id INT NULL,
+
+    -- For challenges
+                          quiz_id INT NULL,
+                          challenger_score INT NULL,
+                          challenger_total_questions INT NULL,
+
+                          FOREIGN KEY (sender_name) REFERENCES users(name) ON DELETE CASCADE,
+                          FOREIGN KEY (recipient_name) REFERENCES users(name) ON DELETE CASCADE,
+                          FOREIGN KEY (friend_request_id) REFERENCES FriendRequests(id) ON DELETE CASCADE,
+                          FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE CASCADE,
+
+                          INDEX idx_recipient_date (recipient_name, created_at DESC),
+                          INDEX idx_sender_date (sender_name, created_at DESC)
+);
 SELECT 'QuizWebsite database setup completed successfully!' as message;
