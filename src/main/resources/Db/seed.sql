@@ -66,7 +66,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(18,2,'Which of the following characters were in Avengers: Endgame?','Multiple Choice with Multiple Answers','Deadpool,Wolverine,Ant-Man,Captain America','Ant-Man,Captain America',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(19,2,'Match each Marvel hero to their real name','Matching','Iron Man=T''Challa;Spider-Man=Tony Stark;Black Panther=Peter Parker','Iron Man=Tony Stark;Spider-Man=Peter Parker;Black Panther=T''Challa',NULL,NULL);
+VALUES(19,2,'Match each Marvel hero to their real name','Matching',NULL,'Iron Man=Tony Stark;Spider-Man=Peter Parker;Black Panther=T''Challa',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(20,2,'The super-soldier serum was used to enhance _ _ into Captain America.','Fill in the Blank',NULL,'Steve Rogers',NULL,NULL);
@@ -131,7 +131,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(35,4,'Name this singer','Picture-Response',NULL,'Taylor Swift','https://th.bing.com/th/id/OIP.Ha68ba6j0TIZoW_kATrZPQHaD4?w=339&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3',NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(36,4,'Match the artist to their genre','Matching','Kendrick Lamar=Pop;Metallica=Electronic;Taylor Swift=Heavy Metal;Daft Punk=Hip Hop','Kendrick Lamar=Hip Hop;Metallica=Heavy Metal;Taylor Swift=Pop;Daft Punk=Electronic',NULL,NULL);
+VALUES(36,4,'Match the artist to their genre','Matching',NULL,'Kendrick Lamar=Hip Hop;Metallica=Heavy Metal;Taylor Swift=Pop;Daft Punk=Electronic',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(37,4,'Name all members of the band Queen','Multi-Answer',NULL,'Freddie Mercury,Brian May,Roger Taylor,John Deacon',NULL,0);
@@ -143,7 +143,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(39,4,'Which of these artists performed at Coachella 2024?','Multiple Choice with Multiple Answers','Lana Del Rey,Ice Spice,Travis Scott,Dua Lipa','Lana Del Rey,Ice Spice,Travis Scott',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(40,4,'Match each artist to their 2023-2025 hit','Matching','Olivia Rodrigo=Lunch;Ice Spice=Deli;SZA=Vampire;Billie Eilish=Kill Bill','Olivia Rodrigo=Vampire;Ice Spice=Deli;SZA=Kill Bill;Billie Eilish=Lunch',NULL,NULL);
+VALUES(40,4,'Match each artist to their 2023-2025 hit','Matching',NULL,'Olivia Rodrigo=Vampire;Ice Spice=Deli;SZA=Kill Bill;Billie Eilish=Lunch',NULL,NULL);
 
 
 
@@ -179,7 +179,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(49,5,'In Forrest Gump, life is like a box of _','Fill in the Blank',NULL,'chocolates',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(50,5,'Match the actor with their iconic role','Matching','Leonardo DiCaprio=Terminator;Tom Hanks=John Wick;Keanu Reeves=Jack Dawson;Arnold Schwarzenegger=Forrest Gump','Leonardo DiCaprio=Jack Dawson;Tom Hanks=Forrest Gump;Keanu Reeves=John Wick;Arnold Schwarzenegger=Terminator',NULL,NULL);
+VALUES(50,5,'Match the actor with their iconic role','Matching',NULL,'Leonardo DiCaprio=Jack Dawson;Tom Hanks=Forrest Gump;Keanu Reeves=John Wick;Arnold Schwarzenegger=Terminator',NULL,NULL);
 
 
 
@@ -220,7 +220,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(60,6,'Wolfenstein:The New _','Fill in the Blank',NULL,'Order',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(61,6,'Match the game to its developer','Matching','Halo=CD Projekt red;God of War=Blizzard;The Witcher 3=343 Games;Overwatch=Santa Monica Studio','Halo=343 Games;God of War=Santa Monica Studio;The Witcher 3=CD Prokect Red;Overwatch=Blizzard',NULL,NULL);
+VALUES(61,6,'Match the game to its developer','Matching',NULL,'Halo=343 Games;God of War=Santa Monica Studio;The Witcher 3=CD Prokect Red;Overwatch=Blizzard',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(62,6,'Guess the Game by the Logo','Picture-Response',NULL,'Half-Life','https://th.bing.com/th/id/OIP.Jiqm0OJcMXdXpwpc3JkUGgHaEK?w=160&h=104&c=7&bgcl=69def8&r=0&o=6&cb=iavawebpc1&dpr=1.3&pid=13.1',NULL);
@@ -232,7 +232,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(64,6,'The main antagonist in the Portal series is a rogue AI named _','Fill in the Blank',NULL,'GLaDOS',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(65,6,'Match the Protagonists to the Games','Matching','Lara Croft=Uncharted;Nathan Drake=Halo;Arthur Morgan=Tomb Raider;Master Chief=Red Dead Redemption 2','Lara Croft=Tomb Raider;Nathan Drake=Uncharted;Arthur Morgan=Red Dead Redemption;Master Chief=Halo',NULL,NULL);
+VALUES(65,6,'Match the Protagonists to the Games','Matching',NULL,'Lara Croft=Tomb Raider;Nathan Drake=Uncharted;Arthur Morgan=Red Dead Redemption;Master Chief=Halo',NULL,NULL);
 
 
 ## Quiz 7 (The Matching Quiz)
@@ -240,21 +240,20 @@ INSERT INTO quizzes(id, name, description, num_questions, random_order, one_page
 VALUES(7,'The Matching Quiz','can you match all the pairs correctly?',5,1,1,0,0,'Admin');
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(66,7,'Match the Game to Their Developer','Matching','The Legend of Zelda=CD Projekt Red;Fortnite=Obsidian Entertainment;Cyberpunk=Epic Games;Fallout: New Vegas=Nintendo','The Legend of Zelda=Nintendo;Fortnite=Epic Games;Cyberpunk=CD Projekt Red;Fallout: New Vegas=Obsidian Entertainment',NULL,NULL);
+VALUES(66,7,'Match the Game to Their Developer','Matching',NULL,'The Legend of Zelda=Nintendo;Fortnite=Epic Games;Cyberpunk=CD Projekt Red;Fallout: New Vegas=Obsidian Entertainment',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(67,7,'Match each artist to one of their famous songs','Matching','Taylor Swift=God''s Plan;The Weekend=Shake It Off;Ed Sheeran=Blinding Lights;Billie Eilish=Bad Guy;Drake=Shape of You','Taylor Swift=Shake It Off;The Weeknd=Blinding Lights;Ed Sheeran=Shape of You;Billie Eilish=Bad Guy;Drake=God''s Plan',NULL,NULL);
+VALUES(67,7,'Match each artist to one of their famous songs','Matching',NULL,'Taylor Swift=Shake It Off;The Weeknd=Blinding Lights;Ed Sheeran=Shape of You;Billie Eilish=Bad Guy;Drake=God''s Plan',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(68,7,'Match the Movie to Its Director','Matching','Inception=James Cameron;Pulp Fiction=Martin Scorsese;Titanic=Quentin Tarantino;Parasite=Bong Joon-ho;The Irishman=Christopher Nolan','Inception=Christopher Nolan;Pulp Fiction=Quentin Tarantino;Titanic=James Cameron;Parasite=Bong Joon-ho;The Irishman=Martin Scorsese',NULL,NULL);
+VALUES(68,7,'Match the Movie to Its Director','Matching',NULL,'Inception=Christopher Nolan;Pulp Fiction=Quentin Tarantino;Titanic=James Cameron;Parasite=Bong Joon-ho;The Irishman=Martin Scorsese',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(69,7,'Match the App to Its Main Function','Matching','Spotify=Team Communication;TikTok=Productivity;Slack=Music Streaming;Notion=Photo Sharing;Instagram=Short Videos
-','Spotify=Music Streaming;TikTok=Short Videos;Slack=Team Communication;Notion=Productivity;Instagram=Photo Sharing',NULL,NULL);
+VALUES(69,7,'Match the App to Its Main Function','Matching',NULL,'Spotify=Music Streaming;TikTok=Short Videos;Slack=Team Communication;Notion=Productivity;Instagram=Photo Sharing',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(70,7,'Match the Gaming Console to Its Manufacturer','Matching','PlayStation 5=Microsoft;Xbox Series X=Nintendo;Nintendo Switch=Atari;Steam Deck=Sony;Atari VCS=Valve
-','PlayStation 5=Sony;Xbox Series X=Microsoft;Nintendo Switch=Nintendo;Steam Deck=Valve;Atari VCS=Atari',NULL,NULL);
+VALUES(70,7,'Match the Gaming Console to Its Manufacturer','Matching',NULL,
+'PlayStation 5=Sony;Xbox Series X=Microsoft;Nintendo Switch=Nintendo;Steam Deck=Valve;Atari VCS=Atari',NULL,NULL);
 
 
 
@@ -275,7 +274,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(74,8,'Who won Austin major 2025 ','Question-Response',NULL,'Vitality',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES (75,8,'Match the organizations to the Regions','Matching','G2=North America;MIBR=Europe;TSM=Brazil;Paper Rex=China;BLG=Pacific','G2=Europe;MIBR=Brazil;TSM=North America;Paper Rex=Pacific;BLG=China',NULL,NULL);
+VALUES (75,8,'Match the organizations to the Regions','Matching',NULL,'G2=Europe;MIBR=Brazil;TSM=North America;Paper Rex=Pacific;BLG=China',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES (76,8,'Which Country won Overwatch World Cup 2016?','Multiple Choice','Singapore,Russia,Sweden,South Korea','South Korea',NULL,NULL);
@@ -302,7 +301,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(83,8,'Which Team won League Worlds 2023?','Multiple Choice','Gen.G,JDG,G2,T1','T1',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(84,8,'Match the player to the game','Matching','Faker=CS:GO;S1mple=Valorant;Tenz=Apex Legends;iiTzTimmy=League of Legends','Faker=League of Legends;S1mple=CS:GO;Tenz=Valorant;iiTzTimmy=Apex Legends',NULL,NULL);
+VALUES(84,8,'Match the player to the game','Matching',NULL,'Faker=League of Legends;S1mple=CS:GO;Tenz=Valorant;iiTzTimmy=Apex Legends',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(85,8,'Which of these Football Clubs have Valorant Teams?','Multiple Choice with Multiple Answers','FC Barcelona,Manchester United,Wolverhampton Wanderers,Eintracht Frankfurt','FC Barcelona,Wolverhampton Wanderers,Eintracht Frankfurt',NULL,NULL);
@@ -319,7 +318,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(87,9,'Who is the creator of Attack on Titan?','Question-Response',NULL,'Hajime Isayama',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(88,9,'Match the anime to its protagonist','Matching','Naruto=Ichigo Kurosaki;Death Note=Naruto Uzumaki;Bleach=Yuji Itadori;One Piece=Light Yagami;Jujutsu Kaisen=Monkey D. Luffy','Naruto=Naruto Uzumaki;Death Note=Light Yagami;Bleach=Ichigo Kurosaki;One Piece=Monkey D. Luffy;Jujutsu Kaisen=Yuji Itado',NULL,NULL);
+VALUES(88,9,'Match the anime to its protagonist','Matching',NULL,'Naruto=Naruto Uzumaki;Death Note=Light Yagami;Bleach=Ichigo Kurosaki;One Piece=Monkey D. Luffy;Jujutsu Kaisen=Yuji Itadori',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(89,9,'Tokyo Ghoul is set in a world where humans coexist with flesh-eating creatures called _.','Fill in the Blank',NULL,'Ghouls',NULL,NULL);
@@ -377,7 +376,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(104,10,'Identify the historical figure in this image','Picture-Response',NULL,'Napoleon Bonaparte','https://th.bing.com/th/id/OIP.SD_9v01uDwergtnd-xASqwHaEK?w=303&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3',NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(105,10,'Match each historical event to the correct year','Matching','Fall of Constantinople=1215;French Revolution begins=1914;Start of World War I=1453;Signing of the Magna Carta=1789','Fall of Constantinople=1453;French Revolution begins=1789;Start of World War I=1914;Signing of the Magna Carta=1215',NULL,NULL);
+VALUES(105,10,'Match each historical event to the correct year','Matching',NULL,'Fall of Constantinople=1453;French Revolution begins=1789;Start of World War I=1914;Signing of the Magna Carta=1215',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(106,10,'The Renaissance began in _ during the 14th century','Fill in the Blank',NULL,'Italy',NULL,NULL);
@@ -417,7 +416,7 @@ INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answer
 VALUES(115,11,'Which of the following are Scandinavian countries?','Multiple Choice with Multiple Answers','Sweden,Finland,Denmark,Germany','Sweden,Finland,Denmark',NULL,NULL);
 
 INSERT INTO  questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
-VALUES(116,11,'Match the capital to the country','Matching','Tokyo=Australia;Cairo=Canada;Canberra=Egypt;Ottawa=Japan','Tokyo=Japan;Cairo=Egypt;Canberra=Australia;Ottawa=Canada',NULL,NULL);
+VALUES(116,11,'Match the capital to the country','Matching',NULL,'Tokyo=Japan;Cairo=Egypt;Canberra=Australia;Ottawa=Canada',NULL,NULL);
 
 INSERT INTO questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(117,11,'What is the smallest country in the world by land area?','Multiple Choice','Monaco,San Marino,Liechtenstein,Vatican City','Vatican City',NULL,NULL);
@@ -431,3 +430,27 @@ VALUES(119,11,'Guess the Country','Picture-Response',NULL,'Japan','https://img.f
 INSERT INTO  questions(id, quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters)
 VALUES(120,11,'Guess the Country','Picture-Response',NULL,'Netherlands','https://th.bing.com/th/id/OIP.qYjv67oxdJvLHLXadhenJAHaFu?w=219&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7',NULL);
 
+INSERT INTO quiz_attempts (user_name, quiz_id, score, total_questions, time_taken, is_practice_mode) VALUES
+                                                                                                         ('user1', 1, 8, 10, 300, FALSE),
+                                                                                                         ('user2', 1, 7, 10, 450, FALSE),
+                                                                                                         ('user3', 1, 9, 10, 250, FALSE),
+                                                                                                         ('user1', 2, 6, 10, 400, FALSE),
+                                                                                                         ('user2', 2, 8, 10, 350, FALSE),
+                                                                                                         ('user1', 3, 5, 10, 500, FALSE);
+
+
+
+INSERT INTO achievements (achievement_id, name, description, icon_url, condition_type, condition_value) VALUES
+                                                                                                            (1, 'Amateur Author', 'Create your first quiz', '/images/Achievements/amateur_author.png', 'quiz_created', 1),
+                                                                                                            (2, 'Prolific Creator', 'Create 5 quizzes', '/images/Achievements/Prolifict_Author.png', 'quiz_created', 5),
+                                                                                                            (3, 'Prodigious Author', 'Create 10 quizzes', '/images/Achievements/Prodigious_Author.png', 'quiz_created', 10),
+                                                                                                            (4, 'Quiz Machine', 'Take 10 quizzes', '/images/Achievements/Quiz_Machine.png', 'quiz_count', 10),
+                                                                                                            (5, 'I am the Greatest', 'Hold the highest score on any quiz', '/images/Achievements/I_am_the_Greatest.png', 'high_score', 1),
+                                                                                                            (6, 'Practice Makes Perfect', 'Use practice mode', '/images/Achievements/Practice_Makes_Perfect.png', 'practice_mode', 1),
+                                                                                                            (7, 'Perfectionist', 'Score 100% on any quiz', '/images/Achievements/Perfectionist.png', 'perfect_score', 100),
+                                                                                                            (8, 'Speed Demon', 'Complete a quiz in under 30 seconds', '/images/Achievements/Speed_Demon.png', 'quiz_count', 1),
+                                                                                                            (9, 'Dedicated Learner', 'Take 25 quizzes', '/images/Achievements/Dedicated_Learner.png', 'quiz_count', 25),
+                                                                                                            (10, 'Quiz Master', 'Take 50 quizzes', '/images/Achievements/Quiz_Master.png', 'quiz_count', 50),
+                                                                                                            (11, 'Consistent Performer', 'Score 80%+ on 5 consecutive quizzes', '/images/Achievements/Consistent_Performer.png', 'high_score', 80);
+
+INSERT INTO users(name,hashedpassword,isadmin) values ('Admin','40bd001563085fc35165329ea1ff5c5ecbdbbeef',1);
