@@ -1,0 +1,754 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Century Gothic', 'Segoe UI', 'Arial', 'Helvetica', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: white;
+    min-height: 100vh;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+/* Header */
+.messages-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px 40px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.messages-header h1 {
+    font-size: 2.2em;
+    font-weight: normal;
+    margin: 0;
+}
+
+.main-nav {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    font-size: 0.9em;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.nav-link:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.logout-link {
+    background-color: rgba(220,20,60,0.3);
+    border-color: rgba(220,20,60,0.5);
+}
+
+/* Main Content Layout */
+.main-content {
+    display: flex;
+    min-height: calc(100vh - 100px);
+}
+
+.messages-sidebar {
+    width: 250px;
+    background: #f8f9fa;
+    padding: 30px 20px;
+    border-right: 1px solid #dee2e6;
+}
+
+.messages-content {
+    flex: 1;
+    padding: 30px 40px;
+}
+
+/* Sidebar */
+.message-actions {
+    margin-bottom: 30px;
+}
+
+.message-actions .btn {
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.messages-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    color: #666;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.nav-item:hover {
+    background: #e9ecef;
+    color: #333;
+}
+
+.nav-item.active {
+    background: #667eea;
+    color: white;
+}
+
+.unread-badge {
+    background: #dc3545;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75em;
+    font-weight: bold;
+    min-width: 20px;
+    text-align: center;
+}
+
+/* Content Header */
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.content-header h2 {
+    font-size: 1.8em;
+    color: #333;
+    margin: 0;
+}
+
+.message-stats {
+    display: flex;
+    gap: 20px;
+    color: #666;
+    font-size: 0.9em;
+}
+
+.total-count {
+    color: #667eea;
+    font-weight: bold;
+}
+
+.unread-count {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* Alerts */
+.alert {
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 4px solid;
+}
+
+.alert-error {
+    background: #f8d7da;
+    color: #721c24;
+    border-color: #dc3545;
+}
+
+.alert-success {
+    background: #d4edda;
+    color: #155724;
+    border-color: #28a745;
+}
+
+/* Messages List */
+.messages-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.message-item {
+    background: white;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+.message-item:hover {
+    background: #f8f9fa;
+    transform: translateX(2px);
+}
+
+.message-item.unread {
+    border-left-color: #667eea;
+    background: #f0f4ff;
+}
+
+.message-item.sent {
+    border-left-color: #28a745;
+}
+
+.message-type-icon {
+    font-size: 1.5em;
+    width: 40px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.message-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.sender-name, .recipient-name {
+    font-weight: bold;
+    color: #667eea;
+}
+
+.message-date {
+    color: #666;
+    font-size: 0.85em;
+}
+
+.message-subject {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #333;
+}
+
+.message-type-badge {
+    font-size: 0.7em;
+    padding: 2px 6px;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+}
+
+.message-type-badge.friend-request {
+    background: #17a2b8;
+}
+
+.message-type-badge.challenge {
+    background: #fd7e14;
+}
+
+.message-preview {
+    color: #666;
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
+.message-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.unread-indicator {
+    color: #667eea;
+    font-size: 1.2em;
+}
+
+.btn-delete {
+    background: none;
+    border: none;
+    font-size: 1.1em;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-delete:hover {
+    background: #f8f9fa;
+}
+
+/* Buttons */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+    text-align: center;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #5a6fd8, #6a4190);
+}
+
+.btn-primary.active {
+    background: linear-gradient(135deg, #5a6fd8, #6a4190);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+}
+
+.btn-success {
+    background: #28a745;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #218838;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+}
+
+.btn-info {
+    background: #17a2b8;
+    color: white;
+}
+
+.btn-info:hover {
+    background: #138496;
+}
+
+.btn-large {
+    padding: 15px 30px;
+    font-size: 1.1em;
+}
+
+/* Compose Form */
+.compose-form {
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 0.9em;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+    font-family: inherit;
+}
+
+.form-help {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+    font-size: 0.8em;
+}
+
+.character-counter {
+    text-align: right;
+    margin-top: 5px;
+    font-size: 0.8em;
+    color: #666;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+/* Compose Tips */
+.compose-tips {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.compose-tips h3 {
+    margin-bottom: 15px;
+    color: #856404;
+}
+
+.compose-tips ul {
+    list-style: none;
+    padding: 0;
+}
+
+.compose-tips li {
+    margin-bottom: 8px;
+    padding-left: 20px;
+    position: relative;
+    color: #856404;
+}
+
+.compose-tips li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #ffc107;
+    font-weight: bold;
+}
+
+/* Message View */
+.message-view {
+    max-width: 800px;
+}
+
+.message-header-view {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.message-navigation {
+    display: flex;
+    gap: 10px;
+}
+
+.type-badge {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: bold;
+    color: white;
+}
+
+.type-badge.friend-request {
+    background: #17a2b8;
+}
+
+.type-badge.challenge {
+    background: #fd7e14;
+}
+
+.type-badge.note {
+    background: #6c757d;
+}
+
+.message-details {
+    margin-bottom: 30px;
+}
+
+.message-subject {
+    font-size: 1.6em;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.message-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+}
+
+.meta-item strong {
+    color: #333;
+}
+
+.message-body {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+    border-left: 4px solid #667eea;
+}
+
+.message-body p {
+    margin: 0;
+    white-space: pre-wrap;
+}
+
+/* Message Actions Panel */
+.message-actions-panel {
+    background: #f0f4ff;
+    border: 1px solid #c7d2fe;
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+.message-actions-panel h3 {
+    margin-bottom: 15px;
+    color: #4338ca;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Challenge Panel */
+.challenge-panel {
+    background: #fff4e6;
+    border-color: #ffd1aa;
+}
+
+.challenge-panel h3 {
+    color: #c05621;
+}
+
+.challenge-details {
+    margin-bottom: 25px;
+}
+
+.quiz-info {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 4px solid #fd7e14;
+}
+
+.quiz-info h4 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.quiz-info p {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.quiz-meta {
+    display: flex;
+    gap: 20px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.challenger-score {
+    text-align: center;
+}
+
+.score-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.score {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #fd7e14;
+}
+
+.percentage {
+    font-size: 1.2em;
+    color: #666;
+}
+
+.challenge-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+/* Response Message */
+.response-message {
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    border-left: 4px solid;
+}
+
+.response-message.success {
+    background: #d4edda;
+    color: #155724;
+    border-color: #28a745;
+}
+
+.response-message.error {
+    background: #f8d7da;
+    color: #721c24;
+    border-color: #dc3545;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 60px 40px;
+    color: #666;
+}
+
+.empty-icon {
+    font-size: 4em;
+    margin-bottom: 20px;
+}
+
+.empty-state h3 {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 1.4em;
+}
+
+.empty-state p {
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .main-content {
+        flex-direction: column;
+    }
+
+    .messages-sidebar {
+        width: 100%;
+        padding: 20px;
+        border-right: none;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .messages-nav {
+        flex-direction: row;
+        overflow-x: auto;
+    }
+
+    .nav-item {
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 768px) {
+    .messages-content {
+        padding: 20px;
+    }
+
+    .header-content {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .message-item {
+        padding: 15px;
+    }
+
+    .message-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .challenge-actions {
+        flex-direction: column;
+    }
+
+    .message-navigation {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .message-header-view {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+}
