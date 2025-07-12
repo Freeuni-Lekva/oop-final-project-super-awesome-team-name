@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +44,7 @@ public class MessageController {
             return new ModelAndView("redirect:/welcome");
         }
 
-        ModelAndView mav = new ModelAndView("messages/inbox");
+        ModelAndView mav = new ModelAndView("inbox");
 
         try {
             List<Message> userMessages = messages.getMessagesForUser(userName);
@@ -69,7 +70,7 @@ public class MessageController {
             return new ModelAndView("redirect:/welcome");
         }
 
-        ModelAndView mav = new ModelAndView("messages/sent");
+        ModelAndView mav = new ModelAndView("sent");
 
         try {
             List<Message> sentMessages = messages.getSentMessagesForUser(userName);
@@ -94,10 +95,18 @@ public class MessageController {
             return new ModelAndView("redirect:/welcome");
         }
 
-        ModelAndView mav = new ModelAndView("messages/compose");
+        ModelAndView mav = new ModelAndView("compose");
         mav.addObject("userName", userName);
         mav.addObject("recipientName", to != null ? to : "");
         mav.addObject("subject", subject != null ? subject : "");
+
+        // Get user's friends for the dropdown
+        try {
+            List<Friendship> userFriends = friendships.findByUser(userName);
+            mav.addObject("friends", userFriends);
+        } catch (Exception e) {
+            mav.addObject("friends", new ArrayList<Friendship>());
+        }
 
         return mav;
     }
@@ -116,7 +125,7 @@ public class MessageController {
         try {
             // Check if recipient exists
             if (!users.exists(recipientName)) {
-                ModelAndView mav = new ModelAndView("messages/compose");
+                ModelAndView mav = new ModelAndView("compose");
                 mav.addObject("error", "User '" + recipientName + "' does not exist.");
                 mav.addObject("recipientName", recipientName);
                 mav.addObject("subject", subject);
@@ -124,16 +133,14 @@ public class MessageController {
                 return mav;
             }
 
-            // Send the message
+            // Send the message using the correct DAO method
             messages.sendNote(userName, recipientName, subject, messageText);
 
-            ModelAndView mav = new ModelAndView("redirect:/messages/sent");
-            mav.addObject("success", "Message sent successfully!");
-            return mav;
+            return new ModelAndView("redirect:/messages/sent?success=Message sent successfully");
 
         } catch (Exception e) {
             e.printStackTrace();
-            ModelAndView mav = new ModelAndView("messages/compose");
+            ModelAndView mav = new ModelAndView("compose");
             mav.addObject("error", "Failed to send message: " + e.getMessage());
             mav.addObject("recipientName", recipientName);
             mav.addObject("subject", subject);
@@ -154,16 +161,12 @@ public class MessageController {
             Message message = messages.getMessage(messageId);
 
             if (message == null) {
-                ModelAndView mav = new ModelAndView("redirect:/messages");
-                mav.addObject("error", "Message not found.");
-                return mav;
+                return new ModelAndView("redirect:/messages?error=Message not found");
             }
 
             // Check if user has permission to view this message
             if (!userName.equals(message.getRecipientName()) && !userName.equals(message.getSenderName())) {
-                ModelAndView mav = new ModelAndView("redirect:/messages");
-                mav.addObject("error", "You don't have permission to view this message.");
-                return mav;
+                return new ModelAndView("redirect:/messages?error=You don't have permission to view this message");
             }
 
             // Mark as read if user is the recipient
@@ -171,24 +174,60 @@ public class MessageController {
                 messages.markAsRead(messageId, userName);
             }
 
-            ModelAndView mav = new ModelAndView("messages/view");
+            ModelAndView mav = new ModelAndView("view");
             mav.addObject("message", message);
             mav.addObject("userName", userName);
 
             // Add additional data for specific message types
             if (message.getMessageType() == Message.MessageType.CHALLENGE && message.getQuizId() != null) {
-                Quiz quiz = quizzes.getQuiz(message.getQuizId());
-                mav.addObject("quiz", quiz);
+                try {
+                    Quiz quiz = quizzes.getQuiz(message.getQuizId());
+                    mav.addObject("quiz", quiz);
+                } catch (Exception e) {
+                    // Quiz might not exist anymore, ignore
+                }
             }
 
             return mav;
 
         } catch (Exception e) {
             e.printStackTrace();
-            ModelAndView mav = new ModelAndView("redirect:/messages");
-            mav.addObject("error", "Failed to load message: " + e.getMessage());
-            return mav;
+            return new ModelAndView("redirect:/messages?error=Failed to load message");
         }
+    }
+
+    // Delete message
+    @PostMapping("/{messageId}/delete")
+    @ResponseBody
+    public Map<String, String> deleteMessage(@PathVariable int messageId, HttpSession session) {
+        Map<String, String> result = new HashMap<String, String>();
+        String userName = (String) session.getAttribute("name");
+
+        if (userName == null) {
+            result.put("status", "error");
+            result.put("message", "Not authenticated");
+            return result;
+        }
+
+        try {
+            // CORRECT: Using both messageId AND userName parameters
+            boolean deleted = messages.deleteMessage(messageId, userName);
+
+            if (deleted) {
+                result.put("status", "success");
+                result.put("message", "Message deleted successfully");
+            } else {
+                result.put("status", "error");
+                result.put("message", "Message not found or access denied");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("status", "error");
+            result.put("message", "Failed to delete message: " + e.getMessage());
+        }
+
+        return result;
     }
 
     // Handle friend request response
@@ -198,7 +237,13 @@ public class MessageController {
                                                    @RequestParam String action,
                                                    HttpSession session) {
         String userName = (String) session.getAttribute("name");
-        Map<String, String> result = new HashMap<>();
+        Map<String, String> result = new HashMap<String, String>();
+
+        if (userName == null) {
+            result.put("status", "error");
+            result.put("message", "Not authenticated");
+            return result;
+        }
 
         try {
             Message message = messages.getMessage(messageId);
@@ -206,13 +251,13 @@ public class MessageController {
             if (message == null || !userName.equals(message.getRecipientName()) ||
                     message.getMessageType() != Message.MessageType.FRIEND_REQUEST) {
                 result.put("status", "error");
-                result.put("message", "Invalid friend request.");
+                result.put("message", "Invalid friend request");
                 return result;
             }
 
             if (message.getFriendRequestId() == null) {
                 result.put("status", "error");
-                result.put("message", "Friend request ID not found.");
+                result.put("message", "Friend request ID not found");
                 return result;
             }
 
@@ -220,30 +265,33 @@ public class MessageController {
 
             if (friendRequest == null) {
                 result.put("status", "error");
-                result.put("message", "Friend request not found.");
+                result.put("message", "Friend request not found");
                 return result;
             }
 
             if ("accept".equals(action)) {
-                // Accept the friend request
+                // Accept the friend request - create bidirectional friendship
+                String requesterName = message.getSenderName();
+
+                friendships.insertFriendship(userName, requesterName);
+                friendships.insertFriendship(requesterName, userName);
+
+                // Update friend request status
                 friendRequests.updateStatus(message.getFriendRequestId(), "ACCEPTED");
 
-                // Create friendship entries (bidirectional)
-                friendships.insertFriendship(friendRequest.getRequesterName(), friendRequest.getRequesteeName());
-                friendships.insertFriendship(friendRequest.getRequesteeName(), friendRequest.getRequesterName());
-
                 result.put("status", "success");
-                result.put("message", "Friend request accepted! You are now friends with " + message.getSenderName());
+                result.put("message", "Friend request accepted");
 
             } else if ("decline".equals(action)) {
                 // Decline the friend request
                 friendRequests.updateStatus(message.getFriendRequestId(), "DECLINED");
 
                 result.put("status", "success");
-                result.put("message", "Friend request declined.");
+                result.put("message", "Friend request declined");
+
             } else {
                 result.put("status", "error");
-                result.put("message", "Invalid action.");
+                result.put("message", "Invalid action");
             }
 
         } catch (Exception e) {
@@ -255,7 +303,7 @@ public class MessageController {
         return result;
     }
 
-    // Send a challenge
+    // Send challenge message (can be called from quiz pages)
     @PostMapping("/challenge")
     public ModelAndView sendChallenge(@RequestParam String recipientName,
                                       @RequestParam int quizId,
@@ -313,53 +361,5 @@ public class MessageController {
             mav.addObject("error", "Failed to send challenge: " + e.getMessage());
             return mav;
         }
-    }
-
-    // Delete a message
-    @PostMapping("/{messageId}/delete")
-    @ResponseBody
-    public Map<String, String> deleteMessage(@PathVariable int messageId, HttpSession session) {
-        String userName = (String) session.getAttribute("name");
-        Map<String, String> result = new HashMap<>();
-
-        try {
-            boolean deleted = messages.deleteMessage(messageId, userName);
-
-            if (deleted) {
-                result.put("status", "success");
-                result.put("message", "Message deleted successfully.");
-            } else {
-                result.put("status", "error");
-                result.put("message", "Failed to delete message or message not found.");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            result.put("status", "error");
-            result.put("message", "Failed to delete message: " + e.getMessage());
-        }
-
-        return result;
-    }
-
-    // Get unread message count (for AJAX)
-    @GetMapping("/unread-count")
-    @ResponseBody
-    public Map<String, Integer> getUnreadCount(HttpSession session) {
-        String userName = (String) session.getAttribute("name");
-        Map<String, Integer> result = new HashMap<>();
-
-        if (userName != null) {
-            try {
-                int count = messages.getUnreadCount(userName);
-                result.put("count", count);
-            } catch (Exception e) {
-                result.put("count", 0);
-            }
-        } else {
-            result.put("count", 0);
-        }
-
-        return result;
     }
 }

@@ -122,7 +122,7 @@ public class MessageDao {
     // Get messages for a user (inbox)
     public List<Message> getMessagesForUser(String recipientName) {
         String sql = "SELECT * FROM messages WHERE recipient_name = ? ORDER BY created_at DESC";
-        List<Message> messages = new ArrayList<>();
+        List<Message> messages = new ArrayList<Message>();
 
         try (Connection con = db.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -145,7 +145,7 @@ public class MessageDao {
     // Get sent messages for a user
     public List<Message> getSentMessagesForUser(String senderName) {
         String sql = "SELECT * FROM messages WHERE sender_name = ? ORDER BY created_at DESC";
-        List<Message> messages = new ArrayList<>();
+        List<Message> messages = new ArrayList<Message>();
 
         try (Connection con = db.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {

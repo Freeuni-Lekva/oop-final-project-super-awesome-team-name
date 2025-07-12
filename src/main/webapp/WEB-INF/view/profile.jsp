@@ -5,18 +5,26 @@
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ProfileStyle.css">
-    <title>Quiz Website - ${userName}'s Profile</title>
+    <title>Super Awesome Quiz Website - ${sessionScope.name}'s Profile</title>
 </head>
 <body>
 <div class="container">
     <header class="profile-header">
-        <div class="header-content">
-            <h1>${userName}'s Profile</h1>
+        <div class="header-content-centered">
+            <h1>Super Awesome Quiz Website</h1>
+            <div class="user-welcome">
+                <span>${sessionScope.name}'s Profile</span>
+            </div>
             <nav class="main-nav">
                 <a href="/" class="nav-link">Home</a>
                 <a href="/quiz" class="nav-link">Browse Quizzes</a>
                 <a href="/CreateQuiz" class="nav-link">Create Quiz</a>
-                <a href="/history" class="nav-link">Quiz History</a>
+                <a href="/history" class="nav-link">My History</a>
+                <a href="/messages/inbox" class="nav-link">Messages
+                    <c:if test="${unreadMessageCount > 0}">
+                        <span class="notification-badge">${unreadMessageCount}</span>
+                    </c:if>
+                </a>
                 <c:if test="${sessionScope.isAdmin}">
                     <a href="/admin" class="nav-link admin-link">Admin</a>
                 </c:if>
@@ -26,248 +34,191 @@
     </header>
 
     <main class="main-content">
-        <!-- Profile Overview -->
-        <section class="profile-overview">
-            <div class="profile-avatar">
-                <div class="avatar-circle">
-                    <span class="avatar-initial">${fn:substring(userName, 0, 1)}</span>
-                </div>
-            </div>
-            <div class="profile-info">
-                <h2>${userName}</h2>
-                <p class="profile-title">Quiz Enthusiast</p>
-                <div class="profile-stats">
-                    <div class="stat-item">
-                        <span class="stat-number">${totalAttempts}</span>
-                        <span class="stat-label">Quizzes Taken</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">${totalQuizzesCreated}</span>
-                        <span class="stat-label">Quizzes Created</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number">${totalAchievements}</span>
-                        <span class="stat-label">Achievements</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Detailed Statistics -->
-        <section class="stats-section">
-            <h2>📊 Detailed Statistics</h2>
+        <!-- Profile Stats Overview -->
+        <section class="profile-stats-section">
+            <h2>${sessionScope.name}'s Activity Summary</h2>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-icon">📝</div>
-                    <div class="stat-info">
-                        <div class="stat-value">${totalAttempts}</div>
-                        <div class="stat-name">Total Quiz Attempts</div>
-                    </div>
+                    <div class="stat-number">${totalAttempts}</div>
+                    <div class="stat-label">Quizzes Taken</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon">📈</div>
-                    <div class="stat-info">
-                        <div class="stat-value">
-                            <fmt:formatNumber value="${averageScore}" maxFractionDigits="1"/>%
-                        </div>
-                        <div class="stat-name">Average Score</div>
-                    </div>
+                    <div class="stat-number">${totalCreatedQuizzes}</div>
+                    <div class="stat-label">Quizzes Created</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon">🏆</div>
-                    <div class="stat-info">
-                        <div class="stat-value">
-                            <fmt:formatNumber value="${bestScore}" maxFractionDigits="1"/>%
-                        </div>
-                        <div class="stat-name">Best Score</div>
-                    </div>
+                    <div class="stat-number">${totalAchievements}</div>
+                    <div class="stat-label">Achievements</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon">⏱️</div>
-                    <div class="stat-info">
-                        <div class="stat-value">
-                            <c:choose>
-                                <c:when test="${totalTimeTaken >= 3600}">
-                                    ${totalTimeTaken / 3600}h ${(totalTimeTaken % 3600) / 60}m
-                                </c:when>
-                                <c:when test="${totalTimeTaken >= 60}">
-                                    ${totalTimeTaken / 60}m ${totalTimeTaken % 60}s
-                                </c:when>
-                                <c:otherwise>
-                                    ${totalTimeTaken}s
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
-                        <div class="stat-name">Total Time Spent</div>
+                    <div class="stat-number">${totalFriends}</div>
+                    <div class="stat-label">Friends</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">
+                        <fmt:formatNumber value="${averageScore}" maxFractionDigits="1"/>%
                     </div>
+                    <div class="stat-label">Average Score</div>
                 </div>
             </div>
         </section>
 
-        <!-- Quiz Attempts -->
-        <section class="content-section">
-            <h2>📋 Quiz History</h2>
-            <div class="section-controls">
-                <div class="sort-controls">
-                    <label for="sortBy">Sort by:</label>
-                    <select id="sortBy" onchange="sortQuizHistory()">
-                        <option value="date">Date (Newest First)</option>
-                        <option value="date-asc">Date (Oldest First)</option>
-                        <option value="score">Score (Highest First)</option>
-                        <option value="score-asc">Score (Lowest First)</option>
-                        <option value="time">Time (Fastest First)</option>
-                        <option value="time-desc">Time (Slowest First)</option>
-                    </select>
-                </div>
-            </div>
-
+        <!-- Friends' Recent Activities - Horizontal Scroll -->
+        <section class="friends-scroll-section">
+            <h2>Friends' Recent Activities</h2>
             <c:choose>
-                <c:when test="${not empty userAttempts}">
-                    <div class="quiz-attempts-list" id="quizAttemptsList">
-                        <c:forEach items="${userAttempts}" var="attempt">
-                            <div class="attempt-item"
-                                 data-date="${attempt.attemptDate.time}"
-                                 data-score="${attempt.percentage}"
-                                 data-time="${attempt.timeTaken}">
-                                <div class="attempt-header">
-                                    <div class="attempt-title">
-                                        <a href="/quiz/${attempt.quizId}">Quiz #${attempt.quizId}</a>
-                                        <c:if test="${attempt.practiceMode}">
-                                            <span class="practice-badge">Practice</span>
-                                        </c:if>
+                <c:when test="${hasFriends}">
+                    <div class="friends-activity-scroll">
+                        <c:forEach items="${friendActivities}" var="friendActivity">
+                            <div class="friend-activity-card">
+                                <h3>
+                                    <a href="/user/${friendActivity.friendName}" class="friend-link">
+                                            ${friendActivity.friendName}
+                                    </a>
+                                </h3>
+
+                                <!-- Friend's Recent Quiz Attempts -->
+                                <c:if test="${not empty friendActivity.recentAttempts}">
+                                    <div class="friend-section">
+                                        <h4>Recent Quiz Attempts</h4>
+                                        <c:forEach items="${friendActivity.recentAttempts}" var="attempt" varStatus="status">
+                                            <c:if test="${status.index < 3}">
+                                                <div class="friend-activity-item">
+                                                    <div class="activity-text">
+                                                        <a href="/quiz/${attempt.quizId}">Quiz #${attempt.quizId}</a>
+                                                        - ${attempt.score}/${attempt.totalQuestions}
+                                                        (<fmt:formatNumber value="${attempt.percentage}" maxFractionDigits="1"/>%)
+                                                    </div>
+                                                </div>
+                                            </c:if>
+                                        </c:forEach>
                                     </div>
-                                    <div class="attempt-score ${attempt.percentage >= 80 ? 'good' : attempt.percentage >= 60 ? 'average' : 'poor'}">
-                                        <fmt:formatNumber value="${attempt.percentage}" maxFractionDigits="1"/>%
+                                </c:if>
+
+                                <!-- Friend's Recent Quiz Creations -->
+                                <c:if test="${not empty friendActivity.recentQuizzes}">
+                                    <div class="friend-section">
+                                        <h4>Recent Quiz Creations</h4>
+                                        <c:forEach items="${friendActivity.recentQuizzes}" var="quiz" varStatus="status">
+                                            <c:if test="${status.index < 3}">
+                                                <div class="friend-activity-item">
+                                                    <div class="activity-text">
+                                                        <a href="/quiz/${quiz.quizID}">${quiz.quizName}</a>
+                                                        - ${quiz.NQuestions} questions
+                                                    </div>
+                                                </div>
+                                            </c:if>
+                                        </c:forEach>
                                     </div>
-                                </div>
-                                <div class="attempt-details">
-                                    <span class="detail-item">
-                                        <strong>Score:</strong> ${attempt.score}/${attempt.totalQuestions}
-                                    </span>
-                                    <span class="detail-item">
-                                        <strong>Time:</strong> ${attempt.timeTaken}s
-                                    </span>
-                                    <span class="detail-item">
-                                        <strong>Date:</strong> <fmt:formatDate value="${attempt.attemptDate}" pattern="MMM dd, yyyy 'at' HH:mm"/>
-                                    </span>
-                                </div>
+                                </c:if>
+
+                                <!-- Friend's Recent Achievements -->
+                                <c:if test="${not empty friendActivity.recentAchievements}">
+                                    <div class="friend-section">
+                                        <h4>Recent Achievements</h4>
+                                        <c:forEach items="${friendActivity.recentAchievements}" var="achievement" varStatus="status">
+                                            <c:if test="${status.index < 3}">
+                                                <div class="friend-activity-item">
+                                                    <div class="activity-text">
+                                                            ${achievement.achievement.name}
+                                                    </div>
+                                                </div>
+                                            </c:if>
+                                        </c:forEach>
+                                    </div>
+                                </c:if>
                             </div>
                         </c:forEach>
                     </div>
                 </c:when>
                 <c:otherwise>
                     <div class="empty-state">
-                        <h3>No Quiz Attempts Yet</h3>
-                        <p>You haven't taken any quizzes yet. <a href="/quiz">Browse available quizzes</a> to get started!</p>
+                        <p>No friends yet. Add some friends to see their activities here!</p>
                     </div>
                 </c:otherwise>
             </c:choose>
         </section>
 
-        <!-- Created Quizzes -->
-        <c:if test="${not empty userCreatedQuizzes}">
-            <section class="content-section">
-                <h2>✏️ Created Quizzes</h2>
-                <div class="quiz-list">
-                    <c:forEach items="${userCreatedQuizzes}" var="quiz">
-                        <div class="quiz-item">
-                            <div class="quiz-header">
-                                <h3><a href="/quiz/${quiz.quizID}">${quiz.quizName}</a></h3>
-                                <div class="quiz-badges">
-                                    <c:if test="${quiz.practiceMode}">
-                                        <span class="badge practice">Practice Mode</span>
-                                    </c:if>
-                                    <c:if test="${quiz.randomOrder}">
-                                        <span class="badge random">Random Order</span>
-                                    </c:if>
-                                    <c:if test="${quiz.onePage}">
-                                        <span class="badge single">Single Page</span>
-                                    </c:if>
+        <!-- Two Column Layout: Recent Quiz Creating Activities and Messages -->
+        <div class="profile-content-grid">
+            <!-- Recent Quiz Creating Activities -->
+            <section class="profile-section">
+                <h2>Recent Quiz Creating Activities</h2>
+                <c:choose>
+                    <c:when test="${not empty userCreatedQuizzes}">
+                        <div class="activity-list">
+                            <c:forEach items="${userCreatedQuizzes}" var="quiz">
+                                <div class="activity-item quiz-creation">
+                                    <div class="activity-content">
+                                        <h3><a href="/quiz/${quiz.quizID}">${quiz.quizName}</a></h3>
+                                        <p class="activity-description">${quiz.description}</p>
+                                        <div class="activity-meta">
+                                                ${quiz.NQuestions} questions
+                                            <c:if test="${quiz.practiceMode}"> | Practice Mode Available</c:if>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <p class="quiz-description">${quiz.description}</p>
-                            <div class="quiz-meta">
-                                <span><strong>Questions:</strong> ${quiz.NQuestions}</span>
-                                <span><strong>Type:</strong> ${quiz.onePage ? 'Single Page' : 'Multi-Page'}</span>
-                            </div>
-                            <div class="quiz-actions">
-                                <a href="/quiz/${quiz.quizID}" class="btn btn-primary">View Details</a>
-                                <a href="/quiz/${quiz.quizID}/take" class="btn btn-secondary">Take Quiz</a>
-                            </div>
+                            </c:forEach>
                         </div>
-                    </c:forEach>
-                </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="empty-state">
+                            <p>No quizzes created yet. <a href="/CreateQuiz">Create your first quiz!</a></p>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
             </section>
-        </c:if>
 
-        <!-- Achievements -->
-        <section class="content-section">
-            <h2>🏆 Achievements</h2>
-            <c:choose>
-                <c:when test="${not empty userAchievements}">
-                    <div class="achievements-grid">
-                        <c:forEach items="${userAchievements}" var="userAchievement">
-                            <div class="achievement-card">
-                                <div class="achievement-icon">
-                                    <img src="${pageContext.request.contextPath}${userAchievement.achievement.iconUrl}"
-                                         alt="${userAchievement.achievement.name}"
-                                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMzAiIGZpbGw9IiNGRkQ3MDAiLz4KPHR3eHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7wn4+GPC90ZXh0Pgo8L3N2Zz4K';">
-                                </div>
-                                <div class="achievement-content">
-                                    <h3>${userAchievement.achievement.name}</h3>
-                                    <p>${userAchievement.achievement.description}</p>
-                                    <div class="achievement-date">
-                                        Earned on <fmt:formatDate value="${userAchievement.earnedDate}" pattern="MMMM dd, yyyy"/>
+            <!-- Message Notifications -->
+            <section class="profile-section">
+                <h2>Recent Messages
+                    <c:if test="${unreadMessageCount > 0}">
+                        <span class="notification-count">(${unreadMessageCount} unread)</span>
+                    </c:if>
+                </h2>
+                <c:choose>
+                    <c:when test="${hasMessages}">
+                        <div class="message-list">
+                            <c:forEach items="${recentMessages}" var="message" varStatus="status">
+                                <c:if test="${status.index < 3}">
+                                    <div class="message-item ${message.read ? '' : 'unread'}">
+                                        <div class="message-type">
+                                            <c:choose>
+                                                <c:when test="${message.messageType == 'FRIEND_REQUEST'}">
+                                                    <span class="type-label">Friend Request</span>
+                                                </c:when>
+                                                <c:when test="${message.messageType == 'CHALLENGE'}">
+                                                    <span class="type-label">Quiz Challenge</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="type-label">Message</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </div>
+                                        <div class="message-content">
+                                            <h4><a href="/messages/view/${message.messageId}">${message.subject}</a></h4>
+                                            <p class="message-from">From: ${message.senderName}</p>
+                                            <p class="message-date">
+                                                <fmt:formatDate value="${message.createdAt}" pattern="MMM dd, yyyy"/>
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </c:forEach>
-                    </div>
-                </c:when>
-                <c:otherwise>
-                    <div class="empty-state">
-                        <h3>No Achievements Yet</h3>
-                        <p>Keep taking quizzes and creating content to unlock achievements!</p>
-                        <ul class="achievement-hints">
-                            <li>Take your first quiz to unlock <strong>Quiz Machine</strong></li>
-                            <li>Create a quiz to unlock <strong>Amateur Author</strong></li>
-                            <li>Score 100% on any quiz to unlock <strong>Perfectionist</strong></li>
-                            <li>Try practice mode to unlock <strong>Practice Makes Perfect</strong></li>
-                        </ul>
-                    </div>
-                </c:otherwise>
-            </c:choose>
-        </section>
+                                </c:if>
+                            </c:forEach>
+                        </div>
+                        <div class="view-all-link">
+                            <a href="/messages/inbox">View All Messages →</a>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="empty-state">
+                            <p>No messages yet. When you receive messages, they'll appear here!</p>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+            </section>
+        </div>
     </main>
 </div>
-
-<script>
-    function sortQuizHistory() {
-        const sortBy = document.getElementById('sortBy').value;
-        const list = document.getElementById('quizAttemptsList');
-        const items = Array.from(list.children);
-
-        items.sort((a, b) => {
-            switch(sortBy) {
-                case 'date':
-                    return parseInt(b.dataset.date) - parseInt(a.dataset.date);
-                case 'date-asc':
-                    return parseInt(a.dataset.date) - parseInt(b.dataset.date);
-                case 'score':
-                    return parseFloat(b.dataset.score) - parseFloat(a.dataset.score);
-                case 'score-asc':
-                    return parseFloat(a.dataset.score) - parseFloat(b.dataset.score);
-                case 'time':
-                    return parseInt(a.dataset.time) - parseInt(b.dataset.time);
-                case 'time-desc':
-                    return parseInt(b.dataset.time) - parseInt(a.dataset.time);
-                default:
-                    return 0;
-            }
-        });
-
-        items.forEach(item => list.appendChild(item));
-    }
-</script>
 </body>
 </html>
