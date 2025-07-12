@@ -6,6 +6,7 @@ import ge.edu.freeuni.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ge.edu.freeuni.listener.SessionTracker;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
@@ -59,6 +60,7 @@ public class AdminController {
 
             case "removeUser": {
                 if (users.removeUser(text)) {
+                    SessionTracker.invalidateSession(text);
                     result.put("status", "success");
                     result.put("message", "User removed: " + reducedText);
                 } else {
