@@ -486,7 +486,7 @@
                 </div>
             </div>
 
-            <!-- Alert messages only show when there are actual errors or success messages from the controller -->
+
             <c:if test="${not empty param.error}">
                 <div class="alert alert-error">
                     <strong>Error:</strong> <c:out value="${param.error}" escapeXml="true"/>

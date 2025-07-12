@@ -29,7 +29,7 @@
     </header>
 
     <main class="main-content">
-        <!-- Announcements Horizontal Scroll Section -->
+
         <c:if test="${not empty announcements}">
             <section class="announcements-section">
                 <h2>Latest Announcements</h2>
@@ -47,9 +47,9 @@
             </section>
         </c:if>
 
-        <!-- Two Column Layout for Quizzes -->
+
         <div class="quiz-columns">
-            <!-- Recently Created Quizzes -->
+
             <section class="quiz-column">
                 <h2>Recently Created Quizzes</h2>
                 <c:choose>
@@ -77,7 +77,7 @@
                 </c:choose>
             </section>
 
-            <!-- Popular Quizzes -->
+
             <section class="quiz-column">
                 <h2>Popular Quizzes</h2>
                 <c:choose>

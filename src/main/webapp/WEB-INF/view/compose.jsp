@@ -378,7 +378,7 @@
             border-bottom: none;
         }
 
-        /* Form Actions */
+
         .form-actions {
             display: flex;
             gap: 15px;
@@ -398,7 +398,7 @@
             }
         }
 
-        /* Animations */
+
         @keyframes slideInUp {
             from {
                 opacity: 0;
@@ -414,7 +414,7 @@
             animation: slideInUp 0.6s ease forwards;
         }
 
-        /* Character Counter */
+
         .character-counter {
             font-size: 12px;
             color: #6c757d;
@@ -437,7 +437,7 @@
         <div class="header-content">
             <h1>Messages</h1>
             <nav class="main-nav">
-                <a href="/" class="nav-link">Home</a>
+                <a href="/home" class="nav-link">Home</a>
                 <a href="/quiz" class="nav-link">Browse Quizzes</a>
                 <a href="/history" class="nav-link">My History</a>
                 <a href="/profile" class="nav-link">Profile</a>
@@ -548,7 +548,7 @@
 </div>
 
 <script>
-    // Character counter functionality
+
     function updateCharacterCounter(inputId, counterId, maxLength) {
         const input = document.getElementById(inputId);
         const counter = document.getElementById(counterId);
@@ -557,7 +557,7 @@
             const currentLength = input.value.length;
             counter.textContent = currentLength + ' / ' + maxLength;
 
-            // Update counter styling based on length
+
             counter.classList.remove('warning', 'danger');
             if (currentLength > maxLength * 0.9) {
                 counter.classList.add('danger');
@@ -567,10 +567,10 @@
         }
 
         input.addEventListener('input', updateCounter);
-        updateCounter(); // Initialize counter
+        updateCounter();
     }
 
-    // Friends dropdown functionality
+
     function toggleFriendsDropdown() {
         const dropdown = document.getElementById('friendsDropdown');
         dropdown.classList.toggle('show');
@@ -581,7 +581,7 @@
         document.getElementById('friendsDropdown').classList.remove('show');
     }
 
-    // Close dropdown when clicking outside
+
     document.addEventListener('click', function(event) {
         const dropdown = document.getElementById('friendsDropdown');
         const button = document.querySelector('.quick-select-btn');
@@ -591,7 +591,7 @@
         }
     });
 
-    // Form validation
+
     function validateForm() {
         const recipientName = document.getElementById('recipientName').value.trim();
         const subject = document.getElementById('subject').value.trim();
@@ -615,12 +615,12 @@
         return true;
     }
 
-    // Initialize character counters when page loads
+
     document.addEventListener('DOMContentLoaded', function() {
         updateCharacterCounter('subject', 'subjectCounter', 100);
         updateCharacterCounter('messageText', 'messageCounter', 1000);
 
-        // Add form validation
+
         document.querySelector('.compose-form').addEventListener('submit', function(e) {
             if (!validateForm()) {
                 e.preventDefault();
@@ -628,7 +628,7 @@
         });
     });
 
-    // Auto-resize textarea
+    
     document.getElementById('messageText').addEventListener('input', function() {
         this.style.height = 'auto';
         this.style.height = Math.max(150, this.scrollHeight) + 'px';

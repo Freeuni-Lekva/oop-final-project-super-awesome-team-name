@@ -9,7 +9,7 @@
 <head>
     <title>Quiz Status</title>
     <% if ("success".equals(status)) { %>
-    <meta http-equiv="refresh" content="3; URL=${pageContext.request.contextPath}/Profile.jsp" />
+    <meta http-equiv="refresh" content="3; URL=${pageContext.request.contextPath}/profile" />
     <% } %>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/CreatedQuizResultStyle.css" />
 </head>
