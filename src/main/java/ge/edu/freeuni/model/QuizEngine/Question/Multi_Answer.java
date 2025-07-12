@@ -1,6 +1,8 @@
 package ge.edu.freeuni.model.QuizEngine.Question;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Multi_Answer extends Question {
@@ -28,23 +30,33 @@ public class Multi_Answer extends Question {
 
     @Override
     public boolean isCorrect(String userAnswer) {
-        // Assume answers are submitted as comma-separated
         String[] parts = userAnswer.split(",");
         if (parts.length != correctAnswers.size()) return false;
 
-        for (int i = 0; i < parts.length; i++) {
-            if (orderMatters) {
-                if (!parts[i].trim().equalsIgnoreCase(correctAnswers.get(i))) return false;
-            } else {
-                if (!correctAnswers.contains(parts[i].trim())) return false;
-            }
+        List<String> userAnswers = new ArrayList<>();
+        for (String part : parts) {
+            userAnswers.add(part.trim());
         }
 
-        return !orderMatters || isSameSet(parts, correctAnswers);
-    }
+        if (orderMatters) {
+            for (int i = 0; i < userAnswers.size(); i++) {
+                if (!userAnswers.get(i).equalsIgnoreCase(correctAnswers.get(i).trim())) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            if (userAnswers.size() != correctAnswers.size()) return false;
 
+            Collections.sort(userAnswers, String.CASE_INSENSITIVE_ORDER);
+            Collections.sort(correctAnswers, String.CASE_INSENSITIVE_ORDER);
 
-    private boolean isSameSet(String[] a, List<String> b) {
-        return b.containsAll(Arrays.asList(a)) && a.length == b.size();
+            for (int i = 0; i < userAnswers.size(); i++) {
+                if (!userAnswers.get(i).equalsIgnoreCase(correctAnswers.get(i).trim())) {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

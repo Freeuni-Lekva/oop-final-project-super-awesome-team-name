@@ -1,13 +1,13 @@
 function updateFields() {
     const announceBlock = document.getElementById("announce");
-    const smallBLock = document.getElementById("notAnnounce");
+    const smallBlock = document.getElementById("notAnnounce");
     const textLabel = document.querySelector("label[for='smallText']");
 
     document.getElementById("smallText").value = "";
     document.getElementById("announceText").value = "";
 
     announceBlock.classList.add("hide");
-    smallBLock.classList.remove("hide");
+    smallBlock.classList.remove("hide");
     document.getElementById("result").classList.add("hide");
 
     switch (document.getElementById("adminFunc").value) {
@@ -29,7 +29,7 @@ function updateFields() {
             textLabel.textContent = "Enter a username:";
             break;
         case "seeStatistics":
-            smallBLock.classList.add("hide");
+            smallBlock.classList.add("hide");
             break;
     }
 }

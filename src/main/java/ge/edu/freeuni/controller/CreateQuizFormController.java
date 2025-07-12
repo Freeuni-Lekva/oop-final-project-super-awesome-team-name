@@ -18,12 +18,8 @@ import java.util.*;
 @RequestMapping("/CreateQuizForm")
 public class CreateQuizFormController {
 
-    private final QuizDAO quizzes;
-
     @Autowired
-    public CreateQuizFormController(QuizDAO quizzes) {
-        this.quizzes = quizzes;
-    }
+    private QuizDAO quizzes;
 
     @PostMapping
     public String createQuizForm(@RequestParam Map<String, String> requestParams,
@@ -117,8 +113,8 @@ public class CreateQuizFormController {
 
             Quiz quiz = new Quiz(QuizName, description, NQuestions, randomOrder, isOnePage,
                     immediateCorrection, allowPracticeMode, questions, creator);
-            int quizId = quizzes.insertQuiz(quiz);
-            quizzes.insertQuestions(quizId, questions);
+
+            quizzes.insertQuiz(quiz);
 
             request.setAttribute("status", "success");
             request.setAttribute("message", "Quiz created successfully!");

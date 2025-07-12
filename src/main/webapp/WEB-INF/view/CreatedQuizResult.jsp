@@ -2,31 +2,19 @@
 <%
     String status = (String) request.getAttribute("status");
     String message = (String) request.getAttribute("message");
+    String h1Class = "success".equals(status) ? "success" : "error";
 %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Quiz Status</title>
     <% if ("success".equals(status)) { %>
-    <meta http-equiv="refresh" content="3; URL=your_quizzes.jsp" />
+    <meta http-equiv="refresh" content="3; URL=${pageContext.request.contextPath}/Profile.jsp" />
     <% } %>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f8ff;
-            text-align: center;
-            margin-top: 100px;
-        }
-        h1 {
-            color: <%= "success".equals(status) ? "#4CAF50" : "#D32F2F" %>;
-        }
-        p {
-            color: #555;
-        }
-    </style>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/CreatedQuizResultStyle.css" />
 </head>
 <body>
-<h1><%= message %></h1>
+<h1 class="<%= h1Class %>"><%= message %></h1>
 <% if ("success".equals(status)) { %>
 <p>You will be redirected shortly.</p>
 <% } else { %>

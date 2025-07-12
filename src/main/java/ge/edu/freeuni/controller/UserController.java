@@ -16,6 +16,8 @@ import java.util.Map;
 @Controller
 public class UserController {
 
+    private final static int NUM_VISIBLE_SYMBOLS = 60;
+
     @Autowired
     private UserDao users;
 
@@ -35,7 +37,10 @@ public class UserController {
         if ("login".equals(mode)) {
             if (!users.exists(name)) {
                 result.put("status", "error");
-                result.put("message", "User does not exist: " + name);
+                if (name.length() > NUM_VISIBLE_SYMBOLS) {
+                    name = name.substring(0, NUM_VISIBLE_SYMBOLS) + "...";
+                }
+                result.put("message", "User does not exist: " + "\"" + name + "\"");
             } else if (!users.correctPassword(name, password)) {
                 result.put("status", "error");
                 result.put("message", "Incorrect password for user: " + name);

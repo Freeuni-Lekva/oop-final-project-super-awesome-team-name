@@ -1,27 +1,28 @@
 package ge.edu.freeuni.dao;
-
 import ge.edu.freeuni.model.QuizEngine.Question.*;
 import ge.edu.freeuni.model.QuizEngine.Quiz;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
+import javax.persistence.Access;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.*;
 
-@Repository
+
+@Component("quizzes")
 public class QuizDAO {
 
-    private final DataSource dataSource;
-
     @Autowired
-    public QuizDAO(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+    private BasicDataSource db;
 
-    public int insertQuiz(Quiz quiz) throws SQLException {
+
+    public QuizDAO() { }
+
+    public void insertQuiz(Quiz quiz) throws SQLException {
         String sql = "INSERT INTO quizzes (name, description,num_questions,random_order, one_page, immediate_correction, practice_mode,creator_username) VALUES (?, ?, ?, ?, ?, ?,?,?)";
-        try (Connection conn = dataSource.getConnection();
+        try (Connection conn = db.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, quiz.getQuizName());
@@ -35,16 +36,23 @@ public class QuizDAO {
             stmt.executeUpdate();
 
             try (ResultSet rs = stmt.getGeneratedKeys()) {
-                if (rs.next()) return rs.getInt(1);
+                if (rs.next()){
+                    int quizId = rs.getInt(1);
+                    insertQuestions(quizId, quiz.getQuestions());
+
+
+                }else{
+                    throw new SQLException("Failed to insert new quiz");
+                }
             }
         }
-        throw new SQLException("Failed to insert quiz.");
+
     }
 
-    public void insertQuestions(int quizId, List<Question> questions) throws SQLException {
+    private void insertQuestions(int quizId, List<Question> questions) throws SQLException {
         String sql = "INSERT INTO questions (quiz_id, question_text, question_type, possible_answers, correct_answer, imageURL, order_matters) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = dataSource.getConnection();
+        try (Connection conn = db.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             for (Question question : questions) {
@@ -96,44 +104,26 @@ public class QuizDAO {
         }
     }
 
-    public void deleteQuiz(int quizId) throws SQLException {
-        String sql = "DELETE FROM quizzes WHERE id = ?";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, quizId);
-            stmt.executeUpdate();
+    //Deletes a Quiz(Admin Functionality)
+    public boolean removeQuiz(int quizId) {
+        String sql1 = "DELETE FROM questions WHERE quiz_id = ?";
+        String sql2 = "DELETE FROM quizzes WHERE id = ?";
+        try (Connection conn = db.getConnection();
+             PreparedStatement stmt1 = conn.prepareStatement(sql1);
+             PreparedStatement stmt2 = conn.prepareStatement(sql2)) {
+            stmt1.setInt(1, quizId);
+            stmt2.setInt(1, quizId);
+            return stmt1.executeUpdate() == 1 && stmt2.executeUpdate() == 1;
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to remove quiz: #" + quizId, e);
         }
-    }
-
-    public Quiz getQuiz(int quizId) throws SQLException {
-        String sql = "SELECT * FROM quizzes WHERE id = ?";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, quizId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    Quiz quiz = new Quiz();
-                    quiz.setQuizID(rs.getInt("id"));
-                    quiz.setQuizName(rs.getString("title"));
-                    quiz.setDescription(rs.getString("description"));
-                    quiz.setRandomOrder(rs.getBoolean("random_order"));
-                    quiz.setOnePage(rs.getBoolean("one_page"));
-                    quiz.setImmediateCorrection(rs.getBoolean("immediate_correction"));
-                    quiz.setPracticeMode(rs.getBoolean("practice_mode"));
-                    quiz.setQuestions(getQuestions(quizId));
-                    return quiz;
-                }
-            }
-        }
-        return null;
     }
 
     public List<Question> getQuestions(int quizId) throws SQLException {
         List<Question> questions = new ArrayList<>();
         String sql = "SELECT * FROM questions WHERE quiz_id = ?";
 
-        try (Connection conn = dataSource.getConnection();
+        try (Connection conn = db.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, quizId);
@@ -194,28 +184,149 @@ public class QuizDAO {
         return questions;
     }
 
-    public List<Quiz> getAllQuizzes() throws SQLException {
-        List<Quiz> quizzes = new ArrayList<>();
-        String sql = "SELECT * FROM quizzes";
+    public Quiz getQuiz(int quizId) {
+        String sql = "SELECT * FROM quizzes WHERE id = ?";
+        try (Connection con = db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
-        try (Connection conn = dataSource.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+            ps.setInt(1, quizId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Quiz quiz = new Quiz();
+
+
+                    quiz.setQuizID(rs.getInt("id"));
+                    quiz.setQuizName(rs.getString("name"));
+                    quiz.setDescription(rs.getString("description"));
+                    quiz.setNQuestions(rs.getInt("num_questions"));
+                    quiz.setRandomOrder(rs.getBoolean("random_order"));
+                    quiz.setOnePage(rs.getBoolean("one_page"));
+                    quiz.setImmediateCorrection(rs.getBoolean("immediate_correction"));
+                    quiz.setPracticeMode(rs.getBoolean("practice_mode"));
+                    quiz.setQuestions(getQuestions(quizId));
+                    return quiz;
+
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to getQuiz quiz: " + quizId, e);
+        }
+        return null;
+    }
+
+    public List<Quiz> getAllQuizzes() {
+        List<Quiz> quizzes = new ArrayList<>();
+        String sql = "SELECT * FROM quizzes ORDER BY id DESC";
+
+        try (Connection con = db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 Quiz quiz = new Quiz();
                 int quizId = rs.getInt("id");
                 quiz.setQuizID(quizId);
-                quiz.setQuizName(rs.getString("title"));
+                quiz.setQuizName(rs.getString("name"));
                 quiz.setDescription(rs.getString("description"));
+                quiz.setNQuestions(rs.getInt("num_questions"));
                 quiz.setRandomOrder(rs.getBoolean("random_order"));
                 quiz.setOnePage(rs.getBoolean("one_page"));
                 quiz.setImmediateCorrection(rs.getBoolean("immediate_correction"));
                 quiz.setPracticeMode(rs.getBoolean("practice_mode"));
+                quiz.setCreatorUsername(rs.getString("creator_username"));
                 quiz.setQuestions(getQuestions(quizId));
                 quizzes.add(quiz);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to get all quizzes", e);
+        }
+        return quizzes;
+    }
+
+    public List<Quiz> getPopularQuizzes(int limit) {
+        List<Quiz> quizzes = new ArrayList<>();
+        String sql = "SELECT q.*, COUNT(qa.attempt_id) as attempt_count " +
+                "FROM quizzes q " +
+                "LEFT JOIN quiz_attempts qa ON q.id = qa.quiz_id " +
+                "GROUP BY q.id " +
+                "ORDER BY attempt_count DESC, q.id DESC " +
+                "LIMIT ?";
+
+        try (Connection con = db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, limit);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Quiz quiz = new Quiz();
+                    quiz.setQuizID(rs.getInt("id"));
+                    quiz.setQuizName(rs.getString("name"));
+                    quiz.setDescription(rs.getString("description"));
+                    quiz.setNQuestions(rs.getInt("num_questions"));
+                    quiz.setRandomOrder(rs.getBoolean("random_order"));
+                    quiz.setOnePage(rs.getBoolean("one_page"));
+                    quiz.setImmediateCorrection(rs.getBoolean("immediate_correction"));
+                    quiz.setPracticeMode(rs.getBoolean("practice_mode"));
+                    quiz.setCreatorUsername(rs.getString("creator_username"));
+                    quizzes.add(quiz);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to get popular quizzes", e);
+        }
+        return quizzes;
+    }
+    // return the number of existing Quizzes
+    public int numberOfQuizzes() {
+        int count = 0;
+        String query = "SELECT COUNT(*) FROM quizzes";
+
+        try (Connection conn = db.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to retrieve number of quizzes" + e);
+        }
+
+
+        return count;
+    }
+
+    //Gets Only Those Quizzes that have a name alike the user Input
+    public List<Quiz> getQuizzesWithName(String name) throws SQLException {
+        List<Quiz> quizzes = new ArrayList<>();
+        String query = "SELECT id, name, description, creator, created_at FROM quizzes WHERE name LIKE ?";
+
+        try (Connection conn = db.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, "%" + name + "%"); // Wildcard for partial match
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Quiz quiz = new Quiz();
+                    int quizId = rs.getInt("id");
+                    quiz.setQuizID(quizId);
+                    quiz.setQuizName(rs.getString("name"));
+                    quiz.setDescription(rs.getString("description"));
+                    quiz.setRandomOrder(rs.getBoolean("random_order"));
+                    quiz.setOnePage(rs.getBoolean("one_page"));
+                    quiz.setImmediateCorrection(rs.getBoolean("immediate_correction"));
+                    quiz.setPracticeMode(rs.getBoolean("practice_mode"));
+                    quiz.setQuestions(getQuestions(quizId));
+                    quiz.setCreatorUsername(rs.getString("creator_username"));
+
+                    quizzes.add(quiz);
+                }
             }
         }
         return quizzes;
     }
+
 }
